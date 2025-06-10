@@ -48,7 +48,14 @@ namespace GarageService.ClientApp.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Passwords do not match", "OK");
                 return;
             }
-            var usertype = (UserType)_ApiService.GetUserType(2).Result.Data;   
+            //            var usertype =  (UserType) _ApiService.GetUserType(2).Result.Data;   
+            var userTypeResponse = await _ApiService.GetUserType(2); // 2 = client user type
+            if (!userTypeResponse.IsSuccess || userTypeResponse.Data == null)
+            {
+                await Shell.Current.DisplayAlert("Error", userTypeResponse.ErrorMessage ?? "Failed to get user type", "OK");
+                return;
+            }
+            var usertype = userTypeResponse.Data;
             // Create user
             var user = new User
             {
