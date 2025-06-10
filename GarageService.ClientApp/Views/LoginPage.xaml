@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GarageService.ClientApp.Views.LoginPage"
+             Title="LoginPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="30,40" Spacing="25">
+            <!-- Header Section -->
+            <StackLayout Spacing="10" HorizontalOptions="Center">
+                <Image Source="garageservicelogo.png" 
+                       HeightRequest="120"
+                       WidthRequest="120"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Welcome" 
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#2C3E50"/>
+
+                <Label Text="Sign in to access your account"
+                       FontSize="14"
+                       HorizontalOptions="Center"
+                       TextColor="#7F8C8D"/>
+            </StackLayout>
+
+            <!-- Login Form -->
+            <Frame CornerRadius="12" 
+                   BorderColor="#E0E0E0" 
+                   BackgroundColor="White"
+                   Padding="25"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="20">
+                    <!-- Username Field -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Username" 
+                               FontSize="14"
+                               TextColor="#34495E"/>
+                        <Entry Text="{Binding Username}" 
+                               Placeholder="Enter your username"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#2C3E50"
+                               HeightRequest="50"/>
+                    </VerticalStackLayout>
+
+                    <!-- Password Field -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Password" 
+                               FontSize="14"
+                               TextColor="#34495E"/>
+                        <Entry Text="{Binding Password}" 
+                               Placeholder="Enter your password" 
+                               IsPassword="True"
+                               BackgroundColor="#F8F9FA"
+                               TextColor="#2C3E50"
+                               HeightRequest="50"/>
+                    </VerticalStackLayout>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="auto">
+                        <HorizontalStackLayout Spacing="10" Grid.Column="0">
+                            <CheckBox IsChecked="{Binding RememberMe}" 
+                                     Color="#3498DB"/>
+                            <Label Text="Remember me" 
+                                   VerticalOptions="Center"
+                                   TextColor="#34495E"/>
+                        </HorizontalStackLayout>
+                    </Grid>
+
+                    <!-- Login Button -->
+                    <Button Text="Sign In" 
+                            Command="{Binding LoginCommand}" 
+                            BackgroundColor="#3498DB"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="50"
+                            CornerRadius="25"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Divider -->
+            <StackLayout Orientation="Horizontal" 
+                         VerticalOptions="Center" 
+                         Spacing="10"
+                         Padding="0,10">
+                <BoxView Color="#E0E0E0" 
+                         HeightRequest="1" 
+                         VerticalOptions="Center"
+                         HorizontalOptions="FillAndExpand"/>
+                <Label Text="OR" 
+                       TextColor="#95A5A6"
+                       FontSize="12"/>
+                <BoxView Color="#E0E0E0" 
+                         HeightRequest="1" 
+                         VerticalOptions="Center"
+                         HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+
+            <!-- Register Section -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Label Text="Don't have an account?" 
+                       TextColor="#7F8C8D"
+                       FontSize="14"/>
+                <Button Text="Sign Up" 
+                        Command="{Binding RegisterCommand}"
+                        TextColor="#3498DB"
+                        BackgroundColor="Transparent"
+                        FontSize="14"
+                        FontAttributes="Bold"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

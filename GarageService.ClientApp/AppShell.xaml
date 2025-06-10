@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="GarageService.ClientApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GarageService.ClientApp"
+    xmlns:views="clr-namespace:GarageService.ClientApp.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="GarageService.ClientApp">
+
+    <ShellContent Title="Login"
+               Route="Login" 
+               ContentTemplate="{DataTemplate views:LoginPage}" />
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    <ShellContent Title="About"
+               Route="AboutPage" 
+               ContentTemplate="{DataTemplate views:AboutPage}" />
+
+    <ShellContent Title="Client Registration"
+               Route="ClientRegistration" 
+               ContentTemplate="{DataTemplate views:ClientRegistrationPage}" />
+
+    <ShellContent Title="Client Dashboard"
+               Route="ClientDashboard" 
+               ContentTemplate="{DataTemplate views:ClientDashboardPage}" />
+
+</Shell>
