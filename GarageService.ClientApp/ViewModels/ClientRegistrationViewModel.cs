@@ -61,12 +61,12 @@ namespace GarageService.ClientApp.ViewModels
             {
                 Username = Username,
                 Password = Password, // Hash this in production
-                UserType = usertype, // Assuming UserTypeid 2 is for clients
                 UserTypeid = usertype.Id
             };
 
-            var userAddedResponse = await _ApiService.UserRegister(user);
-            if (!userAddedResponse.IsSuccess)
+
+            var (isSuccess, message, registeredUser) = await _ApiService.RegisterUserAsync(user);
+            if (!isSuccess)
             {
                 await Shell.Current.DisplayAlert("Error", "Failed to create user", "OK");
                 return;
@@ -80,21 +80,26 @@ namespace GarageService.ClientApp.ViewModels
             {
                 user  = userAdded.Data; // Extract the User object
             }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Not Found", "OK");
+                return;
+            }
 
 
             // Create client profile
             var clientProfile = new ClientProfile
-            {
-                FirstName = FirstName,
-                LastName = LastName,
-                CountryId = 1,
-                PhoneExt = "+961",
-                PhoneNumber = PhoneNumber,
-                Email = Email,
-                Address = Address,
-                IsPremium =false,
-                UserId = user.Id
-            };
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    CountryId = 1,
+                    PhoneExt = "+961",
+                    PhoneNumber = PhoneNumber,
+                    Email = Email,
+                    Address = Address,
+                    IsPremium = false,
+                    UserId = user.Id
+                };
 
             var profileAddedResponse = await _ApiService.ClientRegister(clientProfile);
 

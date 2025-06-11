@@ -16,7 +16,7 @@ namespace GarageService.ClientApp.ViewModels
         private bool _RememberMe;
 
         private readonly ISessionService _sessionService;
-        //private readonly DatabaseService _databaseService;
+        private readonly ApiService _apiService;
         private readonly ISecureStorage _secureStorage;
 
         public string Username
@@ -41,14 +41,17 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand RegisterCommand { get; }
 
         public LoginViewModel( ISessionService sessionService,
-                         ISecureStorage secureStorage)
+                         ISecureStorage secureStorage,
+                         ApiService apiService)
         {
             //_databaseService = databaseService;
+            _apiService = apiService;
             _sessionService = sessionService;
             _secureStorage = secureStorage;
 
-            LoginCommand = new Command(async () => await Login());
+            LoginCommand = new Command(async () => await LoginAsync());
             RegisterCommand = new Command(async () => await Register());
+            _apiService = apiService;
 
             // Check for saved credentials on startup
             Task.Run(async () => await CheckAutoLogin());
@@ -64,16 +67,16 @@ namespace GarageService.ClientApp.ViewModels
 
                 if (!string.IsNullOrEmpty(savedUsername))
                 {
-                    //Username = savedUsername;
-                    //Password = savedPassword;
-                    //RememberMe = true;
+                    Username = savedUsername;
+                    Password = savedPassword;
+                    RememberMe = true;
 
-                    //OnPropertyChanged(nameof(Username));
-                    //OnPropertyChanged(nameof(Password));
-                    //OnPropertyChanged(nameof(RememberMe));
+                    OnPropertyChanged(nameof(Username));
+                    OnPropertyChanged(nameof(Password));
+                    OnPropertyChanged(nameof(RememberMe));
 
                     // Auto-login
-                    //await Login();
+                    ////await LoginAsync();
                 }
             }
             catch (Exception ex)
@@ -81,7 +84,7 @@ namespace GarageService.ClientApp.ViewModels
                 Debug.WriteLine($"Auto-login failed: {ex.Message}");
             }
         }
-        private async Task Login()
+        private async Task LoginAsync()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
@@ -89,33 +92,32 @@ namespace GarageService.ClientApp.ViewModels
                 return;
             }
 
-            //var user = await _databaseService.GetUserByUsername(Username, Password);
+            try
+            {
+                var response = await _apiService.LoginAsync(Username, Password);
 
-            //if (user == null) // In production, use password hashing
-            //{
-            //    await Shell.Current.DisplayAlert("Error", "Invalid username or password", "OK");
-            //    return;
-            //}
+                // Store the token securely
 
-            //if (RememberMe)
-            //{
-            //    await _secureStorage.SetAsync("remember_username", Username);
-            //    await _secureStorage.SetAsync("remember_password", Password);
-            //}
-            //else
-            //{
-            //    _secureStorage.Remove("remember_username");
-            //    _secureStorage.Remove("remember_password");
-            //}
-            
-            // var clientProfile = await _databaseService.GetClientProfileByUserId(user.Id);
-            // _sessionService.CreateSession(user, clientProfile);
-            
+                if (RememberMe)
+                {
+                    await _secureStorage.SetAsync("remember_username", Username);
+                    await _secureStorage.SetAsync("remember_password", Password);
+                }
+                else
+                {
+                    _secureStorage.Remove("remember_username");
+                    _secureStorage.Remove("remember_password");
+                }
 
-            // Navigate based on user type
-           
-            await Shell.Current.GoToAsync("//ClientDashboard");
-            
+                // Navigate to the main page
+                var Clientresponse = await _apiService.GetClientByUserID(response.User.Id);
+                _sessionService.CreateSession(response.User, Clientresponse.Data);
+                await Shell.Current.GoToAsync("//ClientDashboard");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private async Task Register()

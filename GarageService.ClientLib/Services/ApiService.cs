@@ -43,108 +43,119 @@ namespace GarageService.ClientLib.Services
 
 
         // Add other methods (Put, Delete, etc.) as needed
-
-        public async Task<ApiResponse<User>> UserRegister(User user)
+        /// <summary>
+        /// Register users
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<(bool IsSuccess, string Message, User RegisteredUser)> RegisterUserAsync(User user)
         {
             try
             {
-                // Call the API register endpoint
-                var response = await _httpClient.PostAsJsonAsync("register", user);
+                var json = JsonSerializer.Serialize(user);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("Users/register", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var registeredUser = await response.Content.ReadFromJsonAsync<User>();
-
-
-                    return new ApiResponse<User> { Data = registeredUser, IsSuccess = true };
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var registeredUser = JsonSerializer.Deserialize<User>(responseContent);
+                    return (true, "Registration successful", registeredUser);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    return (false, "Username already exists", null);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return (false, errorMessage, null);
                 }
                 else
                 {
-                    // Handle different error status codes
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-
-                    return response.StatusCode switch
-                    {
-                        System.Net.HttpStatusCode.BadRequest =>
-                            new ApiResponse<User> { ErrorMessage = errorMessage ?? "Invalid request data", IsSuccess = false },
-                        System.Net.HttpStatusCode.Conflict =>
-                            new ApiResponse<User> { ErrorMessage = errorMessage ?? "Username already exists", IsSuccess = false },
-                        _ =>
-                            new ApiResponse<User> { ErrorMessage = $"Registration failed: {response.ReasonPhrase}", IsSuccess = false }
-                    };
+                    return (false, $"Registration failed: {response.ReasonPhrase}", null);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<User>
-                {
-                    ErrorMessage = $"An error occurred during registration: {ex.Message}",
-                    IsSuccess = false
-                };
+                return (false, $"An error occurred: {ex.Message}", null);
             }
         }
-
-        public async Task<ApiResponse<ClientProfile>> ClientRegister(ClientProfile Client)
+        /// <summary>
+        /// Registers a client profile.
+        /// </summary>
+        /// <param name="Client"></param>
+        /// <returns></returns>
+        public async Task<(bool IsSuccess, string Message, ClientProfile RegisteredUser)> ClientRegister(ClientProfile Client)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("PostClientProfile", Client);
+                var json = JsonSerializer.Serialize(Client);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("ClientProfiles", content);
+
                 if (response.IsSuccessStatusCode)
                 {
-                    var registeredClient = await response.Content.ReadFromJsonAsync<ClientProfile>();
-
-
-                    return new ApiResponse<ClientProfile> { Data = registeredClient, IsSuccess = true };
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var registeredClient = JsonSerializer.Deserialize<ClientProfile>(responseContent);
+                    return (true, "Registration successful", registeredClient);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    return (false, "Client already exists", null);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return (false, errorMessage, null);
                 }
                 else
                 {
-                    // Handle different error status codes
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-
-                    return response.StatusCode switch
-                    {
-                        System.Net.HttpStatusCode.BadRequest =>
-                            new ApiResponse<ClientProfile> { ErrorMessage = errorMessage ?? "Invalid request data", IsSuccess = false },
-                        System.Net.HttpStatusCode.Conflict =>
-                            new ApiResponse<ClientProfile> { ErrorMessage = errorMessage ?? "Username already exists", IsSuccess = false },
-                        _ =>
-                            new ApiResponse<ClientProfile> { ErrorMessage = $"Registration failed: {response.ReasonPhrase}", IsSuccess = false }
-                    };
+                    return (false, $"Registration failed: {response.ReasonPhrase}", null);
                 }
             }
             catch (Exception ex)
             {
-                return new ApiResponse<ClientProfile>
-                {
-                    ErrorMessage = $"An error occurred during registration: {ex.Message}",
-                    IsSuccess = false
-                };
+                return (false, $"An error occurred: {ex.Message}", null);
             }
         }
+      
+       /// <summary>
+       /// get user by user name
+       /// </summary>
+       /// <param name="username"></param>
+       /// <returns></returns>
         public async Task<ApiResponse<User>> GetUserByUsername(string username)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("GetUserIdByUserName", username);
+                var response = await _httpClient.GetAsync($"Users/GetUserByUserName/{username}");
+                var content = await response.Content.ReadAsStringAsync();
+
                 if (response.IsSuccessStatusCode)
                 {
-                    var ExistUser = await response.Content.ReadFromJsonAsync<User>();
+                    // Parse the response content as User
+                    var user = await response.Content.ReadFromJsonAsync<User>();
 
+                    if (user == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<User>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "User not found"
+                        };
+                    }
 
-                    return new ApiResponse<User> { Data = ExistUser, IsSuccess = true };
+                    return new ApiResponse<User> { Data = user, IsSuccess = true };
                 }
                 else
                 {
-                    // Handle different error status codes
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-                    return response.StatusCode switch
+                    return new ApiResponse<User>
                     {
-                        System.Net.HttpStatusCode.BadRequest =>
-                            new ApiResponse<User> { ErrorMessage = errorMessage ?? "Invalid request data", IsSuccess = false },
-                        System.Net.HttpStatusCode.NotFound =>
-                            new ApiResponse<User> { ErrorMessage = errorMessage ?? "User not found", IsSuccess = false },
-                        _ =>
-                            new ApiResponse<User> { ErrorMessage = $"Check failed: {response.ReasonPhrase}", IsSuccess = false }
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
                     };
                 }
             }
@@ -152,12 +163,17 @@ namespace GarageService.ClientLib.Services
             {
                 return new ApiResponse<User>
                 {
-                    ErrorMessage = $"An error occurred during registration: {ex.Message}",
-                    IsSuccess = false
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
                 };
             }
         }
-       
+
+        /// <summary>
+        /// Fetches a user type by its ID.
+        /// </summary>
+        /// <param name="Typeid"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<UserType>> GetUserType(int Typeid)
         {
             try
@@ -192,6 +208,90 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
+
+        public async Task<LoginResponse> LoginAsync(string username, string password)
+        {
+            try
+            {
+                var loginRequest = new LoginRequest
+                {
+                    Username = username,
+                    Password = password
+                };
+
+                var json = JsonSerializer.Serialize(loginRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("Users/login", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    return JsonSerializer.Deserialize<LoginResponse>(responseContent, options);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new Exception("Invalid username or password");
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Login failed: {errorContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle or log the exception
+                throw new Exception($"Login error: {ex.Message}");
+            }
+        }
+
+        public async Task<ApiResponse<ClientProfile>> GetClientByUserID(int userid)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientProfiles/GetClientProfileByUserID/{userid}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var clientprofile = await response.Content.ReadFromJsonAsync<ClientProfile>();
+
+                    if (clientprofile == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<ClientProfile>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "clientprofile not found"
+                        };
+                    }
+
+                    return new ApiResponse<ClientProfile> { Data = clientprofile, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<ClientProfile>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ClientProfile>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
     }
 
     public class ApiResponse<T>
@@ -199,5 +299,17 @@ namespace GarageService.ClientLib.Services
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public T Data { get; set; }
+    }
+
+    public class LoginResponse
+    {
+        public string Token { get; set; }
+        public User User { get; set; }
+    }
+
+    public class LoginRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
