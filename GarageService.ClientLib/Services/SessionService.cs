@@ -20,7 +20,7 @@ namespace GarageService.ClientLib.Services
         public int ProfileId => Preferences.Get(ProfileIdKey, -1);
         public string Username => Preferences.Get(UsernameKey, string.Empty);
 
-        int ISessionService.UserType => throw new NotImplementedException();
+        int ISessionService.UserType => Preferences.Get(UserTypeidKey, 1);
 
         public void ClearSession()
         {

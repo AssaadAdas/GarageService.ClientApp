@@ -304,6 +304,48 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
+
+        public async Task<ApiResponse<ClientProfile>> GetClientByID(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientProfiles/{id}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var clientprofile = await response.Content.ReadFromJsonAsync<ClientProfile>();
+
+                    if (clientprofile == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<ClientProfile>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "clientprofile not found"
+                        };
+                    }
+
+                    return new ApiResponse<ClientProfile> { Data = clientprofile, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<ClientProfile>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ClientProfile>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
     }
 
     public class ApiResponse<T>
