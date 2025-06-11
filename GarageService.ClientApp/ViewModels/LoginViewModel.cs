@@ -76,7 +76,7 @@ namespace GarageService.ClientApp.ViewModels
                     OnPropertyChanged(nameof(RememberMe));
 
                     // Auto-login
-                    ////await LoginAsync();
+                    //await LoginAsync();
                 }
             }
             catch (Exception ex)

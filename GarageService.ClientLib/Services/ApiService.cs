@@ -41,7 +41,6 @@ namespace GarageService.ClientLib.Services
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-
         // Add other methods (Put, Delete, etc.) as needed
         /// <summary>
         /// Register users
@@ -82,6 +81,7 @@ namespace GarageService.ClientLib.Services
                 return (false, $"An error occurred: {ex.Message}", null);
             }
         }
+     
         /// <summary>
         /// Registers a client profile.
         /// </summary>
@@ -209,6 +209,13 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// login async
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<LoginResponse> LoginAsync(string username, string password)
         {
             try
@@ -250,7 +257,12 @@ namespace GarageService.ClientLib.Services
                 throw new Exception($"Login error: {ex.Message}");
             }
         }
-
+        
+        /// <summary>
+        /// get client profile by user ID
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<ClientProfile>> GetClientByUserID(int userid)
         {
             try
