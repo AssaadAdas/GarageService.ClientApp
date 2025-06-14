@@ -305,6 +305,11 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// Get client by by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<ClientProfile>> GetClientByID(int id)
         {
             try
@@ -346,7 +351,49 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
-    }
+
+        /// <summary>
+        /// Get all countries as list
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<Country>>> GetCountriesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("Countries");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var countries = await response.Content.ReadFromJsonAsync<List<Country>>();
+                    //var countries = JsonSerializer.Deserialize<List<Country>>(content);
+                    return new ApiResponse<List<Country>>
+                    {
+                        IsSuccess = true,
+                        Data = countries.OrderBy(c => c.CountryName).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<Country>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<Country>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+
+                };
+            }
+        }
+}
 
     public class ApiResponse<T>
     {

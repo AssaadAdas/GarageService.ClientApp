@@ -46,8 +46,6 @@ namespace GarageService.ClientApp.ViewModels
             AddVehicleCommand = new Command(AddVehicle);
             AddAppointmentCommand = new Command(AddAppointment);
 
-           
-
             // Load data here
             LoadClientProfile();
         }
@@ -55,7 +53,6 @@ namespace GarageService.ClientApp.ViewModels
         private void OpenHistory() { /* Navigate to history page */ }
         private void AddVehicle() { /* Open add vehicle dialog */ }
         private void AddAppointment() { /* Open add appointment dialog */ }
-
         private async void LoadClientProfile()
         {
             // Get current user ID from your authentication system

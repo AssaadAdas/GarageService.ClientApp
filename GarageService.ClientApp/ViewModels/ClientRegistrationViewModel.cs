@@ -2,6 +2,7 @@
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,22 +19,89 @@ namespace GarageService.ClientApp.ViewModels
         public int UserTypeid { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int CountryId { get; set; }
-        public string PhoneExt { get; set; }
+
+        private int _selectedCountryId;
+        public int CountryId {
+            get => _selectedCountryId;
+            set
+            {
+                SetProperty(ref _selectedCountryId, value);
+                // If you need to find the full country object:
+                SelectedCountry = Countries?.FirstOrDefault(c => c.Id == value);
+            }
+        }
+        private string _phoneExt;
+        public string PhoneExt
+        {
+            get => _phoneExt;
+            set => SetProperty(ref _phoneExt, value);
+        }
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
         public int UserId { get; set; } = 2;
         public bool IsPremium { get; set; } = false;
 
+        private List<Country> _countries;
+        private Country _selectedCountry;
+        public List<Country> Countries
+        {
+            get => _countries;
+            set => SetProperty(ref _countries, value);
+        }
+
+        public Country SelectedCountry
+        {
+            get => _selectedCountry;
+            set
+            {
+                if (SetProperty(ref _selectedCountry, value))
+                {
+                    CountryId = value?.Id ?? 0;
+                    PhoneExt = value?.PhoneExt ?? string.Empty; // Set PhoneExt from selected country
+                }
+            }
+        }
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set => SetProperty(ref _errorMessage, value);
+        }
         public ICommand RegisterCommand { get; }
 
         public ClientRegistrationViewModel(ApiService apiservice)
         {
             _ApiService = apiservice;
             RegisterCommand = new Command(async () => await Register());
+            LoadCountries();
         }
+       
+        private async void LoadCountries()
+        {
+            try
+            {
+                ErrorMessage = string.Empty;
+                var apiResponse = await _ApiService.GetCountriesAsync();
 
+                if (apiResponse.IsSuccess)
+                {
+                    Countries = apiResponse.Data;
+                }
+                else
+                {
+                    ErrorMessage = apiResponse.ErrorMessage;
+                    // Optionally log the error
+                    Debug.WriteLine($"API Error: {apiResponse.ErrorMessage}");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An unexpected error occurred";
+                Debug.WriteLine($"Exception: {ex}");
+            }
+
+        }
         private async Task Register()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) ||
@@ -64,7 +132,6 @@ namespace GarageService.ClientApp.ViewModels
                 UserTypeid = usertype.Id
             };
 
-
             var (isSuccess, message, registeredUser) = await _ApiService.RegisterUserAsync(user);
             if (!isSuccess)
             {
@@ -92,8 +159,8 @@ namespace GarageService.ClientApp.ViewModels
                 {
                     FirstName = FirstName,
                     LastName = LastName,
-                    CountryId = 1,
-                    PhoneExt = "+961",
+                    CountryId = CountryId,
+                    PhoneExt = PhoneExt,
                     PhoneNumber = PhoneNumber,
                     Email = Email,
                     Address = Address,

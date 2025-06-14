@@ -95,11 +95,12 @@
 
                     <Picker Title="Select Country *"
                             ItemsSource="{Binding Countries}"
-                            SelectedIndex="{Binding CountryId}"
+                            ItemDisplayBinding="{Binding CountryName}"
+                            SelectedItem="{Binding SelectedCountry}"
                             Style="{StaticResource FormPicker}"/>
                 </VerticalStackLayout>
             </Border>
-
+            <!-- Contact Info -->
             <Border Stroke="{DynamicResource BorderColor}"
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 10"

@@ -1,4 +1,5 @@
-﻿using GarageService.ClientApp.ViewModels;
+﻿using CommunityToolkit.Maui;
+using GarageService.ClientApp.ViewModels;
 using GarageService.ClientApp.Views;
 using GarageService.ClientLib.Services;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
