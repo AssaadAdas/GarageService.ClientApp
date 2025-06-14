@@ -1,8 +1,10 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace GarageService.ClientApp.ViewModels
         private readonly ApiService _ApiService;
         private readonly ISessionService _sessionService;
         private ClientProfile _clientProfile;
-
+        private ObservableCollection<Vehicle> _Vehicles;
         public ClientProfile ClientProfile
         {
             get => _clientProfile;
@@ -29,12 +31,19 @@ namespace GarageService.ClientApp.ViewModels
             }
         }
 
+        public ObservableCollection<Vehicle> Vehicles
+        {
+            get => _Vehicles;
+            set => SetProperty(ref _Vehicles, value);
+        }
+        
         //public ObservableCollection<Vehicle> Vehicles { get; set; }
         //public ObservableCollection<VehicleAppointment> VehicleAppointments { get; set; }
 
         public ICommand OpenHistoryCommand { get; }
         public ICommand AddVehicleCommand { get; }
         public ICommand AddAppointmentCommand { get; }
+        public ICommand EditProfileCommand { get; }
 
         public ClientDashboardViewModel(ApiService apiservice, ISessionService sessionService)
         {
@@ -45,6 +54,7 @@ namespace GarageService.ClientApp.ViewModels
             OpenHistoryCommand = new Command(OpenHistory);
             AddVehicleCommand = new Command(AddVehicle);
             AddAppointmentCommand = new Command(AddAppointment);
+            EditProfileCommand = new Command(async () => await EditProfile());
 
             // Load data here
             LoadClientProfile();
@@ -53,7 +63,11 @@ namespace GarageService.ClientApp.ViewModels
         private void OpenHistory() { /* Navigate to history page */ }
         private void AddVehicle() { /* Open add vehicle dialog */ }
         private void AddAppointment() { /* Open add appointment dialog */ }
-        private async void LoadClientProfile()
+        private async Task EditProfile()
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditClientProfilePage)}");
+        }
+        public async Task LoadClientProfile()
         {
             // Get current user ID from your authentication system
             int ClientId = GetCurrentUserId();
@@ -65,6 +79,7 @@ namespace GarageService.ClientApp.ViewModels
             }
         }
 
+        
         private int GetCurrentUserId()
         {
             // Implement your actual user ID retrieval logic

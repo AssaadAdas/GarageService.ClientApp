@@ -11,6 +11,7 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute("Main", typeof(MainPage));
             Routing.RegisterRoute("ClientRegistration", typeof(ClientRegistrationPage));
             Routing.RegisterRoute("ClientDashboard", typeof(ClientDashboardPage));
+            Routing.RegisterRoute("EditClientProfilePage", typeof(EditClientProfilePage));
 
             // Set initial route
             //CurrentItem = Items[0];

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GarageService.ClientApp.Views.EditClientProfilePage"
+             Title="EditClientProfilePage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Header -->
+            <Label Text="Edit Profile" 
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource PrimaryTextColor}"/>
+
+            <BoxView HeightRequest="1" 
+                  Color="{DynamicResource SeparatorColor}"
+                  HorizontalOptions="Fill"
+                  Margin="0,0,0,10"/>
+
+            <!-- Personal Information Section -->
+            <Border Stroke="{DynamicResource BorderColor}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="15"
+                    BackgroundColor="{DynamicResource SectionBackgroundColor}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Personal Information" 
+                FontAttributes="Bold"
+                FontSize="16"
+                TextColor="{DynamicResource SectionHeaderColor}"
+                Margin="0,0,0,5"/>
+
+                    <Label Text="First Name *" 
+                FontAttributes="Bold"
+                TextColor="{DynamicResource LabelTextColor}"/>
+                    <Entry Placeholder="First Name" 
+                    Text="{Binding FirstName}"
+                    Style="{StaticResource FormEntry}"/>
+                    <Label Text="Last Name *" 
+                FontAttributes="Bold"
+                TextColor="{DynamicResource LabelTextColor}"/>
+                    <Entry Placeholder="Last Name" 
+                    Text="{Binding LastName}"
+                    Style="{StaticResource FormEntry}"/>
+
+                    <Label Text="Address *" 
+                FontAttributes="Bold"
+                TextColor="{DynamicResource LabelTextColor}"/>
+
+                    <Entry Placeholder="Address" 
+                Text="{Binding Address}"
+                Style="{StaticResource FormEntry}"/>
+
+                    <Picker Title="Select Country *"
+                 ItemsSource="{Binding Countries}"
+                 ItemDisplayBinding="{Binding CountryName}"
+                 SelectedItem="{Binding SelectedCountry}"
+                 Style="{StaticResource FormPicker}"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Contact Information Section -->
+            <Border Stroke="{DynamicResource BorderColor}"
+        StrokeThickness="1"
+        StrokeShape="RoundRectangle 10"
+        Padding="15"
+        BackgroundColor="{DynamicResource SectionBackgroundColor}">
+
+                <VerticalStackLayout Spacing="10">
+
+                    <Label Text="Contact Information" 
+               FontAttributes="Bold"
+               FontSize="16"
+               TextColor="{DynamicResource SectionHeaderColor}"
+               Margin="0,0,0,5"/>
+                    <Label Text="Email *" 
+               FontAttributes="Bold"
+               TextColor="{DynamicResource LabelTextColor}"/>
+
+                    <Entry Placeholder="Email" 
+               Text="{Binding Email}"
+               Keyboard="Email"
+               Style="{StaticResource FormEntry}"/>
+
+                    <Label Text="Ext *" 
+               FontAttributes="Bold"
+               TextColor="{DynamicResource LabelTextColor}"/>
+
+                    <Entry Placeholder="Ext" 
+                   Text="{Binding PhoneExt}"
+                   Keyboard="Telephone"
+                   Style="{StaticResource FormEntry}"/>
+
+                    <Label Text="Phone Number *" 
+               FontAttributes="Bold"
+               TextColor="{DynamicResource LabelTextColor}"/>
+
+                    <Entry Placeholder="Phone Number" 
+                   Text="{Binding PhoneNumber}"
+                   Keyboard="Telephone"
+                   Style="{StaticResource FormEntry}"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Error Message -->
+            <Label Text="{Binding ErrorMessage}"
+                TextColor="Red"
+                IsVisible="{Binding HasError}"/>
+
+            <!-- Save Button -->
+            <Button Text="Save Changes" 
+                 Command="{Binding SaveCommand}"
+                 Margin="0,20,0,0"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

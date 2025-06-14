@@ -16,4 +16,12 @@ public partial class ClientDashboardPage : ContentPage
     {
         //FlyoutMenu.IsPresented = true;
     }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is ClientDashboardViewModel vm)
+        {
+            await vm.LoadClientProfile(); // Make sure this method fetches the latest profile
+        }
+    }
 }

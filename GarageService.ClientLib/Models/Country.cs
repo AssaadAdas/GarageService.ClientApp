@@ -11,7 +11,7 @@ namespace GarageService.ClientLib.Models
     {
         public int Id { get; set; }
 
-        public string CountryName { get; set; } = null!;
+        public string CountryName { get; set; }
 
         public string? PhoneExt { get; set; }
 

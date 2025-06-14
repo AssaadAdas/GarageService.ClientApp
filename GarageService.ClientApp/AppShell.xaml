@@ -26,5 +26,8 @@
     <ShellContent Title="Client Dashboard"
                Route="ClientDashboard" 
                ContentTemplate="{DataTemplate views:ClientDashboardPage}" />
+    <ShellContent Title="Edit Profile"
+           Route="EditClientProfile" 
+           ContentTemplate="{DataTemplate views:EditClientProfilePage}" />
 
 </Shell>

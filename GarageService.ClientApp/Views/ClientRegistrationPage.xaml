@@ -59,7 +59,7 @@
                 </VerticalStackLayout>
 
             </Border>
-
+            <!-- Personal Info -->
             <Border Stroke="{DynamicResource BorderColor}"
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 10"

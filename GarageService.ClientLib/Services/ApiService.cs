@@ -393,7 +393,42 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
-}
+
+        public async Task<bool> UpdateClientProfileAsync(int id, ClientProfile clientProfile)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(clientProfile);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"ClientProfiles/{id}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                   
+                    return true;
+                }
+
+                // Handle specific status codes if needed
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("Client profile not found");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Invalid request - ID mismatch");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle it appropriately
+                Console.WriteLine($"Error updating client profile: {ex.Message}");
+                throw;
+            }
+        }
+    }
 
     public class ApiResponse<T>
     {
