@@ -21,7 +21,7 @@ namespace GarageService.ClientLib.Services
     public class ApiService 
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://localhost:44319/api/";
+        private const string BaseUrl = "https://localhost:44344/api/";
 
         public ApiService()
         {
@@ -406,6 +406,83 @@ namespace GarageService.ClientLib.Services
                 if (response.IsSuccessStatusCode)
                 {
                    
+                    return true;
+                }
+
+                // Handle specific status codes if needed
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("Client profile not found");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Invalid request - ID mismatch");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle it appropriately
+                Console.WriteLine($"Error updating client profile: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<ApiResponse<ClientNotification>> GetClientNotification(int Id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientNotifications/{Id}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var clientnotification = await response.Content.ReadFromJsonAsync<ClientNotification>();
+
+                    if (clientnotification == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<ClientNotification>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "ClientNotification not found"
+                        };
+                    }
+
+                    return new ApiResponse<ClientNotification> { Data = clientnotification, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<ClientNotification>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ClientNotification>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
+        public async Task<bool> UpdateClientNotificationAsync(int id, ClientNotification clientNotification)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(clientNotification);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"ClientNotifications/{id}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
                     return true;
                 }
 

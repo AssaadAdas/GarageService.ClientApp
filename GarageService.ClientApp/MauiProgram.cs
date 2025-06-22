@@ -27,11 +27,19 @@ public static class MauiProgram
         builder.Services.AddTransient<ClientDashboardViewModel>();
         builder.Services.AddTransient<EditClientProfileViewModel>();
 
+        builder.Services.AddTransient<AddVehicleViewModel>();
+        builder.Services.AddTransient<EditVehicleViewModel>();
+        builder.Services.AddTransient<ReadNotificationViewModel>();
+
         // Register Pages
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<ClientRegistrationPage>();
         builder.Services.AddTransient<ClientDashboardPage>();
         builder.Services.AddTransient<EditClientProfilePage>();
+
+        builder.Services.AddTransient<AddVehiclePage>();
+        builder.Services.AddTransient<EditVehiclePage>();
+        builder.Services.AddTransient<NotificationDetailPage>(); 
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();

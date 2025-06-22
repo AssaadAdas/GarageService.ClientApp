@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ namespace GarageService.ClientApp.ViewModels
         private readonly ISessionService _sessionService;
         private ClientProfile _clientProfile;
         private ObservableCollection<Vehicle> _Vehicles;
+        private ObservableCollection<ClientNotification> _ClientNotifications;
         public ClientProfile ClientProfile
         {
             get => _clientProfile;
@@ -36,14 +38,21 @@ namespace GarageService.ClientApp.ViewModels
             get => _Vehicles;
             set => SetProperty(ref _Vehicles, value);
         }
+
+        public ObservableCollection<ClientNotification> ClientNotifications
+        {
+            get => _ClientNotifications;
+            set => SetProperty(ref _ClientNotifications, value);
+        }
         
-        //public ObservableCollection<Vehicle> Vehicles { get; set; }
         //public ObservableCollection<VehicleAppointment> VehicleAppointments { get; set; }
 
         public ICommand OpenHistoryCommand { get; }
         public ICommand AddVehicleCommand { get; }
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
+
+        public ICommand ReadNoteCommand { get; }
 
         public ClientDashboardViewModel(ApiService apiservice, ISessionService sessionService)
         {
@@ -55,10 +64,11 @@ namespace GarageService.ClientApp.ViewModels
             AddVehicleCommand = new Command(AddVehicle);
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
-
+            ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
             // Load data here
             LoadClientProfile();
         }
+
 
         private void OpenHistory() { /* Navigate to history page */ }
         private void AddVehicle() { /* Open add vehicle dialog */ }
@@ -66,6 +76,11 @@ namespace GarageService.ClientApp.ViewModels
         private async Task EditProfile()
         {
             await Shell.Current.GoToAsync($"{nameof(EditClientProfilePage)}");
+        }
+
+        private async Task ReadNote(ClientNotification notification)
+        {
+            await Shell.Current.GoToAsync($"{nameof(NotificationDetailPage)}?noteId={notification.Id}");
         }
         public async Task LoadClientProfile()
         {
@@ -78,8 +93,7 @@ namespace GarageService.ClientApp.ViewModels
                 ClientProfile = response.Data;
             }
         }
-
-        
+      
         private int GetCurrentUserId()
         {
             // Implement your actual user ID retrieval logic
