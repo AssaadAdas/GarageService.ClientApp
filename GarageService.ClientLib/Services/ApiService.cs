@@ -121,12 +121,54 @@ namespace GarageService.ClientLib.Services
                 return (false, $"An error occurred: {ex.Message}", null);
             }
         }
-      
-       /// <summary>
-       /// get user by user name
-       /// </summary>
-       /// <param name="username"></param>
-       /// <returns></returns>
+
+
+        public async Task<(bool IsSuccess, string Message, Vehicle vehicle)> AddVehicleAsync(Vehicle vehicle)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(vehicle);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("Vehicles", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var AddedVehicle = JsonSerializer.Deserialize<Vehicle>(responseContent);
+                    return (true, "Registration successful", AddedVehicle);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new Exception($"Validation error: {errorContent}");
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new Exception($"Conflict: {errorContent}");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode} - {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"Error adding vehicle: {ex.Message}");
+                throw;
+            }
+        }
+       
+
+        /// <summary>
+        /// get user by user name
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<User>> GetUserByUsername(string username)
         {
             try
@@ -386,6 +428,155 @@ namespace GarageService.ClientLib.Services
             catch (Exception ex)
             {
                 return new ApiResponse<List<Country>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+
+                };
+            }
+        }
+
+        public async Task<ApiResponse<List<Manufacturer>>> GetManufacturersAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("Manufacturers");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var manufacturers = await response.Content.ReadFromJsonAsync<List<Manufacturer>>();
+                    return new ApiResponse<List<Manufacturer>>
+                    {
+                        IsSuccess = true,
+                        Data = manufacturers.OrderBy(c => c.ManufacturerDesc).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<Manufacturer>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<Manufacturer>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+
+                };
+            }
+        }
+
+        public async Task<ApiResponse<List<MeassureUnit>>> GetMeassureUnitsAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("MeassureUnits");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var MeassureUnits = await response.Content.ReadFromJsonAsync<List<MeassureUnit>>();
+                    return new ApiResponse<List<MeassureUnit>>
+                    {
+                        IsSuccess = true,
+                        Data = MeassureUnits.OrderBy(c => c.MeassureUnitDesc).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<MeassureUnit>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<MeassureUnit>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+
+                };
+            }
+        }
+
+
+        public async Task<ApiResponse<List<FuelType>>> GetFuelTypesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("FuelTypes");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var manufacturers = await response.Content.ReadFromJsonAsync<List<FuelType>>();
+                    return new ApiResponse<List<FuelType>>
+                    {
+                        IsSuccess = true,
+                        Data = manufacturers.OrderBy(c => c.FuelTypeDesc).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<FuelType>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<FuelType>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+
+                };
+            }
+        }
+
+        public async Task<ApiResponse<List<VehicleType>>> GetVehicleTypesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("VehicleTypes");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var vehicletypes = await response.Content.ReadFromJsonAsync<List<VehicleType>>();
+                    return new ApiResponse<List<VehicleType>>
+                    {
+                        IsSuccess = true,
+                        Data = vehicletypes.OrderBy(c => c.VehicleTypesDesc).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<VehicleType>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<VehicleType>>
                 {
                     IsSuccess = false,
                     ErrorMessage = ex.Message,

@@ -13,6 +13,8 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute("ClientDashboard", typeof(ClientDashboardPage));
             Routing.RegisterRoute("EditClientProfilePage", typeof(EditClientProfilePage));
             Routing.RegisterRoute(nameof(NotificationDetailPage), typeof(NotificationDetailPage));
+            Routing.RegisterRoute(nameof(AddVehiclePage), typeof(AddVehiclePage));
+            Routing.RegisterRoute(nameof(EditVehiclePage), typeof(EditVehiclePage));
 
             // Set initial route
             //CurrentItem = Items[0];

@@ -2,11 +2,94 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.AddVehiclePage"
-             Title="AddVehiclePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             >
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+        <!-- Header -->
+        <Label Text="Car Details"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,0,0,10"/>
+        <!-- Vehicle Name -->
+        <Label Text="Vehicle Name *"
+                   FontAttributes="Bold"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding VehicleName}"
+                   Placeholder="Vehicle Name"
+                   Style="{StaticResource PrimaryEntry}"/>
+
+        <Picker Title="Vehicle Type *"
+                    ItemsSource="{Binding vehicletypes}"
+                    ItemDisplayBinding="{Binding VehicleTypesDesc}"
+                    SelectedItem="{Binding SelectedVehicleType}"
+                    Style="{StaticResource FormPicker}"/>
+        <Picker Title="Manufacturers *"
+                 ItemsSource="{Binding manufacturers}"
+                 ItemDisplayBinding="{Binding ManufacturerDesc}"
+                 SelectedItem="{Binding SelectedManufacturer}"
+                 Style="{StaticResource FormPicker}"/>
+        <!-- Model -->
+        <Label Text="Model *"
+                   FontAttributes="Bold"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding Model}"
+                   Placeholder="Model"
+                   Style="{StaticResource PrimaryEntry}"/>
+
+        <!-- Model -->
+        <Label Text="Liscence Plate *"
+                   FontAttributes="Bold"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding LiscencePlate}"
+                   Placeholder="Liscence Plate"
+                   Style="{StaticResource PrimaryEntry}"/>
+        <!-- Chassis Number -->
+        <Label Text="ChassisNumber"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding ChassisNumber}"
+                   Placeholder="Chassis Number"
+                   Style="{StaticResource PrimaryEntry}"/>
+        <!-- VIN Field -->
+        <Label Text="VIN (Vehicle Identification Number)"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding Identification}"
+                   Placeholder="Enter VIN"
+                   Style="{StaticResource PrimaryEntry}"/>
+
+            <Picker Title="Fuel Type *"
+                 ItemsSource="{Binding fueltypes}"
+                 ItemDisplayBinding="{Binding FuelTypeDesc}"
+                 SelectedItem="{Binding Selectedfueltype}"
+                 Style="{StaticResource FormPicker}"/>
+
+            <Picker Title="Meassure Units *"
+                 ItemsSource="{Binding meassureunits}"
+                 ItemDisplayBinding="{Binding MeassureUnitDesc}"
+                 SelectedItem="{Binding selectedmeassureunit}"
+                 Style="{StaticResource FormPicker}"/>
+            
+            <!-- Mileage -->
+        <Label Text="Mileage"
+                   Style="{StaticResource FieldLabelStyle}"/>
+        <Entry Text="{Binding Odometer}"
+                   Placeholder="Mileage"
+                   Style="{StaticResource PrimaryEntry}"/>
+            <!-- Remember Me & Forgot Password -->
+        <Grid ColumnDefinitions="*,*" RowDefinitions="auto">
+            <HorizontalStackLayout Spacing="10" Grid.Column="0">
+                <CheckBox IsChecked="{Binding Active}" 
+                          Color="#3498DB"/>
+                <Label Text="Active" 
+                       VerticalOptions="Center"
+                       TextColor="#34495E"/>
+            </HorizontalStackLayout>
+        </Grid>
+            <!-- Save Button -->
+        <Button Text="Save" 
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0,30,0,0"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

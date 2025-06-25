@@ -118,7 +118,7 @@
                                   BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#444444}"  
                                   HorizontalOptions="Fill"/>
 
-                        <CollectionView ItemsSource="{Binding Vehicles}"   
+                        <CollectionView ItemsSource="{Binding ClientProfile.Vehicles}"   
                                         EmptyView="No vehicles registered">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -127,18 +127,33 @@
                                            Margin="0,0,0,10"  
                                            BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
                                            HasShadow="True">
-                                        <Grid ColumnDefinitions="Auto,*" RowSpacing="8">
+                                        <Grid ColumnDefinitions="Auto,*" RowSpacing="25">
                                             <Label Grid.Column="0"  
                                                    Text="🚗"  
                                                    FontSize="16"  
                                                    VerticalOptions="Center"/>
-                                            <VerticalStackLayout Grid.Column="1" Spacing="4">
-                                                <Label Text="{Binding Model}"   
+                                            <VerticalStackLayout Grid.Column="1" Spacing="20">
+                                                <Label Text="{Binding VehicleName}"   
                                                        FontAttributes="Bold"  
                                                        TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
-                                                <Label Text="{Binding LicensePlate}"   
+                                                <Label Text="{Binding LiscencePlate}"   
                                                        FontSize="14"  
                                                        TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="2" 
+                                                                   VerticalOptions="Center"
+                                                                   Spacing="20">
+                                                <Button Text="✏️" 
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        HeightRequest="36"
+                                                        WidthRequest="36"
+                                                        CornerRadius="18"/>
+
                                             </VerticalStackLayout>
                                         </Grid>
                                     </Frame>
@@ -155,7 +170,7 @@
                                 FontFamily="Medium"
                                 FontSize="14"
                                 HorizontalOptions="Fill"
-                                Command="{Binding EditProfileCommand}"/>
+                                Command="{Binding AddVehicleCommand}"/>
                     </VerticalStackLayout>
                 </Frame>
 
@@ -201,7 +216,7 @@
                                                        FontSize="14"  
                                                        TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
                                             </VerticalStackLayout>
-                                            <HorizontalStackLayout Grid.Column="1" 
+                                            <VerticalStackLayout Grid.Column="1" 
                                                                    VerticalOptions="Center"
                                                                    Spacing="8">
                                                 <Button Text="✏️" 
@@ -215,7 +230,7 @@
                                                         WidthRequest="36"
                                                         CornerRadius="18"/>
 
-                                            </HorizontalStackLayout>
+                                            </VerticalStackLayout>
                                         </Grid>
                                     </Frame>
                                 </DataTemplate>

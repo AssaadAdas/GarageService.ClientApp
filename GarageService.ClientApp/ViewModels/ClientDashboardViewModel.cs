@@ -44,11 +44,9 @@ namespace GarageService.ClientApp.ViewModels
             get => _ClientNotifications;
             set => SetProperty(ref _ClientNotifications, value);
         }
-        
-        //public ObservableCollection<VehicleAppointment> VehicleAppointments { get; set; }
-
         public ICommand OpenHistoryCommand { get; }
         public ICommand AddVehicleCommand { get; }
+        public ICommand EditVehicleCommand { get; }
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
 
@@ -61,7 +59,8 @@ namespace GarageService.ClientApp.ViewModels
             _sessionService = sessionService;
 
             OpenHistoryCommand = new Command(OpenHistory);
-            AddVehicleCommand = new Command(AddVehicle);
+            AddVehicleCommand = new Command(async () => await AddVehicle());
+            EditVehicleCommand = new Command(async () => await EditVehicle());
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
@@ -71,13 +70,19 @@ namespace GarageService.ClientApp.ViewModels
 
 
         private void OpenHistory() { /* Navigate to history page */ }
-        private void AddVehicle() { /* Open add vehicle dialog */ }
+        private async Task AddVehicle()
+        { 
+            await Shell.Current.GoToAsync($"{nameof(AddVehiclePage)}"); 
+        }
+        private async Task EditVehicle()
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditVehiclePage)}");
+        }
         private void AddAppointment() { /* Open add appointment dialog */ }
         private async Task EditProfile()
         {
             await Shell.Current.GoToAsync($"{nameof(EditClientProfilePage)}");
         }
-
         private async Task ReadNote(ClientNotification notification)
         {
             await Shell.Current.GoToAsync($"{nameof(NotificationDetailPage)}?noteId={notification.Id}");
