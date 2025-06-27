@@ -620,6 +620,42 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+
+        public async Task<bool> UpdateVehicleAsync(int id, Vehicle vehicle)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(vehicle);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"Vehicles/{id}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return true;
+                }
+
+                // Handle specific status codes if needed
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("vehicle not found");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Invalid request - ID mismatch");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle it appropriately
+                Console.WriteLine($"Error updating vehicle: {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task<ApiResponse<ClientNotification>> GetClientNotification(int Id)
         {
             try
@@ -696,6 +732,49 @@ namespace GarageService.ClientLib.Services
                 throw;
             }
         }
+
+        public async Task<ApiResponse<Vehicle>> GetVehicleByID(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"Vehicles/{id}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var vehicle = await response.Content.ReadFromJsonAsync<Vehicle>();
+
+                    if (vehicle == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<Vehicle>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "Vehicle not found"
+                        };
+                    }
+
+                    return new ApiResponse<Vehicle> { Data = vehicle, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<Vehicle>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<Vehicle>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
     }
 
     public class ApiResponse<T>

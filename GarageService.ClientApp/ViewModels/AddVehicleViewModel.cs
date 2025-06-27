@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace GarageService.ClientApp.ViewModels
 {
-    [QueryProperty(nameof(VehileId), "vehileid")]
+    
     public class AddVehicleViewModel: BaseViewModel
     {
         private readonly ApiService _ApiService;

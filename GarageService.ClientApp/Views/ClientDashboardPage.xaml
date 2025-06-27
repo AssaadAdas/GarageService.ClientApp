@@ -15,6 +15,7 @@
             <VerticalStackLayout Spacing="24" Padding="20,16,20,80">
 
                 <!-- Client Profile Card - Modern Design -->
+                <HorizontalStackLayout Spacing="16">
                 <Frame CornerRadius="20" 
                        Padding="24"
                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
@@ -100,7 +101,72 @@
                                 Command="{Binding EditProfileCommand}"/>
                     </VerticalStackLayout>
                 </Frame>
-                
+                    <!-- Premium Status Frame -->
+                    <Frame CornerRadius="20"
+                           Padding="24"
+                           BackgroundColor="{AppThemeBinding Light=#FFFDE7, Dark=#333300}"
+                           BorderColor="{AppThemeBinding Light=#FFD600, Dark=#FFD600}"
+                           HasShadow="True"
+                           Shadow="{StaticResource ShadowMedium}"
+                           WidthRequest="220"
+                           VerticalOptions="Start">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                <Setter Property="BackgroundColor" Value="#E0F7FA"/>
+                                <Setter Property="BorderColor" Value="#00BCD4"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Premium Status"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    TextColor="#FFD600"/>
+                            <ContentView>
+                                <ContentView.Content>
+                                    <Grid>
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="False">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Label Text="Expiry: {Binding ClientProfile.PremiumExpiryDate, StringFormat='{}{0:yyyy-MM-dd}'}"
+                               FontSize="14"
+                               TextColor="#009688"/>
+                                    </Grid>
+                                </ContentView.Content>
+                            </ContentView>
+                            <ContentView>
+                                <ContentView.Content>
+                                    <Grid>
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="False">
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Label Text="Unlock premium features!"
+                                               
+                                               FontSize="14"
+                                               TextColor="#FF6F00"/>
+                                        <Button Text="Premuim" 
+                                                Command="{Binding PremuimCommand}"
+                                                TextColor="#3498DB"
+                                                BackgroundColor="Transparent"
+                                                FontSize="14"
+                                                FontAttributes="Bold"/>
+                                        <!-- Add more premium offer details here if needed -->
+                                    </Grid>
+                                </ContentView.Content>
+                            </ContentView>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </HorizontalStackLayout>
                 <!-- Vehicles Card -->
                 <Frame  
                           BackgroundColor="{AppThemeBinding Light=#F5F3FF, Dark=#4C1D95}"

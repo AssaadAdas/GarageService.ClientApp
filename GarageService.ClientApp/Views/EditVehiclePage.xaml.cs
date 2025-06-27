@@ -1,9 +1,12 @@
+using GarageService.ClientApp.ViewModels;
+
 namespace GarageService.ClientApp.Views;
 
 public partial class EditVehiclePage : ContentPage
 {
-	public EditVehiclePage()
+	public EditVehiclePage(EditVehicleViewModel viewModel)
 	{
 		InitializeComponent();
-	}
+        BindingContext = viewModel;
+    }
 }
