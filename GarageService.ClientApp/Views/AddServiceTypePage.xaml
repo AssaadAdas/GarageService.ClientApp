@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GarageService.ClientApp.Views.AddServiceTypePage"
+             >
+    <Shell.TitleView>
+        <Grid BackgroundColor="#4CAF50" ColumnDefinitions ="Auto,*">
+            <!-- Material Design Green 800 -->
+            <HorizontalStackLayout Spacing="16" 
+                      VerticalOptions="Center"
+                      Margin="20,0">
+
+                <!-- Title -->
+                <Label Text="Add Service Types" 
+                       VerticalOptions="Center" 
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"/>
+
+                <!-- Spacer -->
+                <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" />
+
+                <!-- Save Button -->
+                <Button Text="✓" 
+                        FontSize="28"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Padding="16,0"
+                        Command="{Binding SaveCommand}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" 
+                                     Binding="{Binding IsBusy}" 
+                                     Value="True">
+                                        <Setter Property="Text" Value="⏳" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                </Button>
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.TitleView>
+    
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Add Service Type" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10">
+                <Label Text="Service Type ID:" Grid.Row="0" Grid.Column="0"/>
+                <Entry Text="{Binding ServiceTypeId}" Keyboard="Numeric" Grid.Row="0" Grid.Column="1"/>
+
+                <Label Text="Cost:" Grid.Row="1" Grid.Column="0"/>
+                <Entry Text="{Binding Cost}" Keyboard="Numeric" Grid.Row="1" Grid.Column="1"/>
+
+                <Label Text="Currency ID:" Grid.Row="2" Grid.Column="0"/>
+                <Entry Text="{Binding CurrencyId}" Keyboard="Numeric" Grid.Row="2" Grid.Column="1"/>
+
+                <Label Text="Notes:" Grid.Row="3" Grid.Column="0"/>
+                <Editor Text="{Binding Notes}" HeightRequest="100" Grid.Row="3" Grid.Column="1"/>
+            </Grid>
+
+            <Button Text="Save Service Type" Command="{Binding SaveCommand}" BackgroundColor="Green" TextColor="White"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

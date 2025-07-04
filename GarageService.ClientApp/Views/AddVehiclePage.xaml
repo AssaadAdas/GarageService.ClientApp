@@ -3,14 +3,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.AddVehiclePage"
              >
+    <Shell.TitleView>
+        <Grid BackgroundColor="#4CAF50" ColumnDefinitions ="Auto,*">
+            <!-- Material Design Green 800 -->
+            <HorizontalStackLayout Spacing="16" 
+                           VerticalOptions="Center"
+                           Margin="20,0">
+
+                <!-- Title -->
+                <Label Text="Vehicle Details" 
+                VerticalOptions="Center" 
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="White"/>
+
+                <!-- Spacer -->
+                <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" />
+
+                <!-- Save Button -->
+                <Button Text="✓" 
+                 FontSize="28"
+                 FontAttributes="Bold"
+                 BackgroundColor="Transparent"
+                 TextColor="White"
+                 VerticalOptions="Center"
+                 HorizontalOptions="End"
+                 Padding="16,0"
+                 Command="{Binding SaveCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" 
+                              Binding="{Binding IsBusy}" 
+                              Value="True">
+                            <Setter Property="Text" Value="⏳" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.TitleView>
+    
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
         <!-- Header -->
-        <Label Text="Car Details"
-               FontSize="24"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,0,0,10"/>
+        
         <!-- Vehicle Name -->
         <Label Text="Vehicle Name *"
                    FontAttributes="Bold"
@@ -85,11 +120,7 @@
                        TextColor="#34495E"/>
             </HorizontalStackLayout>
         </Grid>
-            <!-- Save Button -->
-        <Button Text="Save" 
-                    Command="{Binding SaveCommand}"
-                    Style="{StaticResource PrimaryButton}"
-                    Margin="0,30,0,0"/>
+       
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using GarageService.ClientApp.ViewModels;
 using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using Microsoft.Extensions.Logging;
 
@@ -26,27 +27,32 @@ public static class MauiProgram
         builder.Services.AddTransient<ClientRegistrationViewModel>();
         builder.Services.AddTransient<ClientDashboardViewModel>();
         builder.Services.AddTransient<EditClientProfileViewModel>();
-
         builder.Services.AddTransient<AddVehicleViewModel>();
         builder.Services.AddTransient<EditVehicleViewModel>();
         builder.Services.AddTransient<ReadNotificationViewModel>();
+        builder.Services.AddTransient<VehiclesServiceTypeViewModel>();
+        builder.Services.AddTransient<VehiclesServiceViewModel>();
 
         // Register Pages
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<ClientRegistrationPage>();
         builder.Services.AddTransient<ClientDashboardPage>();
         builder.Services.AddTransient<EditClientProfilePage>();
-
         builder.Services.AddTransient<AddVehiclePage>();
         builder.Services.AddTransient<EditVehiclePage>();
-        builder.Services.AddTransient<NotificationDetailPage>(); 
+        builder.Services.AddTransient<NotificationDetailPage>();
+        builder.Services.AddTransient<AddServiceTypePage>();
+        builder.Services.AddTransient<VehiclesService>();
+        builder.Services.AddTransient<PremuimPage>();
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();
         builder.Services.AddSingleton<ISecureStorage>(SecureStorage.Default);
         builder.Services.AddSingleton<ApiService>();
 
-        
+        //Models
+        builder.Services.AddTransient<ServicePage>();
+
 
 
 #if DEBUG

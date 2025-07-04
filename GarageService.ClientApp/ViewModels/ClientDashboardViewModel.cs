@@ -48,6 +48,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand PremuimCommand { get; }
         public ICommand AddVehicleCommand { get; }
         public ICommand EditVehicleCommand { get; }
+        public ICommand AddServicesCommand { get; }
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
 
@@ -63,6 +64,7 @@ namespace GarageService.ClientApp.ViewModels
             AddVehicleCommand = new Command(async () => await AddVehicle());
             PremuimCommand = new Command(async () => await LoadPremuim());
             EditVehicleCommand = new Command<Vehicle>(async (vehicle) => await EditVehicle(vehicle));
+            AddServicesCommand = new Command<Vehicle>(async (vehicle) => await AddServices(vehicle));
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
@@ -79,11 +81,16 @@ namespace GarageService.ClientApp.ViewModels
 
         private async Task LoadPremuim()
         {
-            await Shell.Current.GoToAsync($"{nameof(AddVehiclePage)}");
+            await Shell.Current.GoToAsync($"{nameof(PremuimPage)}");
         }
         private async Task EditVehicle(Vehicle vehicle)
         {
             await Shell.Current.GoToAsync($"{nameof(EditVehiclePage)}?vehileid={vehicle.Id}");
+        }
+
+        private async Task AddServices(Vehicle vehicle)
+        {
+            await Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehileid={vehicle.Id}");
         }
         private void AddAppointment() { /* Open add appointment dialog */ }
         private async Task EditProfile()

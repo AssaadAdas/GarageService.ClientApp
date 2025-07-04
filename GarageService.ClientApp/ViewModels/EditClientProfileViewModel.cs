@@ -95,9 +95,10 @@ namespace GarageService.ClientApp.ViewModels
             SaveCommand = new Command(async () => await SaveProfile());
            
             LoadCountriesCommand = new Command(async () => await LoadCountries());
-            LoadCommand = new Command(async () => await LoadProfile());
+            
             LoadCountriesCommand.Execute(null);
             // Load profile when ViewModel is created
+            LoadCommand = new Command(async () => await LoadProfile());
             LoadCommand.Execute(null);
             
         }
