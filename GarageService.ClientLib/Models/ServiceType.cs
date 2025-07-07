@@ -13,7 +13,7 @@ namespace GarageService.ClientLib.Models
 
         public string Description { get; set; } = null!;
 
-        public bool? IsSelected { get; set; }
+        public bool IsSelected { get; set; }
 
         public virtual ICollection<ServicesTypeSetUp> ServicesTypeSetUps { get; set; } = new List<ServicesTypeSetUp>();
 

@@ -2,91 +2,148 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.ServicePage"
-             >
+             Title="Add Services">
+
     <Shell.TitleView>
-        <Grid BackgroundColor="#4CAF50" ColumnDefinitions ="Auto,*">
-            <!-- Material Design Green 800 -->
-            <HorizontalStackLayout Spacing="16" 
-                   VerticalOptions="Center"
-                   Margin="20,0">
+        <FlexLayout BackgroundColor="#4CAF50" 
+                   JustifyContent="SpaceBetween" 
+                   AlignItems="Center"
+                   Padding="20,0">
 
-                <!-- Title -->
-                <Label Text="Add Services" 
-                      VerticalOptions="Center" 
-                      FontSize="24"
-                      FontAttributes="Bold"
-                      TextColor="White"/>
+            <Label Text="Add Services" 
+                  FontSize="24"
+                  FontAttributes="Bold"
+                  TextColor="White"/>
 
-                <!-- Spacer -->
-                <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" />
-
-                <!-- Save Button -->
-                <Button Text="✓" 
-                        FontSize="28"
-                        FontAttributes="Bold"
-                        BackgroundColor="Transparent"
-                        TextColor="White"
-                        VerticalOptions="Center"
-                        HorizontalOptions="End"
-                        Padding="16,0"
-                        Command="{Binding SaveCommand}">
-                                   <Button.Triggers>
-                                       <DataTrigger TargetType="Button" 
-                                     Binding="{Binding IsBusy}" 
-                                     Value="True">
-                                           <Setter Property="Text" Value="⏳" />
-                                       </DataTrigger>
-                                   </Button.Triggers>
-                               </Button>
-                           </HorizontalStackLayout>
-                       </Grid>
+            <Button Text="✓" 
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    Padding="16,0"
+                    Command="{Binding SaveCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" 
+                                 Binding="{Binding IsBusy}" 
+                                 Value="True">
+                        <Setter Property="Text" Value="⏳" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </FlexLayout>
     </Shell.TitleView>
 
-    
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <!-- Header -->
-            <Label Text="Service Details" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <VerticalStackLayout Padding="20" Spacing="25">
 
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10">
-                <Label Text="Date:" Grid.Row="0" Grid.Column="0"/>
-                <DatePicker Date="{Binding ServiceDate}" Grid.Row="0" Grid.Column="1"/>
+            <!-- Form Section -->
+            <VerticalStackLayout Spacing="15">
+                <!-- Date Field -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Date" 
+                           FontSize="14"
+                           TextColor="{StaticResource Gray600}"/>
+                    <DatePicker Date="{Binding ServiceDate}"
+                                BackgroundColor="White"
+                                TextColor="{StaticResource Gray900}"/>
+                </VerticalStackLayout>
 
-                <Label Text="Odometer:" Grid.Row="1" Grid.Column="0"/>
-                <Entry Text="{Binding Odometer}" Keyboard="Numeric" Grid.Row="1" Grid.Column="1"/>
+                <!-- Odometer Field -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Odometer" 
+                           FontSize="14"
+                           TextColor="{StaticResource Gray600}"/>
+                    <Entry Text="{Binding Odometer}" 
+                           Keyboard="Numeric"
+                           BackgroundColor="White"
+                           TextColor="{StaticResource Gray900}"/>
+                </VerticalStackLayout>
 
-                <Label Text="Location:" Grid.Row="2" Grid.Column="0"/>
-                <Entry Text="{Binding ServiceLocation}" Grid.Row="2" Grid.Column="1"/>
+                <!-- Garage Picker -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Select Garage *" 
+                           FontSize="14"
+                           TextColor="{StaticResource Gray600}"/>
+                    <Picker ItemsSource="{Binding Garages}"
+                            ItemDisplayBinding="{Binding GarageName}"
+                            SelectedItem="{Binding SelectedGarage}"
+                            TitleColor="{StaticResource Gray600}"
+                            TextColor="{StaticResource Gray900}"/>
+                </VerticalStackLayout>
 
-                <Label Text="Garage ID:" Grid.Row="3" Grid.Column="0"/>
-                <Entry Text="{Binding GarageId}" Keyboard="Numeric" Grid.Row="3" Grid.Column="1"/>
+                <!-- Notes Field -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Notes" 
+                           FontSize="14"
+                           TextColor="{StaticResource Gray600}"/>
+                    <Editor Text="{Binding Notes}" 
+                            HeightRequest="100"
+                            BackgroundColor="White"
+                            TextColor="{StaticResource Gray900}"
+                            AutoSize="TextChanges"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
 
-                <Label Text="Notes:" Grid.Row="4" Grid.Column="0"/>
-                <Editor Text="{Binding Notes}" HeightRequest="100" Grid.Row="4" Grid.Column="1"/>
-            </Grid>
+            <!-- Service Types Section -->
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Service Types" 
+                       FontSize="20" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}"/>
 
-            <Label Text="Service Types" FontSize="Medium" FontAttributes="Bold"/>
+                <CollectionView ItemsSource="{Binding SelectedServiceTypes}"
+                               SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="15"
+                                   Margin="0,0,0,10"
+                                   BackgroundColor="White"
+                                   CornerRadius="10"
+                                   HasShadow="True">
+                                <VerticalStackLayout Spacing="8">
+                                    <HorizontalStackLayout>
+                                        <Label Text="Type:" 
+                                               FontAttributes="Bold"
+                                               WidthRequest="80"/>
+                                        <Label Text="{Binding ServiceTypeId}"/>
+                                    </HorizontalStackLayout>
 
-            <CollectionView ItemsSource="{Binding ServiceTypes}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="10" Margin="0,0,0,10">
-                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="5" ColumnSpacing="10">
-                                <Label Text="Service Type:" Grid.Row="0" Grid.Column="0"/>
-                                <Label Text="{Binding ServiceTypeId}" Grid.Row="0" Grid.Column="1"/>
-                                <Label Text="Cost:" Grid.Row="1" Grid.Column="0"/>
-                                <Label Text="{Binding Cost}" Grid.Row="1" Grid.Column="1"/>
-                                <Label Text="Currency:" Grid.Row="2" Grid.Column="0"/>
-                                <Label Text="{Binding CurrencyId}" Grid.Row="2" Grid.Column="1"/>
-                                <Label Text="Note:" Grid.Row="3" Grid.Column="0"/>
-                                <Label Text="{Binding Notes}" Grid.Row="3" Grid.Column="1"/>
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Cost:" 
+                                               FontAttributes="Bold"
+                                               WidthRequest="80"/>
+                                        <Label Text="{Binding Cost, StringFormat='{0:C}'}"/>
+                                    </HorizontalStackLayout>
 
-            <Button Text="+" Command="{Binding AddServiceTypeCommand}" Margin="0,20,0,0"/>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Currency:" 
+                                               FontAttributes="Bold"
+                                               WidthRequest="80"/>
+                                        <Label Text="{Binding CurrencyId}"/>
+                                    </HorizontalStackLayout>
+
+                                    <HorizontalStackLayout>
+                                        <Label Text="Note:" 
+                                               FontAttributes="Bold"
+                                               WidthRequest="80"/>
+                                        <Label Text="{Binding Notes}"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Type of service" 
+                        Command="{Binding AddServiceTypeCommand}" 
+                        BackgroundColor="#3498DB"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="25"
+                        Margin="0,10"/>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

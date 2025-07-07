@@ -436,6 +436,10 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<Manufacturer>>> GetManufacturersAsync()
         {
             try
@@ -473,6 +477,10 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<MeassureUnit>>> GetMeassureUnitsAsync()
         {
             try
@@ -511,6 +519,10 @@ namespace GarageService.ClientLib.Services
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<FuelType>>> GetFuelTypesAsync()
         {
             try
@@ -548,6 +560,10 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<VehicleType>>> GetVehicleTypesAsync()
         {
             try
@@ -585,6 +601,12 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clientProfile"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateClientProfileAsync(int id, ClientProfile clientProfile)
         {
             try
@@ -620,7 +642,12 @@ namespace GarageService.ClientLib.Services
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateVehicleAsync(int id, Vehicle vehicle)
         {
             try
@@ -656,6 +683,11 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<ClientNotification>> GetClientNotification(int Id)
         {
             try
@@ -698,6 +730,12 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clientNotification"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateClientNotificationAsync(int id, ClientNotification clientNotification)
         {
             try
@@ -733,6 +771,86 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<GarageProfile>>> GetGaragesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("GarageProfiles");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var garage = await response.Content.ReadFromJsonAsync<List<GarageProfile>>();
+                    return new ApiResponse<List<GarageProfile>>
+                    {
+                        IsSuccess = true,
+                        Data = garage.OrderBy(c => c.GarageName).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<GarageProfile>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<GarageProfile>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+
+        public async Task<ApiResponse<List<ServiceType>>> GetServiceTypesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("ServiceTypes");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var serviceTypes = await response.Content.ReadFromJsonAsync<List<ServiceType>>();
+                    return new ApiResponse<List<ServiceType>>
+                    {
+                        IsSuccess = true,
+                        Data = serviceTypes.OrderBy(c => c.Description).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<ServiceType>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<ServiceType>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<Vehicle>> GetVehicleByID(int id)
         {
             try
@@ -774,7 +892,6 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
-
     }
 
     public class ApiResponse<T>

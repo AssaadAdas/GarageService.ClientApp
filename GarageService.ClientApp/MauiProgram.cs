@@ -12,7 +12,8 @@ public static class MauiProgram
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
-		builder
+        builder.UseMauiApp<App>().UseMauiCommunityToolkit();
+        builder
 			.UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
@@ -30,8 +31,10 @@ public static class MauiProgram
         builder.Services.AddTransient<AddVehicleViewModel>();
         builder.Services.AddTransient<EditVehicleViewModel>();
         builder.Services.AddTransient<ReadNotificationViewModel>();
-        builder.Services.AddTransient<VehiclesServiceTypeViewModel>();
         builder.Services.AddTransient<VehiclesServiceViewModel>();
+        builder.Services.AddTransient<VehiclesServiceTypeViewModel>();
+        builder.Services.AddTransient<ServiceTypeViewModel>();
+        
 
         // Register Pages
         builder.Services.AddTransient<LoginPage>();
@@ -41,9 +44,9 @@ public static class MauiProgram
         builder.Services.AddTransient<AddVehiclePage>();
         builder.Services.AddTransient<EditVehiclePage>();
         builder.Services.AddTransient<NotificationDetailPage>();
-        builder.Services.AddTransient<AddServiceTypePage>();
         builder.Services.AddTransient<VehiclesService>();
         builder.Services.AddTransient<PremuimPage>();
+        builder.Services.AddTransient<AddServiceTypePage>();
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();

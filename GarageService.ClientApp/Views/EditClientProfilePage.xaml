@@ -44,8 +44,6 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-
-
             <!-- Personal Information Section -->
             <Border Stroke="{DynamicResource BorderColor}"
                     StrokeThickness="1"

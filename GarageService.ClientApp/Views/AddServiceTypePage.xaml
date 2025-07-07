@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:GarageService.ClientApp.ViewModels"
              x:Class="GarageService.ClientApp.Views.AddServiceTypePage"
              >
     <Shell.TitleView>
@@ -41,26 +42,36 @@
             </HorizontalStackLayout>
         </Grid>
     </Shell.TitleView>
-    
-    <ScrollView>
-        <StackLayout Padding="20" Spacing="15">
-            <Label Text="Add Service Type" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10">
-                <Label Text="Service Type ID:" Grid.Row="0" Grid.Column="0"/>
-                <Entry Text="{Binding ServiceTypeId}" Keyboard="Numeric" Grid.Row="0" Grid.Column="1"/>
-
-                <Label Text="Cost:" Grid.Row="1" Grid.Column="0"/>
-                <Entry Text="{Binding Cost}" Keyboard="Numeric" Grid.Row="1" Grid.Column="1"/>
-
-                <Label Text="Currency ID:" Grid.Row="2" Grid.Column="0"/>
-                <Entry Text="{Binding CurrencyId}" Keyboard="Numeric" Grid.Row="2" Grid.Column="1"/>
-
-                <Label Text="Notes:" Grid.Row="3" Grid.Column="0"/>
-                <Editor Text="{Binding Notes}" HeightRequest="100" Grid.Row="3" Grid.Column="1"/>
-            </Grid>
-
-            <Button Text="Save Service Type" Command="{Binding SaveCommand}" BackgroundColor="Green" TextColor="White"/>
-        </StackLayout>
-    </ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="16">
+        <Label Text="Select Service Types" FontSize="20" FontAttributes="Bold"/>
+        <CollectionView x:Name="ServiceTypesCollection"
+                        ItemsSource="{Binding AvailableServiceTypes}"
+                        SelectionMode="Multiple"
+                        >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="0,0,0,10" BackgroundColor="White" CornerRadius="8">
+                        <HorizontalStackLayout Spacing="25">
+                            <CheckBox IsChecked="{Binding IsSelected}" Color="#3498DB"/>
+                            <Label Text="{Binding Description}" FontAttributes="Bold"/>
+                            <Entry Placeholder="Cost" 
+                                   Text="{Binding Cost}" 
+                                   Keyboard="Numeric"/>
+                            <Entry Placeholder="Currency" 
+                                   Text="{Binding CurrId}" 
+                                   Keyboard="Numeric"/>
+                            
+                            <Editor Text="{Binding Notes}" 
+                                     HeightRequest="100"
+                                     BackgroundColor="White"
+                                     TextColor="{StaticResource Gray900}"
+                                     AutoSize="TextChanges"/>
+                        </HorizontalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Done" Command="{Binding DoneCommand}" BackgroundColor="#4CAF50" TextColor="White"/>
+    </VerticalStackLayout>
 </ContentPage>
