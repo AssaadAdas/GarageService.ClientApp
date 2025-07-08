@@ -11,7 +11,7 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute("Main", typeof(MainPage));
             Routing.RegisterRoute("ClientRegistration", typeof(ClientRegistrationPage));
             Routing.RegisterRoute("ClientDashboard", typeof(ClientDashboardPage));
-            Routing.RegisterRoute("EditClientProfilePage", typeof(EditClientProfilePage));
+            Routing.RegisterRoute(nameof(EditClientProfilePage), typeof(EditClientProfilePage));
             Routing.RegisterRoute(nameof(NotificationDetailPage), typeof(NotificationDetailPage));
             Routing.RegisterRoute(nameof(AddVehiclePage), typeof(AddVehiclePage));
             Routing.RegisterRoute(nameof(EditVehiclePage), typeof(EditVehiclePage));

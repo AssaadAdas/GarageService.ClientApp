@@ -23,6 +23,17 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _cost, value);
         }
 
+        private Currency _selectedCurrency;
+        public Currency SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                SetProperty(ref _selectedCurrency, value);
+                CurrId = value?.Id ?? 0;
+            }
+        }
+
         private int _currId;
         public int CurrId
         {

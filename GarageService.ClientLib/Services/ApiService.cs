@@ -846,6 +846,41 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+
+        public async Task<ApiResponse<List<Currency>>> GetCurremciesAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("Currencies");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var Currencies = await response.Content.ReadFromJsonAsync<List<Currency>>();
+                    return new ApiResponse<List<Currency>>
+                    {
+                        IsSuccess = true,
+                        Data = Currencies.OrderBy(c => c.CurrDesc).ToList(),
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<Currency>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} - {content}",
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<Currency>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
         /// <summary>
         /// 
         /// </summary>

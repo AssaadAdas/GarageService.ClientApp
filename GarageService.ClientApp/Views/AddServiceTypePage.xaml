@@ -5,42 +5,32 @@
              x:Class="GarageService.ClientApp.Views.AddServiceTypePage"
              >
     <Shell.TitleView>
-        <Grid BackgroundColor="#4CAF50" ColumnDefinitions ="Auto,*">
-            <!-- Material Design Green 800 -->
-            <HorizontalStackLayout Spacing="16" 
-                      VerticalOptions="Center"
-                      Margin="20,0">
+        <FlexLayout BackgroundColor="LightBlue" 
+                JustifyContent="SpaceBetween" 
+                AlignItems="Center"
+                Padding="20,0">
 
-                <!-- Title -->
-                <Label Text="Add Service Types" 
-                       VerticalOptions="Center" 
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       TextColor="White"/>
+            <Label Text="Add Services" 
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="White"/>
 
-                <!-- Spacer -->
-                <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" />
-
-                <!-- Save Button -->
-                <Button Text="✓" 
-                        FontSize="28"
-                        FontAttributes="Bold"
-                        BackgroundColor="Transparent"
-                        TextColor="White"
-                        VerticalOptions="Center"
-                        HorizontalOptions="End"
-                        Padding="16,0"
-                        Command="{Binding SaveCommand}">
-                                <Button.Triggers>
-                                    <DataTrigger TargetType="Button" 
-                                     Binding="{Binding IsBusy}" 
-                                     Value="True">
-                                        <Setter Property="Text" Value="⏳" />
-                                    </DataTrigger>
-                                </Button.Triggers>
-                </Button>
-            </HorizontalStackLayout>
-        </Grid>
+            <Button Text="✓" 
+                 FontSize="28"
+                 FontAttributes="Bold"
+                 BackgroundColor="Transparent"
+                 TextColor="White"
+                 Padding="16,0"
+                 Command="{Binding DoneCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" 
+                              Binding="{Binding IsBusy}" 
+                              Value="True">
+                        <Setter Property="Text" Value="⏳" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </FlexLayout>
     </Shell.TitleView>
 
     <VerticalStackLayout Padding="20" Spacing="16">
@@ -51,27 +41,64 @@
                         >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="0,0,0,10" BackgroundColor="White" CornerRadius="8">
-                        <HorizontalStackLayout Spacing="25">
-                            <CheckBox IsChecked="{Binding IsSelected}" Color="#3498DB"/>
-                            <Label Text="{Binding Description}" FontAttributes="Bold"/>
-                            <Entry Placeholder="Cost" 
-                                   Text="{Binding Cost}" 
-                                   Keyboard="Numeric"/>
-                            <Entry Placeholder="Currency" 
-                                   Text="{Binding CurrId}" 
-                                   Keyboard="Numeric"/>
-                            
-                            <Editor Text="{Binding Notes}" 
-                                     HeightRequest="100"
-                                     BackgroundColor="White"
-                                     TextColor="{StaticResource Gray900}"
-                                     AutoSize="TextChanges"/>
-                        </HorizontalStackLayout>
+                    <Frame Padding="12" Margin="0,0,0,10" BackgroundColor="White" CornerRadius="8">
+                        <Grid ColumnSpacing="12" RowSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- CheckBox -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Description -->
+                                <ColumnDefinition Width="80"/>
+                                <!-- Cost -->
+                                <ColumnDefinition Width="120"/>
+                                <!-- Currency -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Notes -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- CheckBox -->
+                            <CheckBox Grid.Column="0"
+                                      IsChecked="{Binding IsSelected}" 
+                                      Color="#3498DB"
+                                      VerticalOptions="Center"/>
+
+                            <!-- Description -->
+                            <Label Grid.Column="1"
+                                   Text="{Binding Description}" 
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation"/>
+
+                            <!-- Cost Entry -->
+                            <Entry Grid.Column="2"
+                                   Placeholder="Cost"
+                                   Text="{Binding Cost}"
+                                   Keyboard="Numeric"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Fill"/>
+
+                            <!-- Currency Picker -->
+                            <Picker Grid.Column="3"
+                                    ItemsSource="{Binding BindingContext.Currencies, Source={x:Reference ServiceTypesCollection}}"
+                                    ItemDisplayBinding="{Binding CurrDesc}"
+                                    SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Fill"/>
+
+                            <!-- Notes Editor -->
+                            <Editor Grid.Column="4"
+                                    Text="{Binding Notes}"
+                                    Placeholder="Notes"
+                                    BackgroundColor="#FAFAFA"
+                                    TextColor="{StaticResource Gray900}"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="60"
+                                    VerticalOptions="Center"/>
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Text="Done" Command="{Binding DoneCommand}" BackgroundColor="#4CAF50" TextColor="White"/>
+        <!--<Button Text="Done" Command="{Binding DoneCommand}" BackgroundColor="#4CAF50" TextColor="White"/>-->
     </VerticalStackLayout>
 </ContentPage>

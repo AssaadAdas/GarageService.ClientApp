@@ -19,30 +19,14 @@ namespace GarageService.ClientApp.ViewModels
 {
     public class VehiclesServiceTypeViewModel:BaseViewModel
     {
-        public ObservableCollection<SelectableServiceTypeViewModel> AvailableServiceTypes { get; set; }
-        public ObservableCollection<SelectableServiceTypeViewModel> SelectedServiceTypes { get; set; } 
+        private ObservableCollection<SelectableServiceTypeViewModel> _availableServiceTypes;
+        public ObservableCollection<SelectableServiceTypeViewModel> AvailableServiceTypes
+        {
+            get => _availableServiceTypes;
+            set => SetProperty(ref _availableServiceTypes, value);
+        }
         public ICommand DoneCommand { get; }
         public ICommand LoadCommand { get; }
-        private decimal _cost;
-        public decimal Cost
-        {
-            get => _cost;
-            set => SetProperty(ref _cost, value);
-        }
-
-        private int _currId;
-        public int CurrId
-        {
-            get => _currId;
-            set => SetProperty(ref _currId, value);
-        }
-
-        private string _notes;
-        public string Notes
-        {
-            get => _notes;
-            set => SetProperty(ref _notes, value);
-        }
 
         private readonly ApiService _apiService;
 
@@ -52,8 +36,25 @@ namespace GarageService.ClientApp.ViewModels
             DoneCommand = new Command(async () => await OnDone());
             LoadCommand = new Command(async () => await LoadServiceTypesAsync());
             LoadCommand.Execute(null);
+            _ = LoadCurrenciesAsync();
         }
 
+        private ObservableCollection<Currency> _currencies;
+        public ObservableCollection<Currency> Currencies
+        {
+            get => _currencies;
+            set => SetProperty(ref _currencies, value);
+        }
+
+        // In your constructor or LoadCommand, call this:
+        private async Task LoadCurrenciesAsync()
+        {
+            var response = await _apiService.GetCurremciesAsync();
+            if (response.IsSuccess)
+                Currencies = new ObservableCollection<Currency>(response.Data);
+        }
+
+        #region load data
         private string _errorMessage;
         public string ErrorMessage
         {
@@ -85,37 +86,24 @@ namespace GarageService.ClientApp.ViewModels
                 Debug.WriteLine($"Exception: {ex}");
             }
         }
+        #endregion
         private async Task OnDone()
         {
             try
             {
-                // Clear previous selections
-                SelectedServiceTypes?.Clear();
-
-                // Check if any services are available
-                if (AvailableServiceTypes == null || AvailableServiceTypes.Count == 0)
+                var selected = AvailableServiceTypes.Where(x => x.IsSelected).ToList();
+                if (selected.Count == 0)
                 {
-                    ErrorMessage = "No service types available";
+                    ErrorMessage = "Please select at least one service type.";
                     return;
                 }
 
-                if (SelectedServiceTypes == null)
-                {
-                    SelectedServiceTypes = new ObservableCollection<SelectableServiceTypeViewModel>();
-                }
+                var navigationParams = new Dictionary<string, object>
+                 {
+                      { "SelectedServiceTypes", selected }
+                 };
 
-                var selected = AvailableServiceTypes.Where(x => x.IsSelected).ToList();
-                foreach (var service in selected)
-                {
-                    SelectedServiceTypes.Add(service);
-                }
-                
-               var navigationParams = new Dictionary<string, object>
-               {
-                    { "SelectedServiceTypes", SelectedServiceTypes }
-               };
-
-                await Shell.Current.GoToAsync("..", navigationParams);
+                await Shell.Current.GoToAsync("ServicePage", navigationParams);
             }
             catch (Exception ex)
             {

@@ -26,9 +26,18 @@ namespace GarageService.ClientApp.ViewModels
             LoadGargesCommand = new Command(async () => await LoadGarages());
             LoadGargesCommand.Execute(null);
         }
+        public ObservableCollection<SelectableServiceTypeViewModel> ServiceTypess { get; set; } = new();
 
-        private VehiclesService _service;
-        private ObservableCollection<VehiclesServiceTypeViewModel> _serviceTypes;
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue("SelectedServiceTypes", out var value) && value is IEnumerable<SelectableServiceTypeViewModel> selected)
+            {
+                ServiceTypess = new ObservableCollection<SelectableServiceTypeViewModel>(selected);
+                OnPropertyChanged(nameof(ServiceTypess));
+            }
+        }
+
+
         private readonly ApiService _apiService;
         public ICommand LoadServicesTypesCommand { get; }
         public ICommand AddServiceTypeCommand { get;}
@@ -66,8 +75,6 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
-
-
         public DateTime ServiceDate { get; set; }
 
         public int Odometer { get; set; }
@@ -126,12 +133,7 @@ namespace GarageService.ClientApp.ViewModels
 
         private async Task AddServiceTypes()
         {
-            //var navigationParams = new ShellNavigationQueryParameters
-            //{
-            //    { "PreviouslySelectedItems", SelectedServiceTypes.ToList() }
-            //};
             await Shell.Current.GoToAsync($"{nameof(AddServiceTypePage)}");
-            //await Shell.Current.GoToAsync(nameof(AddServiceTypePage), navigationParams);
         }
         public void UpdateSelectedItems(List<ServiceType> items)
         {
@@ -145,14 +147,6 @@ namespace GarageService.ClientApp.ViewModels
         {
             //await Shell.Current.GoToAsync($"{nameof(AddServiceTypePage)}");
         }
-
-
-        public ObservableCollection<VehiclesServiceTypeViewModel> ServiceTypes
-        {
-            get => _serviceTypes;
-            set { _serviceTypes = value; OnPropertyChanged(); }
-        }
-
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
