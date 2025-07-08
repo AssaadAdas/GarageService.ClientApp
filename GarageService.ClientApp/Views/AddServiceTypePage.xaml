@@ -99,6 +99,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <!--<Button Text="Done" Command="{Binding DoneCommand}" BackgroundColor="#4CAF50" TextColor="White"/>-->
     </VerticalStackLayout>
 </ContentPage>
