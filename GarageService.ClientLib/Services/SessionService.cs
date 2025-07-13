@@ -13,12 +13,15 @@ namespace GarageService.ClientLib.Services
         private const string UserTypeidKey = "user_type_id";
         private const string ProfileIdKey = "profile_id";
         private const string UsernameKey = "username";
+        private const string IsPremuimKey = "IsPremuimKey";
 
         public bool IsLoggedIn => Preferences.ContainsKey(UserIdKey);
         public int UserId => Preferences.Get(UserIdKey, -1);
         public int UserTypeid => Preferences.Get(UserTypeidKey, 1);
         public int ProfileId => Preferences.Get(ProfileIdKey, -1);
         public string Username => Preferences.Get(UsernameKey, string.Empty);
+
+        public bool IsPremuim => Preferences.Get(IsPremuimKey,false);
 
         int ISessionService.UserType => Preferences.Get(UserTypeidKey, 1);
 
@@ -37,10 +40,12 @@ namespace GarageService.ClientLib.Services
             Preferences.Set(UserIdKey, user.Id);
             Preferences.Set(UserTypeidKey, user.UserTypeid);
             Preferences.Set(UsernameKey, user.Username);
+           
 
             if (user.UserTypeid == 2 && clientProfile != null)
             {
                 Preferences.Set(ProfileIdKey, clientProfile.Id);
+                Preferences.Set(IsPremuimKey, clientProfile.IsPremium);
             }
            
         }

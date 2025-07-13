@@ -15,6 +15,7 @@ namespace GarageService.ClientLib.Services
         int ProfileId { get; } // ClientId or GarageId
         string Username { get; }
 
+        bool IsPremuim { get; }
         void CreateSession(User user, ClientProfile clientProfile = null);
         void ClearSession();
     }

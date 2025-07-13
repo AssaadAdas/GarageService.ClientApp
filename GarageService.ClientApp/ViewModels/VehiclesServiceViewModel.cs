@@ -25,6 +25,7 @@ namespace GarageService.ClientApp.ViewModels
             _formState = formState;
             AddServiceTypeCommand = new Command(async () => await AddServiceTypes());
             SaveCommand = new Command(async () => await SaveService());
+            BackCommand = new Command(async () => await GoBack());
             LoadGargesCommand = new Command(async () => await LoadGarages());
             LoadGargesCommand.Execute(null);
             if (_formState.VehicleId != 0)
@@ -101,6 +102,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand AddServiceTypeCommand { get;}
         public ICommand SaveCommand { get; }
         public ICommand LoadGargesCommand { get; }
+        public ICommand BackCommand { get; }
 
         private List<GarageProfile> _Garages;
 
@@ -204,6 +206,10 @@ namespace GarageService.ClientApp.ViewModels
 
         }
 
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
+        }
         private async Task AddServiceTypes()
         {
             _formState.VehicleId = VehicleId;

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Diagnostics;
+using GarageService.ClientApp.Views;
 
 
 namespace GarageService.ClientApp.ViewModels
@@ -27,7 +28,7 @@ namespace GarageService.ClientApp.ViewModels
         }
         public ICommand DoneCommand { get; }
         public ICommand LoadCommand { get; }
-
+        public ICommand BackCommand { get; }
         private readonly ApiService _apiService;
 
         public VehiclesServiceTypeViewModel(ApiService apiService)
@@ -35,8 +36,13 @@ namespace GarageService.ClientApp.ViewModels
             _apiService = apiService;
             DoneCommand = new Command(async () => await OnDone());
             LoadCommand = new Command(async () => await LoadServiceTypesAsync());
+            BackCommand = new Command(async () => await GoBack());
             LoadCommand.Execute(null);
             _ = LoadCurrenciesAsync();
+        }
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ServicePage)}");
         }
 
         private ObservableCollection<Currency> _currencies;

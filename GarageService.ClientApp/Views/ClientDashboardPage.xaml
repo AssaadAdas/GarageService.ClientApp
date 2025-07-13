@@ -185,49 +185,54 @@
                                   HorizontalOptions="Fill"/>
 
                         <CollectionView ItemsSource="{Binding ClientProfile.Vehicles}"   
-                                        EmptyView="No vehicles registered">
+                EmptyView="No vehicles registered">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Frame CornerRadius="12"   
-                                           Padding="16"  
-                                           Margin="0,0,0,10"  
-                                           BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
-                                           HasShadow="True">
-                                        <Grid ColumnDefinitions="Auto,*" RowSpacing="25">
-                                           
-                                            <VerticalStackLayout Grid.Column="0" Grid.Row="1" Spacing="20">
+                   Padding="16"  
+                   Margin="0,0,0,10"  
+                   BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
+                   HasShadow="True">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                                            <!-- Simplified row definition -->
+                                            <!-- Left-aligned vehicle info -->
+                                            <VerticalStackLayout Grid.Column="0" Spacing="8">
+                                                <!-- Reduced spacing for better compactness -->
                                                 <Label Text="{Binding VehicleName}"   
-                                                       FontAttributes="Bold"  
-                                                       TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+                               FontAttributes="Bold"  
+                               TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
                                                 <Label Text="{Binding LiscencePlate}"   
-                                                       FontSize="14"  
-                                                       TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                               FontSize="14"  
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
                                             </VerticalStackLayout>
-                                            <HorizontalStackLayout Grid.Column="1" Grid.RowSpan="0" 
-                                                                   VerticalOptions="Center"
-                                                                   Spacing="20">
+
+                                            <!-- Right-aligned buttons -->
+                                            <HorizontalStackLayout Grid.Column="1" 
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="End"
+                                          Spacing="12">
+                                                <!-- Reduced spacing between buttons -->
                                                 <Button Text="✏️" 
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
-                                                        CommandParameter="{Binding .}"
-                                                        BackgroundColor="Transparent"
-                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                                        FontSize="16"
-                                                        Padding="0"
-                                                        HeightRequest="36"
-                                                        WidthRequest="36"
-                                                        CornerRadius="18"/>
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="Transparent"
+                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                FontSize="16"
+                                Padding="0"
+                                HeightRequest="36"
+                                WidthRequest="36"
+                                CornerRadius="18"/>
                                                 <Button Text="⚙️" 
-                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=AddServicesCommand}" 
-                                                         CommandParameter="{Binding .}"
-                                                         BackgroundColor="Transparent"
-                                                         TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                                         FontSize="16"
-                                                         Padding="0"
-                                                         HeightRequest="36"
-                                                         WidthRequest="36"
-                                                         CornerRadius="18"/>
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ShowPopUpCommand}" 
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="Transparent"
+                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                FontSize="16"
+                                Padding="0"
+                                HeightRequest="36"
+                                WidthRequest="36"
+                                CornerRadius="18"/>
                                             </HorizontalStackLayout>
-                                           
                                         </Grid>
                                     </Frame>
                                 </DataTemplate>
@@ -265,16 +270,15 @@
                                  HorizontalOptions="Fill"/>
 
                         <CollectionView ItemsSource="{Binding ClientProfile.ClientNotifications}" 
-                                        SelectionMode="Single"
- 
-                                        EmptyView="No upcoming Notification">
+                SelectionMode="Single"
+                EmptyView="No upcoming Notification">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Frame CornerRadius="12"   
-                                           Padding="16"  
-                                           Margin="0,0,0,10"  
-                                           BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
-                                           HasShadow="True">
+                   Padding="16"  
+                   Margin="0,0,0,10"  
+                   BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
+                   HasShadow="True">
                                         <Frame.Triggers>
                                             <DataTrigger TargetType="Frame" Binding="{Binding IsRead}" Value="False">
                                                 <Setter Property="BackgroundColor" Value="Red"/>
@@ -283,26 +287,29 @@
                                                 <Setter Property="BackgroundColor" Value="White"/>
                                             </DataTrigger>
                                         </Frame.Triggers>
-                                        <Grid ColumnDefinitions="Auto,*" RowSpacing="8">
-                                            <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                        <Grid ColumnDefinitions="*,Auto" RowSpacing="8">
+                                            <!-- Left-aligned content -->
+                                            <VerticalStackLayout Grid.Column="0" Spacing="4" HorizontalOptions="Start">
                                                 <Label Text="{Binding Notes}"  
-                                                       FontSize="14"  
-                                                       TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                               FontSize="14"  
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
                                             </VerticalStackLayout>
-                                            <VerticalStackLayout Grid.Column="1" 
-                                                                   VerticalOptions="Center"
-                                                                   Spacing="8">
-                                                <Button Text="✏️" 
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ReadNoteCommand}" 
-                                                        CommandParameter="{Binding .}"
-                                                        BackgroundColor="Transparent"
-                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                                        FontSize="16"
-                                                        Padding="0"
-                                                        HeightRequest="36"
-                                                        WidthRequest="36"
-                                                        CornerRadius="18"/>
 
+                                            <!-- Right-aligned button -->
+                                            <VerticalStackLayout Grid.Column="1" 
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="End"
+                                         Spacing="8">
+                                                <Button Text="✏️" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ReadNoteCommand}" 
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="Transparent"
+                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                FontSize="16"
+                                Padding="0"
+                                HeightRequest="36"
+                                WidthRequest="36"
+                                CornerRadius="18"/>
                                             </VerticalStackLayout>
                                         </Grid>
                                     </Frame>

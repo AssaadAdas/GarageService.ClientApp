@@ -2,38 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:GarageService.ClientApp.ViewModels"
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
              x:Class="GarageService.ClientApp.Views.AddServiceTypePage"
              >
-    <Shell.TitleView>
-        <FlexLayout BackgroundColor="LightBlue" 
-                JustifyContent="SpaceBetween" 
-                AlignItems="Center"
-                Padding="20,0">
-
-            <Label Text="Add Services" 
-               FontSize="24"
-               FontAttributes="Bold"
-               TextColor="White"/>
-
-            <Button Text="✓" 
-                 FontSize="28"
-                 FontAttributes="Bold"
-                 BackgroundColor="Transparent"
-                 TextColor="White"
-                 Padding="16,0"
-                 Command="{Binding DoneCommand}">
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" 
-                              Binding="{Binding IsBusy}" 
-                              Value="True">
-                        <Setter Property="Text" Value="⏳" />
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-        </FlexLayout>
-    </Shell.TitleView>
-
-    <VerticalStackLayout Padding="20" Spacing="16">
+    <Grid RowDefinitions="Auto,*">
+        <views:TitleView Title="Add Service"
+                         SaveCommand="{Binding SaveCommand}"
+                         BackCommand="{Binding GoBack}"
+                         Grid.Row="0"/>
+        <VerticalStackLayout Grid.Row="1" Padding="20" Spacing="16">
         <Label Text="Select Service Types" FontSize="20" FontAttributes="Bold"/>
         <CollectionView x:Name="ServiceTypesCollection"
                         ItemsSource="{Binding AvailableServiceTypes}"
@@ -100,4 +77,5 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
     </VerticalStackLayout>
+    </Grid>
 </ContentPage>
