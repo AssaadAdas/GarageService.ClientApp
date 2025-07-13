@@ -1,4 +1,5 @@
-﻿using GarageService.ClientApp.Views;
+﻿using GarageService.ClientApp.Services;
+using GarageService.ClientApp.Views;
 using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
@@ -48,22 +49,24 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand PremuimCommand { get; }
         public ICommand AddVehicleCommand { get; }
         public ICommand EditVehicleCommand { get; }
+        public ICommand ShowPopUpCommand { get; }
         public ICommand AddServicesCommand { get; }
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
 
         public ICommand ReadNoteCommand { get; }
-
-        public ClientDashboardViewModel(ApiService apiservice, ISessionService sessionService)
+        private readonly INavigationService _navigationService;
+        public ClientDashboardViewModel(ApiService apiservice, ISessionService sessionService, INavigationService navigationService)
         {
             // Initialize properties and commands
             _ApiService = apiservice;
             _sessionService = sessionService;
-
+            _navigationService = navigationService;
             OpenHistoryCommand = new Command(OpenHistory);
             AddVehicleCommand = new Command(async () => await AddVehicle());
             PremuimCommand = new Command(async () => await LoadPremuim());
             EditVehicleCommand = new Command<Vehicle>(async (vehicle) => await EditVehicle(vehicle));
+            ShowPopUpCommand = new Command<Vehicle>(async (vehicle) => await ShowMenu(vehicle));
             AddServicesCommand = new Command<Vehicle>(async (vehicle) => await AddServices(vehicle));
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
@@ -90,8 +93,17 @@ namespace GarageService.ClientApp.ViewModels
 
         private async Task AddServices(Vehicle vehicle)
         {
-            await Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehileid={vehicle.Id}");
+            //await Shell.Current.GoToAsync($"{nameof(ServicePage)}?VehicleId={vehicle.Id}");
+
+            await Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehicleid={vehicle.Id}");
+
         }
+        private async Task ShowMenu(Vehicle vehicle)
+        {
+            var popup = new PopupMenuPage(vehicle.Id);
+            await _navigationService.ShowPopupAsync(popup);
+        }
+       
         private void AddAppointment() { /* Open add appointment dialog */ }
         private async Task EditProfile()
         {

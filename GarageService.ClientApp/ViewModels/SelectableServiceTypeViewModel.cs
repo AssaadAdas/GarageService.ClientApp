@@ -31,6 +31,7 @@ namespace GarageService.ClientApp.ViewModels
             {
                 SetProperty(ref _selectedCurrency, value);
                 CurrId = value?.Id ?? 0;
+                CurrDesc = value?.CurrDesc ?? string.Empty;
             }
         }
 
@@ -41,6 +42,12 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _currId, value);
         }
 
+        private string _currDesc;
+        public string CurrDesc
+        {
+            get => _currDesc;
+            set => SetProperty(ref _currDesc, value);
+        }
         private string _notes;
         public string Notes
         {

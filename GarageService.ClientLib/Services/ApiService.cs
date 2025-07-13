@@ -1,4 +1,6 @@
-﻿using GarageService.ClientLib.Models;
+﻿
+using GarageService.ClientLib.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,7 +124,11 @@ namespace GarageService.ClientLib.Services
             }
         }
 
-
+        /// <summary>
+        /// Adds a new vehicle asynchronously.
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         public async Task<(bool IsSuccess, string Message, Vehicle vehicle)> AddVehicleAsync(Vehicle vehicle)
         {
             try
@@ -437,6 +443,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
+        /// GetManufacturersAsync
         /// 
         /// </summary>
         /// <returns></returns>
@@ -925,6 +932,91 @@ namespace GarageService.ClientLib.Services
                     IsSuccess = false,
                     ErrorMessage = ex.Message
                 };
+            }
+        }
+
+        public async Task<ApiResponse<VehiclesService>> AddVehiclesServicesAsync(VehiclesService vehicleservice)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(vehicleservice);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("VehiclesServices", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                    var VehicleServices = await response.Content.ReadFromJsonAsync<VehiclesService>();
+                    return new ApiResponse<VehiclesService>
+                    {
+                        IsSuccess = true,
+                        Data = VehicleServices,
+                    };
+                    
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new Exception($"Validation error: {errorContent}");
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new Exception($"Conflict: {errorContent}");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode} - {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"Error adding vehicle: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<(bool IsSuccess, string Message, VehiclesServiceType vehiclesservicetype)> AddVehiclesServiceTypeAsync(VehiclesServiceType vehicleservicetype)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(vehicleservicetype);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("VehiclesServiceTypes", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var AddedVehicleServicesTypes = JsonSerializer.Deserialize<VehiclesServiceType>(responseContent);
+                    return (true, "Registration successful", AddedVehicleServicesTypes);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new Exception($"Validation error: {errorContent}");
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new Exception($"Conflict: {errorContent}");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode} - {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"Error adding vehicle: {ex.Message}");
+                throw;
             }
         }
     }

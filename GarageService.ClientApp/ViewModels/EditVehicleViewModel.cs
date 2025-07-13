@@ -41,9 +41,10 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
-        private int _vehileid;
+        
         public ICommand LoadCommand { get; }
         public ICommand SaveCommand { get; }
+        private int _vehileid;
         public int VehileId
         {
             get => _vehileid;

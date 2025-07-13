@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Extensions;
+using GarageService.ClientApp.Services;
 using GarageService.ClientApp.ViewModels;
 using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
@@ -23,5 +25,7 @@ public partial class ClientDashboardPage : ContentPage
         {
             await vm.LoadClientProfile(); // Make sure this method fetches the latest profile
         }
+        var navService = Handler.MauiContext.Services.GetService<INavigationService>();
+        (navService as NavigationService)?.SetCurrentPage(this);
     }
 }

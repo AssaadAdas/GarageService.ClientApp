@@ -140,7 +140,7 @@ namespace GarageService.ClientApp.ViewModels
 
             // Get the user with ID
 
-
+            
             var userAdded = await _ApiService.GetUserByUsername(Username);
             if (userAdded != null && userAdded.IsSuccess)
             {

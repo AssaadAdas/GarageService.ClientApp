@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using GarageService.ClientApp.Services;
 using GarageService.ClientApp.Views;
 using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
@@ -16,54 +17,100 @@ using System.Windows.Input;
 namespace GarageService.ClientApp.ViewModels
 {
     [QueryProperty(nameof(VehicleId), "vehileid")]
-    public class VehiclesServiceViewModel:BaseViewModel
+    public class VehiclesServiceViewModel:BaseViewModel, IQueryAttributable
     {
-        public VehiclesServiceViewModel(ApiService apiService)
+        public VehiclesServiceViewModel(ApiService apiService, ServiceFormState formState)
         {
             _apiService = apiService;
+            _formState = formState;
             AddServiceTypeCommand = new Command(async () => await AddServiceTypes());
             SaveCommand = new Command(async () => await SaveService());
             LoadGargesCommand = new Command(async () => await LoadGarages());
             LoadGargesCommand.Execute(null);
+            if (_formState.VehicleId != 0)
+            {
+                VehicleId = _formState.VehicleId;
+                Odometer = _formState.Odometer;
+                GarageId = _formState.GarageId;
+                Notes = _formState.Notes;
+                ServiceDate = _formState.ServiceDate;
+                SelectedGarage = _formState.selectedGarage;
+                ServiceTypess = _formState.ServiceTypes ?? new ObservableCollection<SelectableServiceTypeViewModel>();
+            }
         }
-        public ObservableCollection<SelectableServiceTypeViewModel> ServiceTypess { get; set; } = new();
-
+        
+        private ObservableCollection<SelectableServiceTypeViewModel> _ServiceTypess;
+        public ObservableCollection<SelectableServiceTypeViewModel> ServiceTypess
+        {
+            get => _ServiceTypess;
+            set => SetProperty(ref _ServiceTypess, value);
+        }
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
+
+            // Handle SelectedServiceTypes - only update if we're coming from AddServiceTypePage
             if (query.TryGetValue("SelectedServiceTypes", out var value) && value is IEnumerable<SelectableServiceTypeViewModel> selected)
             {
-                ServiceTypess = new ObservableCollection<SelectableServiceTypeViewModel>(selected);
+                if (ServiceTypess == null)
+                {
+                    ServiceTypess = new ObservableCollection<SelectableServiceTypeViewModel>(selected);
+                }
+                else
+                {
+                    // Remove items not in the new selection
+                    var toRemove = ServiceTypess.Where(x => !selected.Any(s => s.Id == x.Id)).ToList();
+                    foreach (var item in toRemove)
+                        ServiceTypess.Remove(item);
+
+                    // Add or update items from the new selection
+                    foreach (var item in selected)
+                    {
+                        var existing = ServiceTypess.FirstOrDefault(x => x.Id == item.Id);
+                        if (existing == null)
+                            ServiceTypess.Add(item);
+                        else
+                        {
+                            // Only update the properties that might have changed in the service types
+                            existing.IsSelected = item.IsSelected;
+                            existing.Cost = item.Cost;
+                            existing.Notes = item.Notes;
+                            existing.CurrId = item.CurrId;
+                        }
+                    }
+                }
                 OnPropertyChanged(nameof(ServiceTypess));
+            }
+
+            // Handle vehicleid
+            if (query.TryGetValue("vehicleid", out var vehicleIdValue))
+            {
+                if (vehicleIdValue is int id)
+                {
+                    VehicleId = id;
+                }
+                else if (int.TryParse(vehicleIdValue?.ToString(), out int parsedId))
+                {
+                    VehicleId = parsedId;
+                }
             }
         }
 
-
         private readonly ApiService _apiService;
+        private readonly ServiceFormState _formState;
         public ICommand LoadServicesTypesCommand { get; }
         public ICommand AddServiceTypeCommand { get;}
         public ICommand SaveCommand { get; }
         public ICommand LoadGargesCommand { get; }
 
         private List<GarageProfile> _Garages;
+
         private GarageProfile _selectedGarage;
         public List<GarageProfile> Garages
         {
             get => _Garages;
             set => SetProperty(ref _Garages, value);
         }
-
-        private ObservableCollection<ServiceType> _selectedServiceTypes;
-        public ObservableCollection<ServiceType> SelectedServiceTypes
-        {
-            get => _selectedServiceTypes;
-            set
-            {
-                _selectedServiceTypes = value;
-                OnPropertyChanged(nameof(SelectedServiceTypes));
-            }
-        }
-
-
+        
         public GarageProfile SelectedGarage
         {
             get => _selectedGarage;
@@ -75,15 +122,40 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
-        public DateTime ServiceDate { get; set; }
+        private DateTime _serviceDate = DateTime.Now; // Default value
+        public DateTime ServiceDate
+        {
+            get => _serviceDate;
+            set => SetProperty(ref _serviceDate, value);
+        }
 
-        public int Odometer { get; set; }
+        private int _odometer;
+        public int Odometer
+        {
+            get => _odometer;
+            set => SetProperty(ref _odometer, value);
+        }
 
-        public string ServiceLocation { get; set; }
+        private string _ServiceLocation;
+        public string ServiceLocation {
+            get => _ServiceLocation;
+            set => SetProperty(ref _ServiceLocation, value);
+        }
+        private string _Notes;
+        public string Notes {
+            get => _Notes;
+            set => SetProperty(ref _Notes, value);
+        }
 
-        public string Notes { get; set; }
-
-        public int VehicleId { get; set; }
+        private int _vehileid;
+        public int VehicleId
+        {
+            get => _vehileid;
+            set
+            {
+                _vehileid = value;
+            }
+        }
 
         private int _selectedGarageId;
         public int GarageId
@@ -133,21 +205,69 @@ namespace GarageService.ClientApp.ViewModels
 
         private async Task AddServiceTypes()
         {
+            _formState.VehicleId = VehicleId;
+            _formState.Odometer = Odometer;
+            _formState.GarageId = GarageId;
+            _formState.Notes = Notes;
+            _formState.ServiceDate = ServiceDate;
+            _formState.ServiceTypes = ServiceTypess;
+            _formState.selectedGarage = SelectedGarage;
             await Shell.Current.GoToAsync($"{nameof(AddServiceTypePage)}");
         }
-        public void UpdateSelectedItems(List<ServiceType> items)
-        {
-            SelectedServiceTypes.Clear();
-            foreach (var item in items)
-            {
-                SelectedServiceTypes.Add(item);
-            }
-        }
+       
         private async Task SaveService()
         {
-            //await Shell.Current.GoToAsync($"{nameof(AddServiceTypePage)}");
+            if (ServiceTypess is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Service types required fields", "OK");
+                return;
+            }
+            if (Odometer == 0)
+            {
+                await Shell.Current.DisplayAlert("Error", "Odometer required fields", "OK");
+                return;
+            }
+            if (GarageId == 0)
+            {
+                await Shell.Current.DisplayAlert("Error", "Garage required fields", "OK");
+                return;
+            }
+            var vehiclesService = new VehiclesService
+            {
+               ServiceDate = ServiceDate,
+               Odometer = Odometer,
+               ServiceLocation = string.Empty,
+               Notes = Notes,
+               Garageid = GarageId,
+               Vehicleid = VehicleId,
+            };
+            var ApiResponse= await _apiService.AddVehiclesServicesAsync(vehiclesService);
+            var addedvehiclesservice = ApiResponse.Data;
+            var vehiclesServiceTypes = new List<VehiclesServiceType>();
+            foreach (var serviceType in ServiceTypess)
+            {
+                if (serviceType.IsSelected)
+                {
+                    vehiclesServiceTypes.Add(new VehiclesServiceType
+                    {
+                        VehicleServiceId = addedvehiclesservice.Id,
+                        ServiceTypeId = serviceType.Id,
+                        Cost = serviceType.Cost,
+                        Notes = serviceType.Notes,
+                        CurrId = serviceType.CurrId
+                    });
+                }
+            }
+            foreach (var serviceType in vehiclesServiceTypes)
+            {
+                var (isSuccess2, message2, addedServiceType) = await _apiService.AddVehiclesServiceTypeAsync(serviceType);
+                if (!isSuccess2)
+                {
+                    await Shell.Current.DisplayAlert("Error", message2, "OK");
+                    return;
+                }
+            }
         }
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

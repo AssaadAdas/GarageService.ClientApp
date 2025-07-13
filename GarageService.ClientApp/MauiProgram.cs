@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using GarageService.ClientApp.Services;
 using GarageService.ClientApp.ViewModels;
 using GarageService.ClientApp.Views;
 using GarageService.ClientLib.Models;
@@ -23,6 +24,7 @@ public static class MauiProgram
                 fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialDesignIcons");
             });
         // Register ViewModels
+
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddSingleton<BaseViewModel>();
         builder.Services.AddTransient<ClientRegistrationViewModel>();
@@ -52,7 +54,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ISessionService, SessionService>();
         builder.Services.AddSingleton<ISecureStorage>(SecureStorage.Default);
         builder.Services.AddSingleton<ApiService>();
-
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<ServiceFormState>();
         //Models
         builder.Services.AddTransient<ServicePage>();
 

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:GarageService.ClientApp.Views"
+             x:Class="GarageService.ClientApp.Views.PopupMenuPage">
+
+    <Border Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#2D2D2D}"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}"
+            Padding="0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            Margin="20">
+
+
+        <VerticalStackLayout Spacing="0" Padding="0">
+
+            <!-- Add Services Menu Item -->
+            <Border BackgroundColor="Transparent"
+                    Padding="16,14"
+                    StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="AddServicesClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="🔧"
+                           TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                           FontSize="18"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="Add Services"
+                           TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                            Value="{AppThemeBinding Light=#F3E5F5, Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" 
+                    Color="{AppThemeBinding Light=#EEEEEE, Dark=#383838}"/>
+
+            <!-- Refuel Label -->
+            <Border BackgroundColor="Transparent"
+                    Padding="16,14"
+                    StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="RefuelClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="⛽"
+                           TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                           FontSize="18"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="Refule"
+                           TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                            Value="{AppThemeBinding Light=#F3E5F5, Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
+            
+            <!-- Divider -->
+            <BoxView HeightRequest="1" 
+                    Color="{AppThemeBinding Light=#EEEEEE, Dark=#383838}"/>
+
+            <!-- History label -->
+            <Border BackgroundColor="Transparent"
+                    Padding="16,14"
+                    StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="HistoryClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="📜"
+                           TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                           FontSize="18"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="History"
+                           TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                            Value="{AppThemeBinding Light=#F3E5F5, Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" 
+          Color="{AppThemeBinding Light=#EEEEEE, Dark=#383838}"/>
+
+            <!-- SetUp ServiceTypes label -->
+            <Border BackgroundColor="Transparent"
+          Padding="16,14"
+          StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SetUpServiceTypesClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="🛠️"
+                 TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                 FontSize="18"
+                 VerticalTextAlignment="Center"
+                 FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="SetUp serviceTypes"
+                 TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                 FontSize="16"
+                 FontAttributes="Bold"
+                 VerticalTextAlignment="Center"
+                 FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                  Value="{AppThemeBinding Light=#F3E5F5, Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" 
+                     Color="{AppThemeBinding Light=#EEEEEE, Dark=#383838}"/>
+
+            <!-- SetUp Appointments label -->
+            <Border BackgroundColor="Transparent"
+                    Padding="16,14"
+                    StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="AppointmentsClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="📅"
+                           TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                           FontSize="18"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="Appointments"
+                           TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                        Value="{AppThemeBinding 
+                                        Light=#F3E5F5, 
+                                         Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

@@ -91,7 +91,7 @@
                        FontAttributes="Bold"
                        TextColor="{StaticResource Primary}"/>
 
-                <CollectionView ItemsSource="{Binding SelectedServiceTypes}"
+                <CollectionView ItemsSource="{Binding ServiceTypess}"
                                SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -100,12 +100,12 @@
                                    BackgroundColor="White"
                                    CornerRadius="10"
                                    HasShadow="True">
-                                <VerticalStackLayout Spacing="8">
+                                <HorizontalStackLayout Spacing="8">
                                     <HorizontalStackLayout>
                                         <Label Text="Type:" 
                                                FontAttributes="Bold"
                                                WidthRequest="80"/>
-                                        <Label Text="{Binding ServiceTypeId}"/>
+                                        <Label Text="{Binding Description}"/>
                                     </HorizontalStackLayout>
 
                                     <HorizontalStackLayout>
@@ -119,7 +119,7 @@
                                         <Label Text="Currency:" 
                                                FontAttributes="Bold"
                                                WidthRequest="80"/>
-                                        <Label Text="{Binding CurrencyId}"/>
+                                        <Label Text="{Binding CurrDesc}"/>
                                     </HorizontalStackLayout>
 
                                     <HorizontalStackLayout>
@@ -128,7 +128,7 @@
                                                WidthRequest="80"/>
                                         <Label Text="{Binding Notes}"/>
                                     </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                </HorizontalStackLayout>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
