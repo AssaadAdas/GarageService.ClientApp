@@ -166,6 +166,7 @@ namespace GarageService.ClientApp.ViewModels
                 SetProperty(ref _selectedGarageId, value);
                 // If you need to find the full country object:
                 SelectedGarage = Garages?.FirstOrDefault(c => c.Id == value);
+                
             }
         }
 
