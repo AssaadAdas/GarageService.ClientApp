@@ -18,8 +18,8 @@ namespace GarageService.ClientLib.Models
         public decimal? RefuelCost { get; set; }
 
         public int? Ododmeter { get; set; }
-
-        public virtual Vehicle Vehicle { get; set; } = null!;
+        public DateTime RefuleDate { get; set; }
+        public virtual Vehicle? Vehicle { get; set; } = null!;
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
-        
+        public ICommand BackCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand SaveCommand { get; }
         private int _vehileid;
@@ -142,6 +143,7 @@ namespace GarageService.ClientApp.ViewModels
             _ApiService = apiService;
             _sessionService = sessionService;
             SaveCommand = new Command(async () => await SaveVehile());
+            BackCommand = new Command(async () => await GoBack());
             LoadClientProfile();
             LoadVehiclesTypes();
             LoadManufacturers();
@@ -150,7 +152,10 @@ namespace GarageService.ClientApp.ViewModels
             LoadCommand = new Command(async () => await LoadVehicle());
             LoadCommand.Execute(null);
         }
-
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
+        }
         private string _errorMessage;
         public string ErrorMessage
         {

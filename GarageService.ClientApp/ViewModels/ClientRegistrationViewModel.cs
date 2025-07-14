@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
@@ -69,14 +70,18 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _errorMessage, value);
         }
         public ICommand RegisterCommand { get; }
-
+        public ICommand BackCommand { get; }
         public ClientRegistrationViewModel(ApiService apiservice)
         {
             _ApiService = apiservice;
             RegisterCommand = new Command(async () => await Register());
+            BackCommand = new Command(async () => await GoBack());
             LoadCountries();
         }
-       
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"..");
+        }
         private async void LoadCountries()
         {
             try

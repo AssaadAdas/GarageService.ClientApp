@@ -18,12 +18,13 @@ public partial class PopupMenuPage : Popup
     private void AddServicesClicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehileid={_vehileid}");
-        this.CloseAsync(); 
+        this.CloseAsync();
     }
 
     private void RefuelClicked(object sender, EventArgs e)
     {
-
+        Shell.Current.GoToAsync($"{nameof(VehiclesRefuelPage)}?vehileid={_vehileid}");
+        this.CloseAsync();
     }
 
     private void HistoryClicked(object sender, EventArgs e)

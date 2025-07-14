@@ -444,7 +444,6 @@ namespace GarageService.ClientLib.Services
 
         /// <summary>
         /// GetManufacturersAsync
-        /// 
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse<List<Manufacturer>>> GetManufacturersAsync()
@@ -485,7 +484,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// GetMeassureUnitsAsync
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse<List<MeassureUnit>>> GetMeassureUnitsAsync()
@@ -527,7 +526,7 @@ namespace GarageService.ClientLib.Services
 
 
         /// <summary>
-        /// 
+        /// GetFuelTypesAsync
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse<List<FuelType>>> GetFuelTypesAsync()
@@ -568,7 +567,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// GetVehicleTypesAsync
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse<List<VehicleType>>> GetVehicleTypesAsync()
@@ -609,7 +608,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// UpdateClientProfileAsync
         /// </summary>
         /// <param name="id"></param>
         /// <param name="clientProfile"></param>
@@ -650,7 +649,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// UpdateVehicleAsync
         /// </summary>
         /// <param name="id"></param>
         /// <param name="vehicle"></param>
@@ -691,7 +690,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// GetClientNotification
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -738,7 +737,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// UpdateClientNotificationAsync
         /// </summary>
         /// <param name="id"></param>
         /// <param name="clientNotification"></param>
@@ -779,7 +778,7 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
-        /// 
+        /// GetGaragesAsync
         /// </summary>
         /// <returns></returns>
         public async Task<ApiResponse<List<GarageProfile>>> GetGaragesAsync()
@@ -817,7 +816,10 @@ namespace GarageService.ClientLib.Services
             }
         }
 
-
+        /// <summary>
+        /// GetServiceTypesAsync
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<ServiceType>>> GetServiceTypesAsync()
         {
             try
@@ -853,7 +855,10 @@ namespace GarageService.ClientLib.Services
             }
         }
 
-
+        /// <summary>
+        /// GetCurremciesAsync
+        /// </summary>
+        /// <returns></returns>
         public async Task<ApiResponse<List<Currency>>> GetCurremciesAsync()
         {
             try
@@ -888,8 +893,9 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
+        
         /// <summary>
-        /// 
+        /// GetVehicleByID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -935,6 +941,11 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        /// <summary>
+        /// AddVehiclesServicesAsync
+        /// </summary>
+        /// <param name="vehicleservice"></param>
+        /// <returns></returns>
         public async Task<ApiResponse<VehiclesService>> AddVehiclesServicesAsync(VehiclesService vehicleservice)
         {
             try
@@ -980,6 +991,56 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+
+        public async Task<ApiResponse<VehiclesRefuel>> AddVehiclesRefuleAsync(VehiclesRefuel vehicleRefuel)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(vehicleRefuel);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("VehiclesRefuels", content);
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var Vehiclerefule = await response.Content.ReadFromJsonAsync<VehiclesRefuel>();
+                    return new ApiResponse<VehiclesRefuel>
+                    {
+                        IsSuccess = true,
+                        Data = Vehiclerefule,
+                    };
+
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new Exception($"Validation error: {errorContent}");
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new Exception($"Conflict: {errorContent}");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode} - {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"Error adding vehicle: {ex.Message}");
+                throw;
+            }
+        }
+        /// <summary>
+        /// AddVehiclesServiceTypeAsync
+        /// </summary>
+        /// <param name="vehicleservicetype"></param>
+        /// <returns></returns>
         public async Task<(bool IsSuccess, string Message, VehiclesServiceType vehiclesservicetype)> AddVehiclesServiceTypeAsync(VehiclesServiceType vehicleservicetype)
         {
             try

@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Services;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -76,7 +77,7 @@ namespace GarageService.ClientApp.ViewModels
                     OnPropertyChanged(nameof(RememberMe));
 
                     // Auto-login
-                   // await LoginAsync();
+                    //await LoginAsync();
                 }
             }
             catch (Exception ex)
@@ -112,7 +113,7 @@ namespace GarageService.ClientApp.ViewModels
                 // Navigate to the main page
                 var Clientresponse = await _apiService.GetClientByUserID(response.User.Id);
                 _sessionService.CreateSession(response.User, Clientresponse.Data);
-                await Shell.Current.GoToAsync("//ClientDashboard");
+                await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
             }
             catch (Exception ex)
             {
@@ -122,7 +123,8 @@ namespace GarageService.ClientApp.ViewModels
 
         private async Task Register()
         {
-            await Shell.Current.GoToAsync("//ClientRegistration");
+            //await Shell.Current.GoToAsync({nameof(ServicePage)});
+            await Shell.Current.GoToAsync($"{nameof(ClientRegistrationPage)}");
         }
     }
 

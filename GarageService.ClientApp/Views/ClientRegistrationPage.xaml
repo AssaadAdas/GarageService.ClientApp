@@ -1,58 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
              x:Class="GarageService.ClientApp.Views.ClientRegistrationPage"
-             
-             BackgroundColor="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}">
+             >
 
-    <Shell.TitleView>
-        <Grid BackgroundColor="#4CAF50" ColumnDefinitions ="Auto,*">
-            <!-- Material Design Green 800 -->
-            <HorizontalStackLayout Spacing="16" 
-                        VerticalOptions="Center"
-                        Margin="20,0">
-
-                <!-- Title -->
-                <Label Text="Create Account" 
-             VerticalOptions="Center" 
-             FontSize="24"
-             FontAttributes="Bold"
-             TextColor="White"/>
-
-                <!-- Spacer -->
-                <BoxView Color="Transparent" HorizontalOptions="FillAndExpand" />
-
-                <!-- Save Button -->
-                <Button Text="✓" 
-              FontSize="28"
-              FontAttributes="Bold"
-              BackgroundColor="Transparent"
-              TextColor="White"
-              VerticalOptions="Center"
-              HorizontalOptions="End"
-              Padding="16,0"
-              Command="{Binding SaveCommand}">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" 
-                           Binding="{Binding IsBusy}" 
-                           Value="True">
-                            <Setter Property="Text" Value="⏳" />
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-            </HorizontalStackLayout>
-        </Grid>
-    </Shell.TitleView>
-
-    
-    <ScrollView>
+    <Grid RowDefinitions="Auto,*">
+        <!-- TitleView in first row -->
+        <views:TitleView Title="Create Account"
+                     SaveCommand="{Binding RegisterCommand}"
+                     BackCommand="{Binding GoBack}"
+                     Grid.Row="0"/>
+      
+        <ScrollView Grid.Row="1">
         <VerticalStackLayout Padding="20" Spacing="15">
             <!-- Header -->
-            <Label Text="Create Account" 
-               FontSize="28"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"/>
-
             <Label Text="Join our community today" 
                FontSize="14"
                TextColor="{AppThemeBinding Light={StaticResource SecondaryTextLight}, Dark={StaticResource SecondaryTextDark}}"
@@ -184,12 +146,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Register Button -->
-            <Button Text="Register" 
-                    Command="{Binding RegisterCommand}"
-                    Style="{StaticResource PrimaryButton}"
-                    Margin="0,20,0,0"/>
-
             <!-- Login Link -->
             <StackLayout Orientation="Horizontal" 
                          HorizontalOptions="Center"
@@ -207,4 +163,5 @@
             </StackLayout>
         </VerticalStackLayout>
     </ScrollView>
+    </Grid>
 </ContentPage>

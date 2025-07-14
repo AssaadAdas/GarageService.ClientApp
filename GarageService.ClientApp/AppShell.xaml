@@ -15,19 +15,6 @@
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
-    <ShellContent Title="About"
-               Route="AboutPage" 
-               ContentTemplate="{DataTemplate views:AboutPage}" />
 
-    <ShellContent Title="Client Registration"
-               Route="ClientRegistration" 
-               ContentTemplate="{DataTemplate views:ClientRegistrationPage}" />
-
-    <ShellContent Title="Client Dashboard"
-               Route="ClientDashboard" 
-               ContentTemplate="{DataTemplate views:ClientDashboardPage}" />
-    <ShellContent Title="Edit Profile"
-           Route="EditClientProfile" 
-           ContentTemplate="{DataTemplate views:EditClientProfilePage}" />
 
 </Shell>

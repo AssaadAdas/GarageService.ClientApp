@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace GarageService.ClientApp.ViewModels
         private ClientProfile _clientProfile;
         private int _vehileid;
         public ICommand LoadCommand { get; }
+        public ICommand BackCommand { get; }
         public ICommand SaveCommand { get; }
         public int VehileId
         {
@@ -115,6 +117,7 @@ namespace GarageService.ClientApp.ViewModels
             _ApiService = apiService;
             _sessionService = sessionService;
             SaveCommand = new Command(async () => await SaveVehile());
+            BackCommand = new Command(async () => await GoBack());
             LoadClientProfile();
             LoadVehiclesTypes();
             LoadManufacturers();
@@ -256,6 +259,11 @@ namespace GarageService.ClientApp.ViewModels
 
         public int Odometer { get; set; }
         #endregion
+
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
+        }
         public ClientProfile ClientProfile
         {
             get => _clientProfile;
