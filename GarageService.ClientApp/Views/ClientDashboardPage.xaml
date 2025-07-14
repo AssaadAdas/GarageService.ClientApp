@@ -15,245 +15,264 @@
             <VerticalStackLayout Spacing="24" Padding="20,16,20,80">
 
                 <!-- Client Profile Card - Modern Design -->
-                <HorizontalStackLayout Spacing="16">
-                <Frame CornerRadius="20" 
-                       Padding="24"
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                       BorderColor="{AppThemeBinding Light=#F0F0F0, Dark=#333333}"
-                       HasShadow="True"
-                       Shadow="{StaticResource ShadowMedium}">
-                    <VerticalStackLayout Spacing="16">
-                        <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                            <Image Source="profile_icon.png"
-                                   WidthRequest="24"
-                                   HeightRequest="24"
-                                   Aspect="AspectFit"/>
-                            <Label Text="My Profile" 
-                                   FontAttributes="Bold" 
-                                   FontSize="20"
-                                   FontFamily="Medium"
-                                   TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
-                        </HorizontalStackLayout>
+                <Grid ColumnDefinitions="*,Auto">
+                    <!-- Profile Section (90% width) -->
+                    <Border Grid.Column="0"
+                            Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#2D2D2D}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}"
+                            Padding="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Start"
+                            Margin="20,20,0,20">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditProfileCommand}"/>
+                        </Border.GestureRecognizers>
 
-                        <BoxView HeightRequest="1" 
-                                 BackgroundColor="{AppThemeBinding Light=#F1F5F9, Dark=#333333}"
-                                 HorizontalOptions="Fill"/>
+                        <VerticalStackLayout Spacing="16">
+                            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                                <Image Source="profile_icon.png"
+                                        WidthRequest="24"
+                                        HeightRequest="24"
+                                        Aspect="AspectFit"/>
+                                <Label Text="My Profile" 
+                                       FontAttributes="Bold" 
+                                       FontSize="20"
+                                       FontFamily="Medium"
+                                       TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
+                            </HorizontalStackLayout>
 
-                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
-                            <!-- Name -->
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="👤"
-                                   FontSize="18"
-                                   VerticalOptions="Center"/>
-                            <Label Grid.Row="0" Grid.Column="1"
-                                   FontSize="16"
-                                   FontFamily="Regular"
-                                   TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding ClientProfile.FirstName}" FontAttributes="Bold"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding ClientProfile.LastName}" FontAttributes="Bold"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                            <BoxView HeightRequest="1" 
+                                     BackgroundColor="{AppThemeBinding Light=#F1F5F9, Dark=#333333}"
+                                     HorizontalOptions="Fill"/>
 
-                            <!-- Email -->
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="✉️"
-                                   FontSize="18"
-                                   VerticalOptions="Center"/>
-                            <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding ClientProfile.Email}"
-                                   FontSize="16"
-                                   FontFamily="Regular"
-                                   TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"/>
+                            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+                                <!-- Name -->
+                                <Label Grid.Row="0" Grid.Column="0"
+                                      Text="👤"
+                                      FontSize="18"
+                                      VerticalOptions="Center"/>
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       FontSize="16"
+                                       FontFamily="Regular"
+                                       TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding ClientProfile.FirstName}" FontAttributes="Bold"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding ClientProfile.LastName}" FontAttributes="Bold"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
 
-                            <!-- Phone -->
-                            <Label Grid.Row="2" Grid.Column="0"
-                                   Text="📞"
-                                   FontSize="18"
-                                   VerticalOptions="Center"/>
-                            <Label Grid.Row="2" Grid.Column="1"
-                                   FontSize="16"
-                                   FontFamily="Regular"
-                                   TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding ClientProfile.PhoneExt}" FontAttributes="Bold"/>
-                                        <Span Text=" "/>
-                                        <Span Text="{Binding ClientProfile.PhoneNumber}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </Grid>
+                                <!-- Email -->
+                                <Label Grid.Row="1" Grid.Column="0"
+                                      Text="✉️"
+                                      FontSize="18"
+                                      VerticalOptions="Center"/>
+                                <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding ClientProfile.Email}"
+                                       FontSize="16"
+                                       FontFamily="Regular"
+                                       TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"/>
 
-                        <!-- Edit Profile Button -->
-                        <Button Text="Edit Profile"
-                                Margin="0,8,0,0"
-                                CornerRadius="12"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#EFF6FF, Dark=#1E3A8A}"
-                                TextColor="{AppThemeBinding Light=#2563EB, Dark=#60A5FA}"
-                                FontFamily="Medium"
-                                FontSize="14"
-                                HorizontalOptions="Fill"
-                                Command="{Binding EditProfileCommand}"/>
-                    </VerticalStackLayout>
-                </Frame>
-                    <!-- Premium Status Frame -->
-                    <Frame CornerRadius="20"
-                           Padding="24"
-                           BackgroundColor="{AppThemeBinding Light=#FFFDE7, Dark=#333300}"
-                           BorderColor="{AppThemeBinding Light=#FFD600, Dark=#FFD600}"
-                           HasShadow="True"
-                           Shadow="{StaticResource ShadowMedium}"
-                           WidthRequest="220"
-                           VerticalOptions="Start">
-                        <Frame.Triggers>
-                            <DataTrigger TargetType="Frame" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                <!-- Phone -->
+                                <Label Grid.Row="2" Grid.Column="0"
+                                       Text="📞"
+                                       FontSize="18"
+                                       VerticalOptions="Center"/>
+                                <Label Grid.Row="2" Grid.Column="1"
+                                       FontSize="16"
+                                       FontFamily="Regular"
+                                       TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding ClientProfile.PhoneExt}" FontAttributes="Bold"/>
+                                            <Span Text=" "/>
+                                            <Span Text="{Binding ClientProfile.PhoneNumber}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Premium Status Section (auto width, docked to right) -->
+                    <Border Grid.Column="1"
+                             Stroke="{AppThemeBinding Light=#FFD600, Dark=#FFD600}"
+                             StrokeThickness="1"
+                             StrokeShape="RoundRectangle 20"
+                             BackgroundColor="{AppThemeBinding Light=#FFFDE7, Dark=#333300}"
+                             Padding="24"
+                             WidthRequest="220"
+                             VerticalOptions="Start"
+                             Margin="0,20,20,20"
+                             Shadow="{StaticResource ShadowMedium}">
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PremiumCommand}"/>
+                        </Border.GestureRecognizers>
+
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" 
+                                          Binding="{Binding ClientProfile.IsPremium}" 
+                                          Value="True">
                                 <Setter Property="BackgroundColor" Value="#E0F7FA"/>
-                                <Setter Property="BorderColor" Value="#00BCD4"/>
+                                <Setter Property="Stroke" Value="#00BCD4"/>
                             </DataTrigger>
-                        </Frame.Triggers>
+                        </Border.Triggers>
+
                         <VerticalStackLayout Spacing="8">
                             <Label Text="Premium Status"
                                     FontAttributes="Bold"
                                     FontSize="16"
                                     TextColor="#FFD600"/>
+
+                            <!-- Premium content -->
                             <ContentView>
                                 <ContentView.Content>
                                     <Grid>
                                         <Grid.Triggers>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                            <DataTrigger TargetType="Grid" 
+                                         Binding="{Binding ClientProfile.IsPremium}" 
+                                         Value="True">
                                                 <Setter Property="IsVisible" Value="True"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="False">
+                                            <DataTrigger TargetType="Grid" 
+                                         Binding="{Binding ClientProfile.IsPremium}" 
+                                         Value="False">
                                                 <Setter Property="IsVisible" Value="False"/>
                                             </DataTrigger>
                                         </Grid.Triggers>
                                         <Label Text="Expiry: {Binding ClientProfile.PremiumExpiryDate, StringFormat='{}{0:yyyy-MM-dd}'}"
-                               FontSize="14"
-                               TextColor="#009688"/>
+                                               FontSize="14"
+                                               TextColor="#009688"/>
                                     </Grid>
                                 </ContentView.Content>
                             </ContentView>
+
+                            <!-- Non-premium content -->
                             <ContentView>
                                 <ContentView.Content>
                                     <Grid>
                                         <Grid.Triggers>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="False">
+                                            <DataTrigger TargetType="Grid" 
+                                                          Binding="{Binding ClientProfile.IsPremium}" 
+                                                          Value="False">
                                                 <Setter Property="IsVisible" Value="True"/>
                                             </DataTrigger>
-                                            <DataTrigger TargetType="Grid" Binding="{Binding ClientProfile.IsPremium}" Value="True">
+                                            <DataTrigger TargetType="Grid" 
+                                                         Binding="{Binding ClientProfile.IsPremium}" 
+                                                         Value="True">
                                                 <Setter Property="IsVisible" Value="False"/>
                                             </DataTrigger>
                                         </Grid.Triggers>
                                         <Label Text="Unlock premium features!"
-                                               
                                                FontSize="14"
                                                TextColor="#FF6F00"/>
-                                        <Button Text="Premuim" 
-                                                Command="{Binding PremuimCommand}"
-                                                TextColor="#3498DB"
-                                                BackgroundColor="Transparent"
-                                                FontSize="14"
-                                                FontAttributes="Bold"/>
-                                        <!-- Add more premium offer details here if needed -->
                                     </Grid>
                                 </ContentView.Content>
                             </ContentView>
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
+                </Grid>
 
-                </HorizontalStackLayout>
-                <!-- Vehicles Card -->
-                <Frame  
-                          BackgroundColor="{AppThemeBinding Light=#F5F3FF, Dark=#4C1D95}"
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Padding="20">
+                    <!-- Vehicles Card -->
+                    <Frame   Grid.Column="0"
+                          BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D2D}"  
                           CornerRadius="16"
                           Padding="20"
                           HasShadow="True"
                           Shadow="{StaticResource ShadowSmall}">
                     <VerticalStackLayout Spacing="12">
-                        <Label Text="My Vehicles"   
-                               FontAttributes="Bold"   
-                               FontSize="20"  
-                               TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Padding="20">
+                                <!-- Label docked to left -->
+                                <Label Grid.Column="0" Text="My Vehicles"   
+                                       FontAttributes="Bold"   
+                                       FontSize="20"  
+                                       TextColor="{AppThemeBinding Light=#333333, Dark=White}"
+                                       HorizontalOptions="Start"/>
 
-                        <BoxView HeightRequest="1"   
+                                <!-- Button docked to right -->
+                                <Button Grid.Column="1" Text="+"
+                                       CornerRadius="12"
+                                       HeightRequest="40"
+                                       WidthRequest="40" 
+                                       BackgroundColor="{AppThemeBinding Light=#EFF6FF, Dark=#1E3A8A}"
+                                       TextColor="{AppThemeBinding Light=#2563EB, Dark=#60A5FA}"
+                                       FontFamily="Medium"
+                                       FontSize="20"
+                                       HorizontalOptions="End"  
+                                       VerticalOptions="Center"
+                                       Command="{Binding AddVehicleCommand}"/>
+                            </Grid>
+                            <BoxView HeightRequest="1"   
                                   BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#444444}"  
                                   HorizontalOptions="Fill"/>
 
                         <CollectionView ItemsSource="{Binding ClientProfile.Vehicles}"   
-                EmptyView="No vehicles registered">
+                                        EmptyView="No vehicles registered">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Frame CornerRadius="12"   
-                   Padding="16"  
-                   Margin="0,0,0,10"  
-                   BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
-                   HasShadow="True">
+                                            Padding="16"  
+                                            Margin="0,0,0,10"  
+                                            BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
+                                            HasShadow="True">
                                         <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
                                             <!-- Simplified row definition -->
                                             <!-- Left-aligned vehicle info -->
                                             <VerticalStackLayout Grid.Column="0" Spacing="8">
                                                 <!-- Reduced spacing for better compactness -->
                                                 <Label Text="{Binding VehicleName}"   
-                               FontAttributes="Bold"  
-                               TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
+                                                      FontAttributes="Bold"  
+                                                      TextColor="{AppThemeBinding Light=#333333, Dark=White}"/>
                                                 <Label Text="{Binding LiscencePlate}"   
-                               FontSize="14"  
-                               TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                                                       FontSize="14"  
+                                                       TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
                                             </VerticalStackLayout>
 
                                             <!-- Right-aligned buttons -->
                                             <HorizontalStackLayout Grid.Column="1" 
-                                          VerticalOptions="Center"
-                                          HorizontalOptions="End"
-                                          Spacing="12">
+                                                                   VerticalOptions="Center"
+                                                                   HorizontalOptions="End"
+                                                                   Spacing="12">
                                                 <!-- Reduced spacing between buttons -->
                                                 <Button Text="✏️" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Transparent"
-                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                FontSize="16"
-                                Padding="0"
-                                HeightRequest="36"
-                                WidthRequest="36"
-                                CornerRadius="18"/>
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        HeightRequest="36"
+                                                        WidthRequest="36"
+                                                        CornerRadius="18"/>
                                                 <Button Text="⚙️" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ShowPopUpCommand}" 
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Transparent"
-                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                FontSize="16"
-                                Padding="0"
-                                HeightRequest="36"
-                                WidthRequest="36"
-                                CornerRadius="18"/>
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ShowPopUpCommand}" 
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        HeightRequest="36"
+                                                        WidthRequest="36"
+                                                        CornerRadius="18"/>
                                             </HorizontalStackLayout>
                                         </Grid>
                                     </Frame>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                        <!-- Edit Profile Button -->
-                        <Button Text="Add Vehicles"
-                                Margin="0,8,0,0"
-                                CornerRadius="12"
-                                HeightRequest="40"
-                                BackgroundColor="{AppThemeBinding Light=#EFF6FF, Dark=#1E3A8A}"
-                                TextColor="{AppThemeBinding Light=#2563EB, Dark=#60A5FA}"
-                                FontFamily="Medium"
-                                FontSize="14"
-                                HorizontalOptions="Fill"
-                                Command="{Binding AddVehicleCommand}"/>
+                        
                     </VerticalStackLayout>
                 </Frame>
 
                 <!-- Notification Card -->
-                <Frame CornerRadius="16"   
+                    <Frame Grid.Column="1"
+                           CornerRadius="16"   
                        Padding="20"  
                        BackgroundColor="{AppThemeBinding Light=White, Dark=#2D2D2D}"  
                        BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"  
@@ -270,15 +289,15 @@
                                  HorizontalOptions="Fill"/>
 
                         <CollectionView ItemsSource="{Binding ClientProfile.ClientNotifications}" 
-                SelectionMode="Single"
-                EmptyView="No upcoming Notification">
+                                        SelectionMode="Single"
+                                        EmptyView="No upcoming Notification">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Frame CornerRadius="12"   
-                   Padding="16"  
-                   Margin="0,0,0,10"  
-                   BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
-                   HasShadow="True">
+                                           Padding="16"  
+                                           Margin="0,0,0,10"  
+                                           BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#3A3A3A}"  
+                                           HasShadow="True">
                                         <Frame.Triggers>
                                             <DataTrigger TargetType="Frame" Binding="{Binding IsRead}" Value="False">
                                                 <Setter Property="BackgroundColor" Value="Red"/>
@@ -291,25 +310,25 @@
                                             <!-- Left-aligned content -->
                                             <VerticalStackLayout Grid.Column="0" Spacing="4" HorizontalOptions="Start">
                                                 <Label Text="{Binding Notes}"  
-                               FontSize="14"  
-                               TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                                                       FontSize="14"  
+                                                       TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
                                             </VerticalStackLayout>
 
                                             <!-- Right-aligned button -->
                                             <VerticalStackLayout Grid.Column="1" 
-                                         VerticalOptions="Center"
-                                         HorizontalOptions="End"
-                                         Spacing="8">
+                                                                 VerticalOptions="Center"
+                                                                 HorizontalOptions="End"
+                                                                 Spacing="8">
                                                 <Button Text="✏️" 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ReadNoteCommand}" 
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Transparent"
-                                TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                FontSize="16"
-                                Padding="0"
-                                HeightRequest="36"
-                                WidthRequest="36"
-                                CornerRadius="18"/>
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ReadNoteCommand}" 
+                                                        CommandParameter="{Binding .}"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
+                                                        FontSize="16"
+                                                        Padding="0"
+                                                        HeightRequest="36"
+                                                        WidthRequest="36"
+                                                        CornerRadius="18"/>
                                             </VerticalStackLayout>
                                         </Grid>
                                     </Frame>
@@ -318,7 +337,7 @@
                         </CollectionView>
                     </VerticalStackLayout>
                 </Frame>
-
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
 

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.TitleView"
              
-             BackgroundColor="#4CAF50"
+             BackgroundColor="{AppThemeBinding Light=#EFF6FF, Dark=#1E3A8A}"
              JustifyContent="SpaceBetween"
              AlignItems="Center"
              Padding="20,0">
@@ -12,19 +12,19 @@
             Text="←"
             Command="{Binding BackCommand}"
             BackgroundColor="Transparent"
-            TextColor="White"
+            TextColor="Black"
             FontSize="24"
             Margin="0,0,10,0"/>
     <Label x:Name="TitleLabel"
            Text="{Binding Title}"
            FontSize="24"
            FontAttributes="Bold"
-           TextColor="White"/>
+           TextColor="Black"/>
 
     <Button x:Name="SaveButton"
             Text="✓"
             Command="{Binding SaveCommand}"
             BackgroundColor="Transparent"
-            TextColor="White"
+            TextColor="Black"
             FontSize="24"/>
 </FlexLayout>

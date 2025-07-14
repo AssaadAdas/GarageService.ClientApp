@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand LoadCountriesCommand { get; }
+        public ICommand BackCommand { get; }
 
         // client proporties
         public string FirstName { get; set; }
@@ -68,6 +70,10 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _countries, value);
         }
 
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
+        }
         public Country SelectedCountry
         {
             get => _selectedCountry;
@@ -93,7 +99,7 @@ namespace GarageService.ClientApp.ViewModels
             _ApiService = apiservice;
 
             SaveCommand = new Command(async () => await SaveProfile());
-           
+            BackCommand = new Command(async () => await GoBack());
             LoadCountriesCommand = new Command(async () => await LoadCountries());
             
             LoadCountriesCommand.Execute(null);
