@@ -48,6 +48,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand OpenHistoryCommand { get; }
         public ICommand PremuimCommand { get; }
         public ICommand AddVehicleCommand { get; }
+        public ICommand LogOutCommand { get; }
         public ICommand EditVehicleCommand { get; }
         public ICommand ShowPopUpCommand { get; }
         public ICommand AddServicesCommand { get; }
@@ -65,6 +66,7 @@ namespace GarageService.ClientApp.ViewModels
             OpenHistoryCommand = new Command(OpenHistory);
             AddVehicleCommand = new Command(async () => await AddVehicle());
             PremuimCommand = new Command(async () => await LoadPremuim());
+            LogOutCommand = new Command(async () => await LogOut());
             EditVehicleCommand = new Command<Vehicle>(async (vehicle) => await EditVehicle(vehicle));
             ShowPopUpCommand = new Command<Vehicle>(async (vehicle) => await ShowMenu(vehicle));
             AddServicesCommand = new Command<Vehicle>(async (vehicle) => await AddServices(vehicle));
@@ -81,7 +83,9 @@ namespace GarageService.ClientApp.ViewModels
         { 
             await Shell.Current.GoToAsync($"{nameof(AddVehiclePage)}"); 
         }
-
+        private async Task LogOut()
+        { 
+        }
         private async Task LoadPremuim()
         {
             await Shell.Current.GoToAsync($"{nameof(PremuimPage)}");
