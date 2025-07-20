@@ -242,16 +242,6 @@
                                                                    HorizontalOptions="End"
                                                                    Spacing="12">
                                                 <!-- Reduced spacing between buttons -->
-                                                <Button Text="✏️" 
-                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=EditVehicleCommand}" 
-                                                        CommandParameter="{Binding .}"
-                                                        BackgroundColor="Transparent"
-                                                        TextColor="{AppThemeBinding Light=#1976D2, Dark=#90CAF9}"
-                                                        FontSize="16"
-                                                        Padding="0"
-                                                        HeightRequest="36"
-                                                        WidthRequest="36"
-                                                        CornerRadius="18"/>
                                                 <Button Text="⚙️" 
                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ClientDashboardViewModel}}, Path=ShowPopUpCommand}" 
                                                         CommandParameter="{Binding .}"

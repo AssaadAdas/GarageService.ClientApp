@@ -1080,6 +1080,34 @@ namespace GarageService.ClientLib.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// display history for vehicles
+        /// </summary>
+        /// <param name="vehicleId"></param>
+        /// <returns>VehicleHistoryResponse</returns>
+        public async Task<VehicleHistoryResponse> GetVehicleHistory(int vehicleId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"Vehicles/GetVehicleHistory/{vehicleId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadFromJsonAsync<VehicleHistoryResponse>();
+                    return content;
+                }
+
+                // Handle non-success status codes
+                throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (network issues, etc.)
+                Console.WriteLine($"Error fetching vehicle history: {ex.Message}");
+                throw;
+            }
+        }
     }
 
     public class ApiResponse<T>

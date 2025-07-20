@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
+             x:Class="GarageService.ClientApp.Views.VehicleHistoryPage"
+             Title="Vehicle History"
+             x:Name="VehicleHistoryPageRoot">
+
+    <!-- Resources -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Date Format Converter -->
+           
+
+            <!-- Style for item labels -->
+            <Style x:Key="ItemLabel" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
+            </Style>
+
+            <Style x:Key="ItemHeader" TargetType="Label" BasedOn="{StaticResource ItemLabel}">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{StaticResource Secondary}" />
+            </Style>
+
+            <!-- Section Header Style -->
+            <Style x:Key="SectionHeader" TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *"
+          RowSpacing="0">
+
+        <!-- Header Section -->
+        <views:TitleView Title="Vehicle History"
+                         SaveCommand="{Binding SaveCommand}"
+                         BackCommand="{Binding GoBack}"
+                         Grid.Row="0"/>
+
+        <!-- Main Content Section -->
+        <ScrollView Grid.Row="1"
+                    Padding="10">
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Service History Section -->
+                <Frame Style="{StaticResource CardFrameStyle}"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Service History" 
+                               Style="{StaticResource SectionHeader}"/>
+
+                        <CollectionView ItemsSource="{Binding ServiceHistory}"
+                                       EmptyView="No service records found"
+                                       SelectionMode="None"
+                                        VerticalScrollBarVisibility="Always"
+                                       >
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" 
+                                                   ItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Style="{StaticResource CardItemFrameStyle}">
+                                        <Grid ColumnDefinitions="Auto, *, Auto, *"
+                                              RowDefinitions="Auto, Auto"
+                                              RowSpacing="8"
+                                              ColumnSpacing="10">
+
+                                            <!-- Description -->
+                                            <Label Text="Description:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="0" Grid.Column="0"/>
+                                            <Label Text="{Binding Description}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="0" Grid.Column="1"/>
+
+                                            <!-- Odometer -->
+                                            <Label Text="Odometer:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="0" Grid.Column="2"/>
+                                            <Label Text="{Binding Odometer, Converter={StaticResource OdometerDisplayConverter}}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="0" Grid.Column="3"/>
+
+                                            <!-- Date -->
+                                            <Label Text="Date:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="1" Grid.Column="0"/>
+                                            <Label Text="{Binding ServiceDate, Converter={StaticResource DateDisplayConverter}}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="1" Grid.Column="1"/>
+
+                                            <!-- Notes -->
+                                            <Label Text="Notes:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="1" Grid.Column="2"/>
+                                            <Label Text="{Binding Notes}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="1" Grid.Column="3"/>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Refuel History Section -->
+                <Frame Style="{StaticResource CardFrameStyle}"
+                       Padding="20">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="Refuel History" 
+                               Style="{StaticResource SectionHeader}"/>
+
+                        <CollectionView ItemsSource="{Binding History.Refuels}"
+                                        EmptyView="No refuel records found"
+                                        SelectionMode="None">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" 
+                                                   ItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Style="{StaticResource CardItemFrameStyle}">
+                                        <Grid ColumnDefinitions="Auto, *, Auto, *"
+                                              RowDefinitions="Auto, Auto"
+                                              RowSpacing="8"
+                                              ColumnSpacing="10">
+
+                                            <!-- Odometer -->
+                                            <Label Text="Odometer:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="0" Grid.Column="0"/>
+                                            <Label Text="{Binding Ododmeter, Converter={StaticResource OdometerDisplayConverter}}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="0" Grid.Column="1"/>
+
+                                            <!-- Refuel Value -->
+                                            <Label Text="Amount:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="0" Grid.Column="2"/>
+                                            <Label Text="{Binding RefuleValue, Converter={StaticResource CurrencyDisplayConverter}}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="0" Grid.Column="3"/>
+
+                                            <!-- Date -->
+                                            <Label Text="Date:" 
+                                                   Style="{StaticResource ItemHeader}"
+                                                   Grid.Row="1" Grid.Column="0"/>
+                                            <Label Text="{Binding RefuleDate, Converter={StaticResource DateDisplayConverter}}"
+                                                   Style="{StaticResource ItemLabel}"
+                                                   Grid.Row="1" Grid.Column="1"/>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

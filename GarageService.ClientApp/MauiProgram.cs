@@ -37,6 +37,7 @@ public static class MauiProgram
         builder.Services.AddTransient<VehiclesServiceTypeViewModel>();
         builder.Services.AddTransient<ServiceTypeViewModel>();
         builder.Services.AddTransient<VehiclesRefuelViewModel>();
+        builder.Services.AddTransient<VehicleHistoryViewModel>();
 
 
         // Register Pages
@@ -51,6 +52,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PremuimPage>();
         builder.Services.AddTransient<AddServiceTypePage>();
         builder.Services.AddTransient<VehiclesRefuelPage>();
+        builder.Services.AddTransient<VehicleHistoryPage>();
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();
