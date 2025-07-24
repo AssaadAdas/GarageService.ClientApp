@@ -7,7 +7,7 @@ namespace GarageService.ClientApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("Login", typeof(LoginPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute("Main", typeof(MainPage));
             Routing.RegisterRoute(nameof(ClientRegistrationPage), typeof(ClientRegistrationPage));
             Routing.RegisterRoute(nameof(ClientDashboardPage), typeof(ClientDashboardPage));
@@ -23,7 +23,7 @@ namespace GarageService.ClientApp
 
 
             // Set initial route
-            //CurrentItem = Items[0];
+            CurrentItem = Items[0];
 
         }
        
