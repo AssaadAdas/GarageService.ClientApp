@@ -1,4 +1,5 @@
 ﻿
+using GarageService.ClientApp.Views;
 using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
@@ -41,13 +42,18 @@ namespace GarageService.ClientApp.ViewModels
             }
         }
         public ICommand LoadCommand { get; }
+        public ICommand BackCommand { get; }
         public ReadNotificationViewModel(ApiService apiService)
         {
             _ApiService = apiService;
             LoadCommand = new Command(async () => await LoadNotification());
+            BackCommand = new Command(async () => await GoBack());
             //LoadCommand.Execute(null);
         }
-
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
+        }
         private async Task LoadNotification()
         {
             var response = await _ApiService.GetClientNotification(_Id);
