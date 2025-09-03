@@ -9,9 +9,10 @@
                          SaveCommand="{Binding SaveCommand}"
                          BackCommand="{Binding GoBack}"
                          Grid.Row="0"/>
+        
         <VerticalStackLayout Grid.Row="1">
 
-            <Entry Placeholder="Notes" 
+            <Label 
               Text="{Binding ClientNotification.Notes}"
               Style="{StaticResource FormEntry}"/>
         </VerticalStackLayout>
