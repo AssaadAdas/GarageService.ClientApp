@@ -1,4 +1,5 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
@@ -65,12 +66,19 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _ServiceHistory, value);
         }
         public ICommand LoadHistoryCommand { get; }
+        public ICommand BackCommand { get; }
+        public ICommand SaveCommand { get; }
         private readonly ApiService _apiService;
         public VehicleHistoryViewModel(ApiService apiService)
         {
             _apiService = apiService;
             LoadHistoryCommand = new Command(async () => await LoadHistory());
-            
+            SaveCommand = new Command(async () => await GoBack());
+            BackCommand = new Command(async () => await GoBack());
+        }
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
         }
         private async Task LoadHistory()
         {
