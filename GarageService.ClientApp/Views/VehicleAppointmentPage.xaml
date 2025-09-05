@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GarageService.ClientApp.Views.VehicleAppointmentPage"
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
+             Title="VehicleAppointmentPage">
+    <Grid RowDefinitions="Auto,*">
+        <views:TitleView Title="Appoitments"
+                         SaveCommand="{Binding SaveCommand}"
+                         BackCommand="{Binding GoBack}"
+                         Grid.Row="0"/>
+        <ScrollView Grid.Row="1">
+            <!-- Garage Picker -->
+            <VerticalStackLayout Spacing="5">
+                <HorizontalStackLayout>
+                    <Label Text="Garage" Style="{StaticResource FormLabel}"/>
+                    <Label Style="{StaticResource RequiredIndicator}"/>
+                </HorizontalStackLayout>
+                <Picker ItemsSource="{Binding Garages}"
+                                ItemDisplayBinding="{Binding GarageName}"
+                                SelectedItem="{Binding SelectedGarage}"
+                                TitleColor="{StaticResource Gray600}"
+                                TextColor="{StaticResource Gray900}"/>
+            </VerticalStackLayout>
+            
+        </ScrollView>
+    </Grid>
+</ContentPage>

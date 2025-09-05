@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:GarageService.ClientApp.Views"
              x:Class="GarageService.ClientApp.Views.VehiclesRefuelPage"
-             Title="VehiclesRefuelPage">
+             >
     <Grid RowDefinitions="Auto,*">
         <!-- TitleView in first row -->
         <views:TitleView Title="Refuel Vehicle"
