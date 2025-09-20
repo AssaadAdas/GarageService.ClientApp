@@ -3,26 +3,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.VehicleAppointmentPage"
              xmlns:views="clr-namespace:GarageService.ClientApp.Views"
-             Title="VehicleAppointmentPage">
-    <Grid RowDefinitions="Auto,*">
-        <views:TitleView Title="Appoitments"
+             Title="Schedule Appointment"
+             BackgroundColor="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+        <!-- Header -->
+        <views:TitleView Title="Appointments"
                          SaveCommand="{Binding SaveCommand}"
                          BackCommand="{Binding GoBack}"
                          Grid.Row="0"/>
-        <ScrollView Grid.Row="1">
-            <!-- Garage Picker -->
-            <VerticalStackLayout Spacing="5">
-                <HorizontalStackLayout>
-                    <Label Text="Garage" Style="{StaticResource FormLabel}"/>
-                    <Label Style="{StaticResource RequiredIndicator}"/>
-                </HorizontalStackLayout>
-                <Picker ItemsSource="{Binding Garages}"
+
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1" Padding="20,10">
+            <VerticalStackLayout Spacing="25">
+
+                <!-- Garage Selection -->
+                <VerticalStackLayout Spacing="8">
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="Garage" 
+                               Style="{StaticResource FormLabel}"/>
+                        <Label Style="{StaticResource RequiredIndicator}"/>
+                    </HorizontalStackLayout>
+                    <Border Stroke="{StaticResource Gray300}"
+                            StrokeShape="RoundRectangle 10"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray800}}"
+                            HeightRequest="50">
+                        <Picker ItemsSource="{Binding Garages}"
                                 ItemDisplayBinding="{Binding GarageName}"
                                 SelectedItem="{Binding SelectedGarage}"
-                                TitleColor="{StaticResource Gray600}"
-                                TextColor="{StaticResource Gray900}"/>
+                                TitleColor="{StaticResource Gray500}"
+                                TextColor="{StaticResource Gray900}"
+                                FontSize="16"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="Center"/>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Appointment Date -->
+                <VerticalStackLayout Spacing="8">
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="Appointment Date" 
+                               Style="{StaticResource FormLabel}"/>
+                        <Label Style="{StaticResource RequiredIndicator}"/>
+                    </HorizontalStackLayout>
+                    <Border Stroke="{StaticResource Gray300}"
+                            StrokeShape="RoundRectangle 10"
+                            BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray800}}"
+                            HeightRequest="50">
+                        <DatePicker Date="{Binding AppointmentDate}"
+                                    MinimumDate="{Binding MinimumAppointmentDate}"
+                                    MaximumDate="{Binding MaximumAppointmentDate}"
+                                    Format="dddd, MMMM dd, yyyy"
+                                    TextColor="{StaticResource Gray900}"
+                                    FontSize="16"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="Center"/>
+                    </Border>
+                </VerticalStackLayout>
+
+
+
+                <!-- Notes Section -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Additional Notes" 
+                           Style="{StaticResource FormLabel}"/>
+                    <Frame Padding="15"
+                           BorderColor="{StaticResource Gray300}"
+                           CornerRadius="10"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray800}}">
+                        <Editor Text="{Binding Note}" 
+                                HeightRequest="120"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Gray900}"
+                                AutoSize="TextChanges"
+                                Placeholder="Enter any special requests or details about your vehicle..."
+                                PlaceholderColor="{StaticResource Gray500}"
+                                FontSize="16"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+               
+
             </VerticalStackLayout>
-            
         </ScrollView>
     </Grid>
 </ContentPage>

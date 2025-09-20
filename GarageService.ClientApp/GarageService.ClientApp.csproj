@@ -118,6 +118,9 @@
 	  <MauiXaml Update="Views\ServicePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ServicesTypeSetUpPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\TitleView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

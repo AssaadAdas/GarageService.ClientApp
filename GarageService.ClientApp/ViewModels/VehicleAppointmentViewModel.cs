@@ -35,6 +35,24 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand LoadGarageCommand { get; }
         public ICommand BackCommand { get; }
         public ICommand SaveCommand { get; }
+        
+        public DateTime AppointmentDate { get; set; }
+        public string Note { get; set; }
+
+        public DateTime MinimumAppointmentDate
+        {
+            get
+            {
+                return DateTime.Now; // Minimum date is tomorrow
+            }
+        }
+        public DateTime MaximumAppointmentDate
+        {
+            get
+            {
+                return DateTime.Now.AddYears(10); // Minimum date is tomorrow
+            }
+        }
         private int _vehicleId;
         public int VehicleId
         {
@@ -95,7 +113,41 @@ namespace GarageService.ClientApp.ViewModels
             await Shell.Current.GoToAsync($"{nameof(ClientDashboardPage)}");
         }
         public async Task SaveVehileAppointment()
-        { 
+        {
+            if (GarageId==0)
+            {
+                await Shell.Current.DisplayAlert("Error", "Please select Garage", "OK");
+                return;
+            }
+            if (AppointmentDate == null || AppointmentDate < DateTime.Now)
+            {
+                await Shell.Current.DisplayAlert("Error", "Please select valid Appointment Date", "OK");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Note))
+            {
+                await Shell.Current.DisplayAlert("Error", "Please enter Note", "OK");
+                return;
+            }
+            var Appointment = new VehicleAppointment
+            {
+                Vehicleid = VehicleId,
+                AppointmentDate = AppointmentDate,
+                Note = Note,
+                Garageid = GarageId
+            };
+            var response = await _apiService.AddVehicleAppointmentAsync(Appointment);
+            if (response.IsSuccess)
+            {
+                // Handle success, e.g., show a message or navigate back
+                await Shell.Current.DisplayAlert("Success", "Data saved successfully", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            else
+            {
+                // Handle error, e.g., show an error message
+                await Shell.Current.DisplayAlert("Error", "Failed to save Data", "OK");
+            }
         }
         private async Task LoadGarages()
         {
