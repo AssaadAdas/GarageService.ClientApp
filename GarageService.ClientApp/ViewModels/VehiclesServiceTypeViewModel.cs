@@ -26,7 +26,7 @@ namespace GarageService.ClientApp.ViewModels
             get => _availableServiceTypes;
             set => SetProperty(ref _availableServiceTypes, value);
         }
-        public ICommand DoneCommand { get; }
+        public ICommand SaveCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand BackCommand { get; }
         private readonly ApiService _apiService;
@@ -34,7 +34,7 @@ namespace GarageService.ClientApp.ViewModels
         public VehiclesServiceTypeViewModel(ApiService apiService)
         {
             _apiService = apiService;
-            DoneCommand = new Command(async () => await OnDone());
+            SaveCommand = new Command(async () => await OnDone());
             LoadCommand = new Command(async () => await LoadServiceTypesAsync());
             BackCommand = new Command(async () => await GoBack());
             LoadCommand.Execute(null);

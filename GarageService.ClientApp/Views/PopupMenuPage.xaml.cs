@@ -40,7 +40,7 @@ public partial class PopupMenuPage : Popup
     }
     private void SetUpServiceTypesClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync($"{nameof(ServicesTypeSetUpPage)}");
+        Shell.Current.GoToAsync($"{nameof(ServicesTypeSetUpPage)}?vehileid={_vehicleid}");
         this.CloseAsync();
     }
 

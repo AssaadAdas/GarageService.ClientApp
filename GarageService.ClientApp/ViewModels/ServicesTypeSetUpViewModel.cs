@@ -1,22 +1,21 @@
-﻿using GarageService.ClientLib.Models;
+﻿using GarageService.ClientApp.Views;
+using GarageService.ClientLib.Models;
 using GarageService.ClientLib.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.Services.Maps;
 
 namespace GarageService.ClientApp.ViewModels
 {
     [QueryProperty(nameof(VehicleId), "vehileid")]
     public  class ServicesTypeSetUpViewModel : BaseViewModel
     {
-        public ServiceType ServiceType { get; }
-        public int Id => ServiceType.Id;
-        public string Description => ServiceType.Description; // or whatever property you use for display
-
+        public List<ServicesTypeSetUp> seviviceTypesetup { get; set; }
         private int _vehileid;
         public int VehicleId
         {
@@ -24,72 +23,165 @@ namespace GarageService.ClientApp.ViewModels
             set
             {
                 _vehileid = value;
+                LoadServiceTypesVehicleAsync();
             }
         }
-
-        private decimal _ServiceTypesValue;
-        public decimal ServiceTypesValue
+        private ObservableCollection<SelectableServiceTypeSetUpViewModel> _availableServiceTypes;
+        public ObservableCollection<SelectableServiceTypeSetUpViewModel> AvailableServiceTypes
         {
-            get => _ServiceTypesValue;
-            set => SetProperty(ref _ServiceTypesValue, value);
+            get => _availableServiceTypes;
+            set => SetProperty(ref _availableServiceTypes, value);
         }
-        //MeassureUnitid
-        private MeassureUnit _selectedMeassureUnit;
-        public MeassureUnit SelectedMeassureUnit
-        {
-            get => _selectedMeassureUnit;
-            set
-            {
-                SetProperty(ref _selectedMeassureUnit, value);
-                MeassureUnitid = value?.Id ?? 0;
-                MeassureUnitDesc = value?.MeassureUnitDesc ?? string.Empty;
-            }
-        }
-
-        private int _MeassureUnitid;
-        public int MeassureUnitid
-        {
-            get => _MeassureUnitid;
-            set => SetProperty(ref _MeassureUnitid, value);
-        }
-
-        private string _MeassureUnitDesc;
-        public string MeassureUnitDesc
-        {
-            get => _MeassureUnitDesc;
-            set => SetProperty(ref _MeassureUnitDesc, value);
-        }
-        private Vehicle _vehicle;
-        public Vehicle Vehicle
-        {
-            get => _vehicle;
-            set
-            {
-                if (_vehicle != value)
-                {
-                    _vehicle = value;
-                    OnPropertyChanged(nameof(Vehicle));
-                }
-            }
-        }
-
-        private readonly ApiService _apiService;
-        public ICommand LoadVehileCommand { get; }
-        public ICommand BackCommand { get; }
         public ICommand SaveCommand { get; }
+        public ICommand LoadCommand { get; }
+        public ICommand LoadSTSCommand { get; }
+        public ICommand BackCommand { get; }
+        private readonly ApiService _apiService;
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set => SetProperty(ref _errorMessage, value);
+        }
         public ServicesTypeSetUpViewModel(ApiService apiService)
         {
             _apiService = apiService;
-            LoadVehileCommand = new Command(async () => await LoadVehicle());
+            SaveCommand = new Command(async () => await SaveAsync());
+            LoadCommand = new Command(async () => await LoadServiceTypesAsync());
+            BackCommand = new Command(async () => await GoBack());
+            LoadCommand.Execute(null);
+            _ = LoadMeasureUnitsAsync();
         }
-        private async Task LoadVehicle()
+        private async Task SaveAsync()
         {
-            // Get current user ID from your authentication system
-            var response = await _apiService.GetVehicleByID(VehicleId);
-            if (response.IsSuccess)
+            try
             {
-                Vehicle = response.Data;
+                var selected = AvailableServiceTypes.ToList();
+                if (selected != null)
+                {
+                    foreach (var setup in selected)
+                    {
+                        var existing = seviviceTypesetup.FirstOrDefault(s => s.ServiceTypesid == setup.Id);
+                        var serviceSetUps = new ServicesTypeSetUp
+                        {
+                            Id = existing != null ? existing.Id : 0,
+                            Vehicleid = VehicleId,
+                            ServiceTypesid = setup.Id,
+                            ServiceTypesValue = setup.ServiceTypesValue,
+                            MeassureUnitid = setup.MeassureUnitid
+                        };
+
+                        if (existing != null)
+                        {
+                            // Update existing record
+                            var response = await _apiService.UpdateServicesTypeSetUpAsync(existing.Id, serviceSetUps);
+                            if (!response)
+                            {
+                                await Shell.Current.DisplayAlert("Error", "Failed to update Data", "OK");
+                            }
+                        }
+                        else
+                        {
+                            // Add new record
+                            var response = await _apiService.AddServicesTypeSetUpAsync(serviceSetUps);
+                            if (response.IsSuccess)
+                            {
+                                await Shell.Current.DisplayAlert("Success", "Data saved successfully", "OK");
+                                await Shell.Current.GoToAsync("..");
+                            }
+                            else
+                            {
+                                await Shell.Current.DisplayAlert("Error", "Failed to save Data", "OK");
+                            }
+                        }
+                    }
+                    await Shell.Current.GoToAsync($"..");
+                }
             }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", "Failed to save Data ", "OK");
+            }
+        }
+
+        private ObservableCollection<MeassureUnit> _MeassureUnits;
+        public ObservableCollection<MeassureUnit> MeassureUnits
+        {
+            get => _MeassureUnits;
+            set => SetProperty(ref _MeassureUnits, value);
+        }
+        private async Task LoadMeasureUnitsAsync()
+        {
+            var response = await _apiService.GetMeassureUnitsAsync();
+            if (response.IsSuccess)
+                MeassureUnits = new ObservableCollection<MeassureUnit>(response.Data);
+        }
+        private async Task LoadServiceTypesAsync()
+        {
+            try
+            {
+                ErrorMessage = string.Empty;
+                var apiResponse = await _apiService.GetServiceTypesAsync();
+
+                if (apiResponse.IsSuccess)
+                {
+                    AvailableServiceTypes = new ObservableCollection<SelectableServiceTypeSetUpViewModel>(
+                                     apiResponse.Data.Select(st => new SelectableServiceTypeSetUpViewModel(st)));
+                }
+                else
+                {
+                    ErrorMessage = apiResponse.ErrorMessage;
+                    // Optionally log the error
+                    Debug.WriteLine($"API Error: {apiResponse.ErrorMessage}");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An unexpected error occurred";
+                Debug.WriteLine($"Exception: {ex}");
+            }
+        }
+
+        private async Task LoadServiceTypesVehicleAsync()
+        {
+            try
+            {
+                ErrorMessage = string.Empty;
+                var apiResponse = await _apiService.GetServicesTypeSetUpVehicleAsync(_vehileid);
+                if (apiResponse.IsSuccess)
+                {
+                    seviviceTypesetup = apiResponse.Data;
+                    var existingSetups = apiResponse.Data;
+                    if (AvailableServiceTypes != null)
+                    {
+                        foreach (var setup in existingSetups)
+                        {
+                            var matchingItem = AvailableServiceTypes.FirstOrDefault(st => st.Id == setup.ServiceTypesid);
+                            if (matchingItem != null)
+                            {
+                                matchingItem.ServiceTypesValue = setup.ServiceTypesValue;
+                                matchingItem.MeassureUnitid = setup.MeassureUnitid;
+                                matchingItem.SelectedMeassureUnit = MeassureUnits?.FirstOrDefault(mu => mu.Id == setup.MeassureUnitid);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorMessage = apiResponse.ErrorMessage;
+                    // Optionally log the error
+                    Debug.WriteLine($"API Error: {apiResponse.ErrorMessage}");
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An unexpected error occurred";
+                Debug.WriteLine($"Exception: {ex}");
+            }
+        }
+        private async Task GoBack()
+        {
+            await Shell.Current.GoToAsync($"..");
         }
     }
 }

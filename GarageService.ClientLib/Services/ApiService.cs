@@ -1162,6 +1162,132 @@ namespace GarageService.ClientLib.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// AddServicesTypeSetUpAsync
+        /// </summary>
+        /// <param name="ServicesTypeSetUp"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse<ServicesTypeSetUp>> AddServicesTypeSetUpAsync(ServicesTypeSetUp ServicesTypeSetUp)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(ServicesTypeSetUp);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("ServicesTypeSetUps", content);
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var servicesTypeSetUp = await response.Content.ReadFromJsonAsync<ServicesTypeSetUp>();
+                    return new ApiResponse<ServicesTypeSetUp>
+                    {
+                        IsSuccess = true,
+                        Data = servicesTypeSetUp,
+                    };
+
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new Exception($"Validation error: {errorContent}");
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new Exception($"Conflict: {errorContent}");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode} - {errorContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Console.WriteLine($"Error adding serviceType setup: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateServicesTypeSetUpAsync(int id, ServicesTypeSetUp serviceSetUp)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(serviceSetUp);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"ServicesTypeSetUps/{id}", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return true;
+                }
+
+                // Handle specific status codes if needed
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("ServicesTypeSetUps not found");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    throw new Exception("Invalid request - ID mismatch");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log error or handle it appropriately
+                Console.WriteLine($"Error updating ServicesTypeSetUps: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// GetServicesTypeSetUpVehicleAsync
+        /// </summary>
+        /// <param name="vehicleId"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<ServicesTypeSetUp>>>  GetServicesTypeSetUpVehicleAsync(int vehicleId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ServicesTypeSetUps/Vehicle/{vehicleId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var serviceTypes = await response.Content.ReadFromJsonAsync<List<ServicesTypeSetUp>>();
+                    return new ApiResponse<List<ServicesTypeSetUp>>
+                    {
+                        IsSuccess = true,
+                        Data = serviceTypes
+
+                    };
+                }
+                else
+                {
+                    return new ApiResponse<List<ServicesTypeSetUp>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode} ",
+                    };
+                }
+
+                // Handle non-success status codes
+                throw new HttpRequestException($"Request failed with status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (network issues, etc.)
+                Console.WriteLine($"Error fetching vehicle history: {ex.Message}");
+                throw;
+            }
+        }
     }
 
     public class ApiResponse<T>

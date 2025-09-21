@@ -35,23 +35,24 @@ namespace GarageService.ClientLib.Models
 
         public int Odometer { get; set; }
 
-        public virtual ClientProfile Client { get; set; } = null!;
+        public virtual ClientProfile? Client { get; set; } = null!;
 
-        public virtual FuelType FuelType { get; set; } = null!;
+        public virtual FuelType? FuelType { get; set; } = null!;
 
-        public virtual Manufacturer Manufacturer { get; set; } = null!;
+        public virtual Manufacturer? Manufacturer { get; set; } = null!;
 
-        public virtual MeassureUnit MeassureUnit { get; set; } = null!;
+        public virtual MeassureUnit? MeassureUnit { get; set; } = null!;
 
-        public virtual ICollection<VehicleAppointment> VehicleAppointments { get; set; } = new List<VehicleAppointment>();
+        public virtual ICollection<ServicesTypeSetUp>? ServicesTypeSetUps { get; set; } = new List<ServicesTypeSetUp>();
 
-        public virtual ICollection<VehicleCheck> VehicleChecks { get; set; } = new List<VehicleCheck>();
+        public virtual ICollection<VehicleAppointment>? VehicleAppointments { get; set; } = new List<VehicleAppointment>();
 
-        public virtual VehicleType VehicleType { get; set; } = null!;
+        public virtual ICollection<VehicleCheck>? VehicleChecks { get; set; } = new List<VehicleCheck>();
 
-        public virtual ICollection<VehiclesRefuel> VehiclesRefuels { get; set; } = new List<VehiclesRefuel>();
+        public virtual VehicleType?  VehicleType { get; set; } = null!;
 
-        public virtual ICollection<VehiclesService> VehiclesServices { get; set; } = new List<VehiclesService>();
+        public virtual ICollection<VehiclesRefuel>? VehiclesRefuels { get; set; } = new List<VehiclesRefuel>();
+
+        public virtual ICollection<VehiclesService>? VehiclesServices { get; set; } = new List<VehiclesService>();
     }
-
 }
