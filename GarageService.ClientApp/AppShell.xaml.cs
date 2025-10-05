@@ -22,6 +22,7 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute(nameof(VehicleHistoryPage), typeof(VehicleHistoryPage));
             Routing.RegisterRoute(nameof(VehicleAppointmentPage), typeof(VehicleAppointmentPage));
             Routing.RegisterRoute(nameof(ServicesTypeSetUpPage), typeof(ServicesTypeSetUpPage));
+            Routing.RegisterRoute(nameof(EditVehicleOdometerPage), typeof(EditVehicleOdometerPage));
 
 
             // Set initial route

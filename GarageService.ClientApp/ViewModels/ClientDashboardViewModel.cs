@@ -20,7 +20,7 @@ namespace GarageService.ClientApp.ViewModels
         private readonly ISessionService _sessionService;
         private ClientProfile _clientProfile;
         private ObservableCollection<Vehicle> _Vehicles;
-        private ObservableCollection<ClientNotification> _ClientNotifications;
+        
         public ClientProfile ClientProfile
         {
             get => _clientProfile;
@@ -33,6 +33,7 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
+       
 
         public ObservableCollection<Vehicle> Vehicles
         {
@@ -40,11 +41,20 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _Vehicles, value);
         }
 
+        private ObservableCollection<ClientNotification> _ClientNotifications;
         public ObservableCollection<ClientNotification> ClientNotifications
         {
             get => _ClientNotifications;
             set => SetProperty(ref _ClientNotifications, value);
         }
+
+        private ObservableCollection<ClientNotification> _UnreadClientNotifications;
+        public ObservableCollection<ClientNotification> UnreadClientNotifications
+        {
+            get => _UnreadClientNotifications;
+            set => SetProperty(ref _UnreadClientNotifications, value);
+        }
+
         public ICommand OpenHistoryCommand { get; }
         public ICommand PremuimCommand { get; }
         public ICommand AddVehicleCommand { get; }
@@ -57,6 +67,47 @@ namespace GarageService.ClientApp.ViewModels
 
         public ICommand ReadNoteCommand { get; }
         private readonly INavigationService _navigationService;
+        private void StartBackgroundWorker()
+        {
+            // Run every 5 minutes (300 seconds)
+            Device.StartTimer(TimeSpan.FromSeconds(20), () =>
+            {
+                // This method will be called every 5 minutes
+                CheckForUnreadNotifications();
+                return true; // return true to keep the timer running
+            });
+        }
+        private async void CheckForUnreadNotifications()
+        {
+            // Assuming you have a service to get unread notifications
+            var unreadNotifications = await GetUnreadNotificationsAsync();
+
+            foreach (var notification in unreadNotifications)
+            {
+                // Show a toast for each unread notification
+                await ShowReminder(notification);
+            }
+        }
+
+        private async Task<IEnumerable<ClientNotification>> GetUnreadNotificationsAsync()
+        {
+            int ClientId = GetCurrentUserId();
+            var response = await _ApiService.GetClientUnReadNotification(ClientId);
+            if (response.IsSuccess && response.Data != null)
+            {
+                UnreadClientNotifications = new ObservableCollection<ClientNotification>(response.Data);
+            }
+
+            return UnreadClientNotifications;
+        }
+
+        private async Task ShowReminder(ClientNotification notification)
+        {
+            // Use CommunityToolkit.Maui.Alerts to show a toast
+            var toast = CommunityToolkit.Maui.Alerts.Toast.Make(notification.Notes,
+                CommunityToolkit.Maui.Core.ToastDuration.Long);
+            await toast.Show();
+        }
         public ClientDashboardViewModel(ApiService apiservice, ISessionService sessionService, INavigationService navigationService)
         {
             // Initialize properties and commands
@@ -75,6 +126,7 @@ namespace GarageService.ClientApp.ViewModels
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
             // Load data here
             LoadClientProfile();
+            //StartBackgroundWorker();
         }
 
 

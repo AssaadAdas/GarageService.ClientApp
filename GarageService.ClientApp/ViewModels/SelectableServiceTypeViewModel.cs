@@ -20,7 +20,14 @@ namespace GarageService.ClientApp.ViewModels
         public decimal Cost
         {
             get => _cost;
-            set => SetProperty(ref _cost, value);
+            set
+            {
+                if (_cost != value)
+                {
+                    _cost = value;
+                    OnPropertyChanged(nameof(Cost));
+                }
+            }
         }
 
         private Currency _selectedCurrency;
@@ -55,7 +62,12 @@ namespace GarageService.ClientApp.ViewModels
             set => SetProperty(ref _notes, value);
         }
 
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
         public SelectableServiceTypeViewModel(ServiceType serviceType)
         {
             ServiceType = serviceType;

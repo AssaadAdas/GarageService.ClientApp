@@ -73,6 +73,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\EditVehicleOdometerPage.xaml.cs">
+	    <DependentUpon>EditVehicleOdometerPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\EditVehiclePage.xaml.cs">
 	    <DependentUpon>EditVehiclePage.xaml</DependentUpon>
 	  </Compile>
@@ -98,6 +101,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\EditClientProfilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\EditVehicleOdometerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\EditVehiclePage.xaml">

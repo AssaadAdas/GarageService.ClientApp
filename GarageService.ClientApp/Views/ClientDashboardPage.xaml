@@ -96,7 +96,8 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                            </Grid>
+
+                                </Grid>
                         </VerticalStackLayout>
                     </Border>
 

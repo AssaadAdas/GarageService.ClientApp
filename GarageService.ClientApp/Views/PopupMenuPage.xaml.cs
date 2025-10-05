@@ -20,7 +20,11 @@ public partial class PopupMenuPage : Popup
         Shell.Current.GoToAsync($"{nameof(EditVehiclePage)}?vehileid={_vehicleid}");
         this.CloseAsync();
     }
-
+    private void EditVehicleOdoClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync($"{nameof(EditVehicleOdometerPage)}?vehileid={_vehicleid}");
+        this.CloseAsync();
+    }
     private void AddServicesClicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehileid={_vehicleid}");

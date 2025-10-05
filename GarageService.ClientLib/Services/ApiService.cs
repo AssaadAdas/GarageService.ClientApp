@@ -736,6 +736,47 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        public async Task<ApiResponse<List<ClientNotification>>> GetClientUnReadNotification(int ClientId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientNotifications/UnReadByClient/{ClientId}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var clientnotification = await response.Content.ReadFromJsonAsync<List<ClientNotification>>();
+
+                    if (clientnotification == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<List<ClientNotification>>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "ClientNotification not found"
+                        };
+                    }
+
+                    return new ApiResponse<List<ClientNotification>> { Data = clientnotification, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<List<ClientNotification>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<ClientNotification>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
         /// <summary>
         /// UpdateClientNotificationAsync
         /// </summary>
@@ -1286,6 +1327,36 @@ namespace GarageService.ClientLib.Services
                 // Handle exceptions (network issues, etc.)
                 Console.WriteLine($"Error fetching vehicle history: {ex.Message}");
                 throw;
+            }
+        }
+
+        public async Task<bool> GetVehicleServicesHistory(int vehicleId, int currentOdometer)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"Vehicles/GetVehicleServicesHistory/{vehicleId}?CurrentOdometer={currentOdometer}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    return bool.Parse(result);
+                }
+                else
+                {
+                    // Handle different status codes
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new Exception("Vehicle not found");
+                    }
+                    else
+                    {
+                        throw new Exception($"API call failed with status code: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (network issues, etc.)
+                throw new Exception($"Error calling API: {ex.Message}");
             }
         }
     }

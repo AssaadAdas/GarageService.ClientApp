@@ -5,7 +5,7 @@
              x:Class="GarageService.ClientApp.Views.EditVehiclePage"
              >
     <Grid RowDefinitions="Auto,*">
-        <views:TitleView Title="Refuel Vehicle"
+        <views:TitleView Title="Edit Vehicle"
                  SaveCommand="{Binding SaveCommand}"
                  BackCommand="{Binding GoBack}"
                  Grid.Row="0"/>
@@ -76,6 +76,7 @@
             <Entry Text="{Binding Odometer}"
                Placeholder="Mileage"
                Keyboard="Numeric"
+               IsEnabled="False"
                Style="{StaticResource PrimaryEntry}"/>
             <!-- Remember Me & Forgot Password -->
             <Grid ColumnDefinitions="*,*" RowDefinitions="auto">

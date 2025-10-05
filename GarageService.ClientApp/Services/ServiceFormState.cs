@@ -17,6 +17,7 @@ namespace GarageService.ClientApp.Services
         public string Notes { get; set; }
         public DateTime ServiceDate { get; set; }
         public ObservableCollection<SelectableServiceTypeViewModel> ServiceTypes { get; set; }
+        public ObservableCollection<SelectableServiceTypeViewModel> SelectedServiceTypes { get; set; }
 
         public GarageProfile selectedGarage { get; set; } =  null!;
     }
