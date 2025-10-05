@@ -242,22 +242,8 @@ namespace GarageService.ClientApp.ViewModels
             _formState.ServiceTypes = ServiceTypess;
             _formState.selectedGarage = SelectedGarage;
 
-            // Pass the selected service types (with IsSelected and Cost) to the next page
-            //var selectedServiceTypes = ServiceTypess
-            //    .Where(st => st.IsSelected)
-            //    .Select(st => new
-            //    {
-            //        st.Id,
-            //        st.Cost,
-            //        st.Notes,
-            //        st.CurrId,
-            //        st.CurrDesc
-            //    })
-            //    .ToList();
-            //_formState.SelectedServiceTypes = selectedServiceTypes;
-
             _formState.SelectedServiceTypes = new ObservableCollection<SelectableServiceTypeViewModel>(
-    ServiceTypess.Where(st => st.IsSelected));
+               ServiceTypess.Where(st => st.IsSelected));
 
 
             await Shell.Current.GoToAsync($"{nameof(AddServiceTypePage)}");

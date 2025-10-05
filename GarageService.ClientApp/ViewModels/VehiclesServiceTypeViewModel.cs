@@ -34,7 +34,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand LoadCommand { get; }
         public ICommand BackCommand { get; }
         private readonly ApiService _apiService;
-        ServiceFormState _formState;
+        private ServiceFormState _formState;
         public List<SelectableServiceTypeViewModel> SelectedServiceTypes { get; set; } = new();
 
         public VehiclesServiceTypeViewModel(ApiService apiService, ServiceFormState formState)
