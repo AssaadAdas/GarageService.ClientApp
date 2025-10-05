@@ -90,6 +90,7 @@ namespace GarageService.ClientApp.ViewModels
                             existing.Cost = item.Cost;
                             existing.Notes = item.Notes;
                             existing.CurrId = item.CurrId;
+                            existing.CurrDesc = item.CurrDesc;
                             TotalServiceAmounts += item.Cost;
                         }
                     }
