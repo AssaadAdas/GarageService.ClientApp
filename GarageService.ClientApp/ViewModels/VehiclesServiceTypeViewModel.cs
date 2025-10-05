@@ -103,7 +103,6 @@ namespace GarageService.ClientApp.ViewModels
                             
                             vm.CurrDesc = prev.CurrDesc;
 
-                            vm.CurrId = prev.CurrId;
                             // Set SelectedCurrency if Currencies are loaded
                             if (Currencies != null)
                                 vm.SelectedCurrency = Currencies.FirstOrDefault(c => c.Id == prev.CurrId);
