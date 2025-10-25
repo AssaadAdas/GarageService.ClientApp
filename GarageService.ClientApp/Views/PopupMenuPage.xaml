@@ -315,6 +315,47 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
             </Border>
+
+            <!-- Last Service label -->
+            <Border BackgroundColor="Transparent"
+                     Padding="16,14"
+                     StrokeShape="RoundRectangle 8,8,0,0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="LastServiceClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <!-- Icon with slightly larger size -->
+                    <Label Text="🔧"
+                           TextColor="{AppThemeBinding Light=#6200EE, Dark=#BB86FC}"
+                           FontSize="18"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansRegular"/>
+
+                    <!-- Text label with semi-bold font -->
+                    <Label Text="Last Service"
+                           TextColor="{AppThemeBinding Light=#1A1A1A, Dark=White}"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           VerticalTextAlignment="Center"
+                           FontFamily="OpenSansSemiBold"/>
+                </HorizontalStackLayout>
+
+                <!-- Press effect with smooth animation -->
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                        Value="{AppThemeBinding 
+                                        Light=#F3E5F5, 
+                                        Dark=#3700B3}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
         </VerticalStackLayout>
     </Border>
 </toolkit:Popup>

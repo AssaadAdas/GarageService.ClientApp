@@ -96,7 +96,7 @@ namespace GarageService.ClientApp.ViewModels
             }
 
             // Navigate to the order page, passing the selected offer's ID
-            await Shell.Current.GoToAsync($"{nameof(ClientPaymentOrderPage)}?paymentOrderid={SelectedPremiumOffer.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ClientPaymentOrderPage)}?PremiumOfferId={SelectedPremiumOffer.Id}");
         }
 
         public async Task LoadClientProfile()

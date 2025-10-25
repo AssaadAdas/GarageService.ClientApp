@@ -29,11 +29,11 @@ namespace GarageService.ClientLib.Models
 
         public int PremiumOfferid { get; set; }
 
-        public virtual ClientPaymentMethod Client { get; set; } = null!;
+        public virtual ClientPaymentMethod? Client { get; set; } = null!;
 
-        public virtual Currency Curr { get; set; } = null!;
+        public virtual Currency? Curr { get; set; } = null!;
 
-        public virtual PremiumOffer PremiumOffer { get; set; } = null!;
+        public virtual PremiumOffer? PremiumOffer { get; set; } = null!;
     }
 
 }
