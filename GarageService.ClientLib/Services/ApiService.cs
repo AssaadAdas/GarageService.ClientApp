@@ -125,6 +125,55 @@ namespace GarageService.ClientLib.Services
         }
 
         /// <summary>
+        /// Get Offers By User Type
+        /// </summary>
+        /// <param name="userTypeId"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse<List<PremiumOffer>>> GetOffersByUserType(int userTypeId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"PremiumOffers/type/{userTypeId}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response content as clientprofile
+                    var premiumoffer = await response.Content.ReadFromJsonAsync<List<PremiumOffer>>();
+
+                    if (premiumoffer == null) // Handle potential null reference
+                    {
+                        return new ApiResponse<List<PremiumOffer>>
+                        {
+                            IsSuccess = false,
+                            ErrorMessage = "premiumoffer not found"
+                        };
+                    }
+
+                    //return new ApiResponse<PremiumOffer> { Data = premiumoffer, IsSuccess = true };
+                    return new ApiResponse<List<PremiumOffer>> { Data = premiumoffer, IsSuccess = true };
+                }
+                else
+                {
+                    return new ApiResponse<List<PremiumOffer>>
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = $"Error: {response.StatusCode}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<PremiumOffer>>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
+
+        /// <summary>
         /// Adds a new vehicle asynchronously.
         /// </summary>
         /// <param name="vehicle"></param>

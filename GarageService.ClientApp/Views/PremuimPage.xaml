@@ -2,11 +2,65 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.PremuimPage"
-             Title="PremuimPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
+             >
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0">
+        <!-- Title/Header -->
+        <views:TitleView Title="Premium Offers"
+                        SaveCommand="{Binding SubscribeCommand}"
+                        BackCommand="{Binding GoBack}"
+                        Grid.Row="0"/>
+
+        <!-- Offers List -->
+        <ScrollView Grid.Row="1">
+            <CollectionView ItemsSource="{Binding PremiumOffers}"
+                           EmptyView="No premium offers registered"
+                           Margin="0,16,0,16">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="18"
+                              Padding="20"
+                              Margin="16,8"
+                              BackgroundColor="{AppThemeBinding Light=White, Dark=#23272F}"
+                              BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#404040}"
+                              HasShadow="True">
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="8">
+                                <!-- Offer Description -->
+                                <Label Grid.Row="0" Grid.Column="0"
+                                      Text="{Binding PremiumDesc}"
+                                      FontSize="18"
+                                      FontAttributes="Bold"
+                                      TextColor="{AppThemeBinding Light=#2C3E50, Dark=White}"/>
+                                <!-- Price and Currency -->
+                                <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="6">
+                                    <Label Text="{Binding PremiumCost}"
+                                          FontSize="22"
+                                          FontAttributes="Bold"
+                                          TextColor="{AppThemeBinding Light=#27AE60, Dark=#2ECC71}"/>
+                                    <Label Text="{Binding Curr.CurrDesc}"
+                                          FontSize="16"
+                                          TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#BDC3C7}"/>
+                                </HorizontalStackLayout>
+                                <!-- Feature/Highlight -->
+                                <Label Grid.Row="2" Grid.Column="0"
+                                      Text="Best value for your business"
+                                      FontSize="13"
+                                      TextColor="{AppThemeBinding Light=#2980B9, Dark=#6DD5FA}"
+                                      FontAttributes="Italic"/>
+                                <!-- Radio Button for selection -->
+                                <RadioButton
+                                Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                GroupName="PremiumOffersGroup"
+                                IsChecked="{Binding Source={x:Reference PageRoot}, Path=BindingContext.SelectedPremiumOffer, Mode=TwoWay, Converter={StaticResource ReferenceEqualsConverter}, ConverterParameter={Binding .}}"
+                                CheckedChanged="OnOfferCheckedChanged"
+                                VerticalOptions="Center"
+                                HeightRequest="32"
+                                WidthRequest="32"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

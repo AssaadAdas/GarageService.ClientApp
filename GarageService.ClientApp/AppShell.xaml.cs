@@ -23,7 +23,7 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute(nameof(VehicleAppointmentPage), typeof(VehicleAppointmentPage));
             Routing.RegisterRoute(nameof(ServicesTypeSetUpPage), typeof(ServicesTypeSetUpPage));
             Routing.RegisterRoute(nameof(EditVehicleOdometerPage), typeof(EditVehicleOdometerPage));
-
+            Routing.RegisterRoute(nameof(ClientPaymentOrderPage), typeof(ClientPaymentOrderPage));
 
             // Set initial route
             CurrentItem = Items[0];

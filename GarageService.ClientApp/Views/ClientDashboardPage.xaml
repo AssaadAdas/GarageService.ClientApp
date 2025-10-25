@@ -8,9 +8,14 @@
              xmlns:views="clr-namespace:GarageService.ClientApp.Views"
              BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#121212}">
     <Grid RowDefinitions="Auto,*">
-        <views:DashBoardTitle Title="Client DashBoard"
-                         SaveCommand="{Binding LogOutCommand}"
-                         Grid.Row="0"/>
+        <views:DashBoardTitle 
+            Title="Client DashBoard"
+            SaveCommand="{Binding LogOutCommand}"
+            PremuimCommand="{Binding PremuimCommand}"
+            ClientPremiumRegistration="{Binding ClientPremiumRegistration}"
+            ClientProfile="{Binding ClientProfile}"
+            IsPremium="{Binding ClientProfile.IsPremium}"
+            Grid.Row="0"/>
         <Grid Grid.Row="1" RowDefinitions="Auto,*,Auto" RowSpacing="0">
           <!-- Main Content -->
           <ScrollView Grid.Row="1" Padding="0">
@@ -114,7 +119,7 @@
                              Shadow="{StaticResource ShadowMedium}">
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding PremiumCommand}"/>
+                                <TapGestureRecognizer Command="{Binding PremuimCommand}"/>
                         </Border.GestureRecognizers>
 
                         <Border.Triggers>

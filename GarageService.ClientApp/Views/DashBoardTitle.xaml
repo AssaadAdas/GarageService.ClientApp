@@ -2,26 +2,172 @@
 <FlexLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.DashBoardTitle"
-             BackgroundColor="{AppThemeBinding Light=#EFF6FF, Dark=#1E3A8A}"
-             JustifyContent="SpaceBetween"
-             AlignItems="Center"
-             Padding="20,0"
-             HeightRequest="60">
-    
-    <Label x:Name="TitleLabel"
-       Text="{Binding Title}"
-       FontSize="24"
-       FontAttributes="Bold"
-       TextColor="Black"
-       HorizontalOptions="Center"
-       VerticalOptions="Center"/>
+            x:Name="Root"
+            BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#0F172A}"
+            JustifyContent="SpaceBetween"
+            AlignItems="Center"
+            Padding="20,12"
+            HeightRequest="135">
+    <!-- Left: Back Button with modern icon -->
+    <Border x:Name="ProfileBorder"
+         Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#2D2D2D}"
+         StrokeThickness="1"
+         StrokeShape="RoundRectangle 12"
+         BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}"
+         Padding="0"
+         HeightRequest="100"
+         WidthRequest="150"
+         >
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding EditProfileCommand}"/>
+        </Border.GestureRecognizers>
+        <VerticalStackLayout Spacing="16">
+            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                <Image Source="profile_icon.png"
+              WidthRequest="24"
+              HeightRequest="24"
+              Aspect="AspectFit"/>
+                <Label Text="Welcome" 
+                   FontAttributes="Bold" 
+                   FontSize="12"
+                   FontFamily="Medium"
+                   TextColor="{AppThemeBinding Light=#1E293B, Dark=White}"/>
+            </HorizontalStackLayout>
 
-    <Button x:Name="SaveButton"
-        Text="🚪"
-        Command="{Binding SaveCommand}"
-        BackgroundColor="Transparent"
-        TextColor="Black"
-        FontSize="24"
-        HorizontalOptions="Center"
-        VerticalOptions="Center"/>
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="6">
+                <!-- Name -->
+                <Label Grid.Row="0" Grid.Column="0"
+                    Text="👤"
+                    FontSize="10"
+                    VerticalOptions="Center"/>
+                <Label Grid.Row="0" Grid.Column="1"
+                     FontSize="10"
+                     FontFamily="Regular"
+                     TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding ClientProfile.FirstName}" FontAttributes="Bold"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding ClientProfile.LastName}" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <!-- Email -->
+                <Label Grid.Row="1" Grid.Column="0"
+                   Text="✉️"
+                   FontSize="10"
+                    VerticalOptions="Center"/>
+                <Label Grid.Row="1" Grid.Column="1"
+                    Text="{Binding ClientProfile.Email}"
+                    FontSize="10"
+                    FontFamily="Regular"
+                    TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"/>
+
+                <!-- Phone -->
+                <Label Grid.Row="2" Grid.Column="0"
+                   Text="📞"
+                   FontSize="10"
+                   VerticalOptions="Center"/>
+                <Label Grid.Row="2" Grid.Column="1"
+                    FontSize="10"
+                    FontFamily="Regular"
+                    TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding ClientProfile.PhoneExt}" FontAttributes="Bold"/>
+                            <Span Text=" "/>
+                            <Span Text="{Binding ClientProfile.PhoneNumber}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+        </VerticalStackLayout>
+
+    </Border>
+
+    <!-- Center: Title with subtle accent -->
+    <Border BackgroundColor="Transparent"
+         Padding="16,8"
+         HorizontalOptions="Center"
+         VerticalOptions="Center">
+        <Label x:Name="TitleLabel"
+            Text="{Binding Title, Source={x:Reference Root}}"
+            FontSize="20"
+            FontAttributes="Bold"
+            TextColor="{AppThemeBinding Light=#1E293B, Dark=#F1F5F9}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"/>
+    </Border>
+
+    <!-- Right: Premium info + Save -->
+    <HorizontalStackLayout HorizontalOptions="End" Spacing="16" VerticalOptions="Center">
+
+        <!-- Premium Badge with gradient and shadow -->
+        <Border x:Name="PremiumBorder"
+             Stroke="{AppThemeBinding Light=#F59E0B, Dark=#FCD34D}"
+             StrokeThickness="1.5"
+             BackgroundColor="Transparent"
+             Padding="0"
+             IsVisible="False"
+             HeightRequest="60"
+             WidthRequest="150"
+             StrokeShape="RoundRectangle 16">
+
+            <!-- Gradient Background -->
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{AppThemeBinding Light=#FFFBEB, Dark=#451A03}" Offset="0"/>
+                    <GradientStop Color="{AppThemeBinding Light=#FEF3C7, Dark=#78350F}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding PremuimCommand, Source={x:Reference Root}}"/>
+            </Border.GestureRecognizers>
+
+            <HorizontalStackLayout Spacing="6" 
+                              HorizontalOptions="Center" 
+                              VerticalOptions="Center"
+                              Padding="12,6">
+
+                <!-- Premium Icon -->
+                <Label Text="⭐"
+                    FontSize="10"
+                    VerticalOptions="Center"/>
+
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="PREMIUM" 
+                        FontAttributes="Bold" 
+                        FontSize="12" 
+                        TextColor="#D97706"
+                        HorizontalOptions="Center"/>
+                    <Label Text="{Binding ClientPremiumRegistration.ExpiryDate, Source={x:Reference Root}, StringFormat='{0:MMM dd yyyy}'}"
+                        FontSize="11"
+                        TextColor="#059669"
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <Border.Triggers>
+                <DataTrigger TargetType="Border" Binding="{Binding IsPremium, Source={x:Reference Root}}" Value="True">
+                    <Setter Property="IsVisible" Value="True"/>
+                </DataTrigger>
+            </Border.Triggers>
+        </Border>
+
+        <!-- Save Button with modern power icon -->
+        <Button x:Name="SaveButton"
+             Text="⏻"
+             BackgroundColor="Transparent"
+             TextColor="{AppThemeBinding Light=#059669, Dark=#34D399}"
+             FontSize="16"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+             WidthRequest="50"
+             HeightRequest="50"
+             CornerRadius="22"
+             Command="{Binding SaveCommand, Source={x:Reference Root}}"/>
+        
+    </HorizontalStackLayout>
 </FlexLayout>
