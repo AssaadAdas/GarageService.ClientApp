@@ -36,7 +36,7 @@ public partial class DashBoardTitle : FlexLayout
     typeof(DashBoardTitle));
     //EditProfileCommand
     public static readonly BindableProperty ClientPremiumRegistrationProperty = BindableProperty.Create(
-        nameof(GaragePremiumRegistration),
+        nameof(ClientPremiumRegistration),
         typeof(ClientPremiumRegistration),
         typeof(DashBoardTitle),
         default(ClientPremiumRegistration),
@@ -94,6 +94,8 @@ public partial class DashBoardTitle : FlexLayout
         get => (ClientProfile)GetValue(ClientProfileProperty);
         set => SetValue(ClientProfileProperty, value);
     }
+
+
     private static void OnTitleChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var control = (DashBoardTitle)bindable;

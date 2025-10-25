@@ -7,7 +7,7 @@
             JustifyContent="SpaceBetween"
             AlignItems="Center"
             Padding="20,12"
-            HeightRequest="135">
+            HeightRequest="160">
     <!-- Left: Back Button with modern icon -->
     <Border x:Name="ProfileBorder"
          Stroke="{AppThemeBinding Light=#E0E0E0, Dark=#2D2D2D}"

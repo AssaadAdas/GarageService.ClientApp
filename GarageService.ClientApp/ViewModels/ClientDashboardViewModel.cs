@@ -103,7 +103,15 @@ namespace GarageService.ClientApp.ViewModels
             
         }
 
-
+        public async Task LoadGaragePremuim(int ClientID)
+        {
+            string ErrorMessage = string.Empty;
+            ClientPremiumRegistration = await _ApiService.GetActiveRegistrationByClientId(ClientID);
+            if (ClientPremiumRegistration == null)
+            {
+                ErrorMessage = "No active registration found for this Client.";
+            }
+        }
         private void OpenHistory() { /* Navigate to history page */ }
         private async Task AddVehicle()
         { 
@@ -152,6 +160,7 @@ namespace GarageService.ClientApp.ViewModels
             if (response.IsSuccess)
             {
                 ClientProfile = response.Data;
+                LoadGaragePremuim(ClientProfile.Id);
             }
         }
       

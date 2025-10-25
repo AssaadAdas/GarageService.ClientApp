@@ -216,6 +216,38 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        public async Task<ClientPremiumRegistration> GetActiveRegistrationByClientId(int ClientId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientPremiumRegistrations/activeClient/{ClientId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var activeRegistration = JsonSerializer.Deserialize<ClientPremiumRegistration>(json,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    return activeRegistration;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    // No active registration found
+                    return null;
+                }
+                else
+                {
+                    // Handle other error status codes
+                    throw new HttpRequestException($"API call failed with status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (network errors, etc.)
+                throw new Exception($"Error calling API: {ex.Message}", ex);
+            }
+        }
+
+
         public async Task<ApiResponse<ClientPaymentOrder>> GetClientOrderByID(int OrderID)
         {
             try
