@@ -13,7 +13,7 @@ namespace GarageService.ClientLib.Models
 
         public int Clientid { get; set; }
 
-        public string PaymentType { get; set; } = null!;
+        public int PaymentTypeId { get; set; }
 
         public bool IsPrimary { get; set; }
 
@@ -33,9 +33,10 @@ namespace GarageService.ClientLib.Models
 
         public string Cvv { get; set; } = null!;
 
-        public virtual ClientProfile Client { get; set; } = null!;
+        public virtual ClientProfile? Client { get; set; } = null!;
+        public virtual PaymentType? PaymentType { get; set; } = null!;
 
-        public virtual ICollection<ClientPaymentOrder> ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
+        public virtual ICollection<ClientPaymentOrder>? ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
     }
 
 }

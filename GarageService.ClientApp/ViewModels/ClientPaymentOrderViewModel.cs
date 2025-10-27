@@ -87,7 +87,7 @@ namespace GarageService.ClientApp.ViewModels
         }
         private async Task AddPaymentMethod()
         {
-            //await Shell.Current.GoToAsync(nameof(ClientPaymentMethodPage));
+            await Shell.Current.GoToAsync(nameof(ClientPaymentMethodPage));
         }
         public async Task LoadPaymentMethods()
         {
