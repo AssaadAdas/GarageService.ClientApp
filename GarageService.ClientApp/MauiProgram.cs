@@ -44,7 +44,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PremiumOffersViewModel>();
         builder.Services.AddTransient<ClientPaymentOrderViewModel>();
         builder.Services.AddTransient<PaymentViewModel>();
-
+        builder.Services.AddTransient<LastServiceViewModel>();
 
         // Register Pages
         builder.Services.AddTransient<LoginPage>();
@@ -64,6 +64,7 @@ public static class MauiProgram
         builder.Services.AddTransient<EditVehicleOdometerPage>();
         builder.Services.AddTransient<ClientPaymentOrderPage>();
         builder.Services.AddTransient<PaymentPage>();
+        builder.Services.AddTransient<LastServicePage>();
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();

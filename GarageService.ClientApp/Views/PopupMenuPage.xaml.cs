@@ -56,7 +56,7 @@ public partial class PopupMenuPage : Popup
 
     private void LastServiceClicked(object sender, EventArgs e)
     {
-        //Shell.Current.GoToAsync($"{nameof(VehicleAppointmentPage)}?vehicleid={_vehicleid}");
-        //this.CloseAsync();
+        Shell.Current.GoToAsync($"{nameof(LastServicePage)}?vehicleid={_vehicleid}");
+        this.CloseAsync();
     }
 }

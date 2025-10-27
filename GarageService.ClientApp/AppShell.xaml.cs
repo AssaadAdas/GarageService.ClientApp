@@ -25,7 +25,8 @@ namespace GarageService.ClientApp
             Routing.RegisterRoute(nameof(EditVehicleOdometerPage), typeof(EditVehicleOdometerPage));
             Routing.RegisterRoute(nameof(ClientPaymentOrderPage), typeof(ClientPaymentOrderPage));
             Routing.RegisterRoute(nameof(PaymentPage), typeof(PaymentPage));
-            //builder.Services.AddTransient<PaymentPage>();
+            Routing.RegisterRoute(nameof(LastServicePage), typeof(LastServicePage));
+            
 
             // Set initial route
             CurrentItem = Items[0];
