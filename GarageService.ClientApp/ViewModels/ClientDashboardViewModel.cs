@@ -33,7 +33,19 @@ namespace GarageService.ClientApp.ViewModels
                 }
             }
         }
-       
+        private List<ClientPaymentOrder> _PendingOrders;
+        public List<ClientPaymentOrder> PendingOrders
+        {
+            get => _PendingOrders;
+            set
+            {
+                if (_PendingOrders != value)
+                {
+                    _PendingOrders = value;
+                    OnPropertyChanged(nameof(PendingOrders));
+                }
+            }
+        }
 
         public ObservableCollection<Vehicle> Vehicles
         {
@@ -64,7 +76,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand AddServicesCommand { get; }
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
-        
+        public ICommand GoPendingOrderCommand { get; }
         public ICommand ReadNoteCommand { get; }
         private readonly INavigationService _navigationService;
 
@@ -97,13 +109,17 @@ namespace GarageService.ClientApp.ViewModels
             AddServicesCommand = new Command<Vehicle>(async (vehicle) => await AddServices(vehicle));
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
+            GoPendingOrderCommand = new Command<ClientPaymentOrder>(async (ClientPaymentOrder) => await GoPendingOrder(ClientPaymentOrder));
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
             // Load data here
             LoadClientProfile();
             
         }
-
-        public async Task LoadGaragePremuim(int ClientID)
+        private async Task GoPendingOrder(ClientPaymentOrder PendingOrder)
+        {
+            await Shell.Current.GoToAsync($"{nameof(PaymentPage)}?PaymentOrderid={PendingOrder.Id}");
+        }
+        public async Task LoadClientPremuim(int ClientID)
         {
             string ErrorMessage = string.Empty;
             ClientPremiumRegistration = await _ApiService.GetActiveRegistrationByClientId(ClientID);
@@ -160,10 +176,19 @@ namespace GarageService.ClientApp.ViewModels
             if (response.IsSuccess)
             {
                 ClientProfile = response.Data;
-                LoadGaragePremuim(ClientProfile.Id);
+                LoadClientPremuim(ClientProfile.Id);
+                LoadPendingOrders(ClientProfile.Id);
             }
         }
-      
+        public async Task LoadPendingOrders(int ClientID)
+        {
+            string ErrorMessage = string.Empty;
+            var response = await _ApiService.GetPendingPaymentOrderByID(ClientID);
+            if (response != null && response.Data != null)
+            {
+                PendingOrders = new List<ClientPaymentOrder>(response.Data);
+            }
+        }
         private int GetCurrentUserId()
         {
             // Implement your actual user ID retrieval logic

@@ -90,7 +90,7 @@ namespace GarageService.ClientApp.ViewModels
                 {
                     Clientid = ClientPaymentOrder.ClientId,
                     Registerdate = DateTime.Now,
-                    ExpiryDate = DateTime.Now.AddYears(1), // Assuming 1 year premium
+                    ExpiryDate = DateTime.Now.AddDays(ClientPaymentOrder.PremiumOffer.PremiumRange),
                     IsActive = true
                 };
 

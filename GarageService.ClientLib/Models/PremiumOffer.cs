@@ -18,6 +18,7 @@ namespace GarageService.ClientLib.Models
         public decimal PremiumCost { get; set; }
 
         public int CurrId { get; set; }
+        public int PremiumRange { get; set; }
 
         public virtual ICollection<ClientPaymentOrder> ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
 

@@ -20,7 +20,7 @@ namespace GarageService.ClientApp.ViewModels
             set
             {
                 _vehicleId = value;
-                OnPropertyChanged(nameof(Vehicle));
+                OnPropertyChanged(nameof(VehicleId));
                 LoadHistoryCommand.Execute(null);
             }
         }

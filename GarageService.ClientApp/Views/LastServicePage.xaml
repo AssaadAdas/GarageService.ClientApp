@@ -2,11 +2,189 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GarageService.ClientApp.Views.LastServicePage"
-             Title="LastServicePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:views="clr-namespace:GarageService.ClientApp.Views"
+             BackgroundColor="{StaticResource Gray50}">
+
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
+        <views:TitleView Title="Last Service"
+                         SaveCommand="{Binding SaveCommand}"
+                         BackCommand="{Binding GoBack}"
+                         Grid.Row="0"/>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="30">
+
+                <!-- Service Summary Card -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="16"
+                       Padding="20"
+                       HasShadow="True"
+                       BorderColor="{StaticResource Gray200}">
+                    <VerticalStackLayout Spacing="16">
+
+                        <!-- Service Date -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label Text="📅" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   Grid.Column="0"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Service Date" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray500}"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding VehiclesService.ServiceDate}"
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray900}"
+                                       FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Odometer -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label Text="🛣️" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   Grid.Column="0"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Odometer" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray500}"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding VehiclesService.Odometer}" 
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray900}"
+                                       FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Garage -->
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Label Text="🏢" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   Grid.Column="0"/>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Garage" 
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray500}"
+                                       FontAttributes="Bold"/>
+                                <Label Text="{Binding VehiclesService.Garage.GarageName}" 
+                                       FontSize="16"
+                                       TextColor="{StaticResource Gray900}"
+                                       FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Notes Section -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="16"
+                       Padding="20"
+                       HasShadow="True"
+                       BorderColor="{StaticResource Gray200}">
+                    <VerticalStackLayout Spacing="12">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="📝" FontSize="16" VerticalOptions="Center"/>
+                            <Label Text="Notes" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Gray800}"/>
+                        </HorizontalStackLayout>
+
+                        <Frame BackgroundColor="{StaticResource Gray50}"
+                               CornerRadius="12"
+                               Padding="16"
+                               HasShadow="False">
+                            <Label Text="{Binding VehiclesService.Notes}" 
+                                   FontSize="14"
+                                   TextColor="{StaticResource Gray700}"
+                                   LineBreakMode="WordWrap"/>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Service Types Section -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="16"
+                       Padding="20"
+                       HasShadow="True"
+                       BorderColor="{StaticResource Gray200}">
+                    <VerticalStackLayout Spacing="16">
+
+                        <!-- Header -->
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="🔧" FontSize="16" VerticalOptions="Center"/>
+                            <Label Text="Service Types" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource Primary}"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Service Types List -->
+                        <CollectionView ItemsSource="{Binding VehiclesService.VehiclesServiceTypes}"
+                                   SelectionMode="None"
+                                        EmptyView="No Service Found">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="20"
+                                       Margin="0,0,0,12"
+                                       BackgroundColor="{StaticResource Gray50}"
+                                       CornerRadius="12"
+                                       HasShadow="False"
+                                       BorderColor="{StaticResource Gray200}">
+                                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" 
+                                              RowSpacing="8" ColumnSpacing="10">
+
+                                            <!-- Service Type -->
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
+                                                <Label Text="Type" 
+                                                       FontSize="11"
+                                                       TextColor="{StaticResource Gray500}"
+                                                       FontAttributes="Bold"/>
+                                                <Label Text="{Binding ServiceType.Description}"
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource Gray800}"
+                                                       FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                            <!-- Cost -->
+                                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
+                                                <Label Text="Cost" 
+                                                       FontSize="11"
+                                                       TextColor="{StaticResource Gray500}"
+                                                       FontAttributes="Bold"/>
+                                                <Label Text="{Binding Cost, StringFormat='{0:C}'}"
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource Success}"
+                                                       FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                            <!-- Currency -->
+                                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                                                <Label Text="Currency" 
+                                                       FontSize="11"
+                                                       TextColor="{StaticResource Gray500}"
+                                                       FontAttributes="Bold"/>
+                                                <Label Text="{Binding Curr.CurrDesc}"
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource Gray700}"/>
+                                            </VerticalStackLayout>
+
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+
+
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
