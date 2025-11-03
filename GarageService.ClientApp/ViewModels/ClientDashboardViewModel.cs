@@ -77,6 +77,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
         public ICommand GoPendingOrderCommand { get; }
+        public ICommand GoPaymentMethodsCommand { get; }
         public ICommand ReadNoteCommand { get; }
         private readonly INavigationService _navigationService;
 
@@ -110,6 +111,7 @@ namespace GarageService.ClientApp.ViewModels
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
             GoPendingOrderCommand = new Command<ClientPaymentOrder>(async (ClientPaymentOrder) => await GoPendingOrder(ClientPaymentOrder));
+            GoPaymentMethodsCommand = new Command(async () => await GoPaymentMethods());
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
             // Load data here
             LoadClientProfile();
@@ -131,7 +133,7 @@ namespace GarageService.ClientApp.ViewModels
         private void OpenHistory() { /* Navigate to history page */ }
         private async Task AddVehicle()
         { 
-            await Shell.Current.GoToAsync($"{nameof(AddVehiclePage)}"); 
+            await Shell.Current.GoToAsync($"{nameof(AddVehiclePage)}");
         }
         private async Task LogOut()
         { 
@@ -144,13 +146,15 @@ namespace GarageService.ClientApp.ViewModels
         {
             await Shell.Current.GoToAsync($"{nameof(EditVehiclePage)}?vehileid={vehicle.Id}");
         }
+        
+        private async Task GoPaymentMethods()
+        {
+            await Shell.Current.GoToAsync($"{nameof(PaymentMethodsPage)}");
+        }
 
         private async Task AddServices(Vehicle vehicle)
         {
-            //await Shell.Current.GoToAsync($"{nameof(ServicePage)}?VehicleId={vehicle.Id}");
-
-            await Shell.Current.GoToAsync($"{nameof(ServicePage)}?vehicleid={vehicle.Id}");
-
+            await Shell.Current.GoToAsync($"{nameof(ServicePage)}?VehicleId={vehicle.Id}");
         }
         private async Task ShowMenu(Vehicle vehicle)
         {

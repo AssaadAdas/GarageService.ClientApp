@@ -8,8 +8,8 @@
              xmlns:views="clr-namespace:GarageService.ClientApp.Views"
              x:Name="PageRoot"
              BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#121212}">
-    
-    <Grid RowDefinitions="Auto,*">
+
+    <Grid RowDefinitions="Auto,*,Auto">
         <views:DashBoardTitle 
             Title="Client DashBoard"
             SaveCommand="{Binding LogOutCommand}"
@@ -250,6 +250,98 @@
                     </Grid>
                 </VerticalStackLayout>
         </ScrollView>
+           
         </Grid>
+
+        <!-- Tabbed Menu Footer -->
+        <Border Grid.Row="2"
+          BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+          Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
+          StrokeThickness="1"
+          Padding="0"
+          HorizontalOptions="Fill">
+
+            <Grid ColumnDefinitions="*,*,*,*" 
+            ColumnSpacing="0"
+            Padding="16,12,16,24"
+            HeightRequest="80">
+
+                <!-- Dashboard Tab -->
+                <Border Grid.Column="0"
+                  BackgroundColor="Transparent"
+                  Padding="8"
+                  HorizontalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToDashboardCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="🏠" 
+                         FontSize="20"
+                         HorizontalOptions="Center"/>
+                        <Label Text="Dashboard"
+                         FontSize="12"
+                         TextColor="{AppThemeBinding Light=#2563EB, Dark=#60A5FA}"
+                         HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Vehicles Tab -->
+                <Border Grid.Column="1"
+                  BackgroundColor="Transparent"
+                  Padding="8"
+                  HorizontalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToVehiclesCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="🚗" 
+                         FontSize="20"
+                         HorizontalOptions="Center"/>
+                        <Label Text="Vehicles"
+                         FontSize="12"
+                         TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"
+                         HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Appointments Tab -->
+                <Border Grid.Column="2"
+                  BackgroundColor="Transparent"
+                  Padding="8"
+                  HorizontalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToAppointmentsCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="📅" 
+                         FontSize="20"
+                         HorizontalOptions="Center"/>
+                        <Label Text="Appointments"
+                         FontSize="12"
+                         TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"
+                         HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Settings Tab -->
+                <Border Grid.Column="3"
+                  BackgroundColor="Transparent"
+                  Padding="8"
+                  HorizontalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoPaymentMethodsCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label Text="⚙️" 
+                         FontSize="20"
+                         HorizontalOptions="Center"/>
+                        <Label Text="Settings"
+                         FontSize="12"
+                         TextColor="{AppThemeBinding Light=#64748B, Dark=#A1A1AA}"
+                         HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </ContentPage>
