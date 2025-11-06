@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GarageService.ClientApp.Views.SettingsMenuPopup"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             >
+    <VerticalStackLayout Padding="20" Spacing="15" WidthRequest="250">
+        <Label Text="Settings"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <Button Text="💳 Payment Method"
+                Command="{Binding GoPaymentMethodsCommand}"
+                BackgroundColor="Transparent"
+                BorderColor="#E5E7EB"
+                BorderWidth="1"
+                CornerRadius="8"
+                TextColor="{AppThemeBinding Light=#111827, Dark=#E5E7EB}"/>
+
+        <Button Text="🔒 Change Password"
+                Command="{Binding ChangePasswordCommand}"
+                BackgroundColor="Transparent"
+                BorderColor="#E5E7EB"
+                BorderWidth="1"
+                CornerRadius="8"
+                TextColor="{AppThemeBinding Light=#111827, Dark=#E5E7EB}"/>
+
+        <Button Text="Close"
+                Command="{Binding CloseCommand}"
+                BackgroundColor="#E5E7EB"
+                TextColor="Black"/>
+    </VerticalStackLayout>
+</toolkit:Popup>

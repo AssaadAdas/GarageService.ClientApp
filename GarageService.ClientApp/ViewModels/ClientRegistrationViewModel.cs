@@ -69,12 +69,12 @@ namespace GarageService.ClientApp.ViewModels
             get => _errorMessage;
             set => SetProperty(ref _errorMessage, value);
         }
-        public ICommand RegisterCommand { get; }
+        public ICommand SaveCommand { get; }
         public ICommand BackCommand { get; }
         public ClientRegistrationViewModel(ApiService apiservice)
         {
             _ApiService = apiservice;
-            RegisterCommand = new Command(async () => await Register());
+            SaveCommand = new Command(async () => await Register());
             BackCommand = new Command(async () => await GoBack());
             LoadCountries();
         }

@@ -77,7 +77,7 @@ namespace GarageService.ClientApp.ViewModels
         public ICommand AddAppointmentCommand { get; }
         public ICommand EditProfileCommand { get; }
         public ICommand GoPendingOrderCommand { get; }
-        public ICommand GoPaymentMethodsCommand { get; }
+        public ICommand GoSettingCommand { get; }
         public ICommand ReadNoteCommand { get; }
         private readonly INavigationService _navigationService;
 
@@ -111,7 +111,7 @@ namespace GarageService.ClientApp.ViewModels
             AddAppointmentCommand = new Command(AddAppointment);
             EditProfileCommand = new Command(async () => await EditProfile());
             GoPendingOrderCommand = new Command<ClientPaymentOrder>(async (ClientPaymentOrder) => await GoPendingOrder(ClientPaymentOrder));
-            GoPaymentMethodsCommand = new Command(async () => await GoPaymentMethods());
+            GoSettingCommand = new Command(async () => await GoSettingMethods());
             ReadNoteCommand = new Command<ClientNotification>(async (clientnotification) => await ReadNote(clientnotification));
             // Load data here
             LoadClientProfile();
@@ -120,6 +120,13 @@ namespace GarageService.ClientApp.ViewModels
         private async Task GoPendingOrder(ClientPaymentOrder PendingOrder)
         {
             await Shell.Current.GoToAsync($"{nameof(PaymentPage)}?PaymentOrderid={PendingOrder.Id}");
+        }
+        private async Task GoSettingMethods()
+        {
+            int ClientId = GetCurrentUserId();
+            var popup = new SettingsMenuPopup();
+            await _navigationService.ShowPopupAsync(popup);
+            
         }
         public async Task LoadClientPremuim(int ClientID)
         {
@@ -147,10 +154,7 @@ namespace GarageService.ClientApp.ViewModels
             await Shell.Current.GoToAsync($"{nameof(EditVehiclePage)}?vehileid={vehicle.Id}");
         }
         
-        private async Task GoPaymentMethods()
-        {
-            await Shell.Current.GoToAsync($"{nameof(PaymentMethodsPage)}");
-        }
+       
 
         private async Task AddServices(Vehicle vehicle)
         {

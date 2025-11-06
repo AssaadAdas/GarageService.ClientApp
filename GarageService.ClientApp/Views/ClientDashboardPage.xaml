@@ -329,7 +329,7 @@
                   Padding="8"
                   HorizontalOptions="Center">
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoPaymentMethodsCommand}"/>
+                        <TapGestureRecognizer Command="{Binding GoSettingCommand}"/>
                     </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
                         <Label Text="⚙️" 
