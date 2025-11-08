@@ -393,6 +393,39 @@ namespace GarageService.ClientLib.Services
             }
         }
 
+        public async Task<ApiResponse<ClientPaymentMethod>> GetPaymentMethodID(int MethodID)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"ClientPaymentMethods/UnMask/{MethodID}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var paymentMethod = await response.Content.ReadFromJsonAsync<ClientPaymentMethod>();
+                    return new ApiResponse<ClientPaymentMethod> { Data = paymentMethod, IsSuccess = true };
+                }
+
+                // Handle non-success status codes
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return response.StatusCode switch
+                {
+                    HttpStatusCode.NotFound =>
+                        new ApiResponse<ClientPaymentMethod> { ErrorMessage = "User type not found", IsSuccess = false },
+                    _ =>
+                        new ApiResponse<ClientPaymentMethod> { ErrorMessage = $"Error fetching user type: {response.ReasonPhrase}", IsSuccess = false }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<ClientPaymentMethod>
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
 
         /// <summary>
         /// Adds a new vehicle asynchronously.
@@ -1000,6 +1033,14 @@ namespace GarageService.ClientLib.Services
                 throw;
             }
         }
+
+        public async Task<bool> UpdatePaymentMethodAsync(int id, ClientPaymentMethod clientPaymentMethod)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"ClientPaymentMethods/{id}", clientPaymentMethod);
+
+            return response.IsSuccessStatusCode; // returns true if 204 or 200
+        }
+
 
         /// <summary>
         /// GetClientNotification

@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 namespace GarageService.ClientApp.ViewModels
 {
+
     public class EditClientProfileViewModel : BaseViewModel
     {
         private readonly ISessionService _sessionService;

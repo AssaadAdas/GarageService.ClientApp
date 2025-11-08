@@ -17,7 +17,7 @@ namespace GarageService.ClientLib.Models
 
         public string? Notes { get; set; }
 
-        public virtual ClientProfile IdNavigation { get; set; } = null!;
+        public virtual ClientProfile? IdNavigation { get; set; } = null!;
     }
 
 }

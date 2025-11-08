@@ -19,7 +19,7 @@ namespace GarageService.ClientLib.Models
 
         public bool IsActive { get; set; }
 
-        public virtual ClientProfile Client { get; set; } = null!;
+        public virtual ClientProfile? Client { get; set; } = null!;
     }
 
 }

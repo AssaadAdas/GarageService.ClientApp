@@ -16,7 +16,7 @@ namespace GarageService.ClientApp.ViewModels
         private readonly ApiService _apiService;
         private readonly ISessionService _session_service;
         public int Id { get; set; }
-        public int Garageid { get; set; }
+        public int Clientid { get; set; }
 
         public bool IsPrimary { get; set; }
         public DateTime CreatedDate { get; set; }

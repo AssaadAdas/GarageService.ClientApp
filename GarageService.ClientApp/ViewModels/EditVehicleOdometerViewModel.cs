@@ -66,7 +66,7 @@ namespace GarageService.ClientApp.ViewModels
             _sessionService = sessionService;
             SaveCommand = new Command(async () => await SaveVehile());
             BackCommand = new Command(async () => await GoBack());
-            LoadClientCommand = new Command(async () => await LoadVehicle());
+            LoadClientCommand = new Command(async () => await LoadClientProfile());
             LoadClientCommand.Execute(null); 
             LoadCommand = new Command(async () => await LoadVehicle());
             LoadCommand.Execute(null);

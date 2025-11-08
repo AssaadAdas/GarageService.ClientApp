@@ -116,6 +116,7 @@ namespace GarageService.ClientApp.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Failed to Pay Order", "OK");
             }
         }
+
         public async Task LoadPaymentOrder()
         {
             // Get current user ID from your authentication system

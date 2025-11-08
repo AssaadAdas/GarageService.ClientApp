@@ -16,7 +16,7 @@ namespace GarageService.ClientLib.Models
         public string? Notes { get; set; }
         public bool IsRead { get; set; } = false;
 
-        public virtual ClientProfile Client { get; set; } = null!;
+        public virtual ClientProfile? Client { get; set; } = null!;
     }
 
 }

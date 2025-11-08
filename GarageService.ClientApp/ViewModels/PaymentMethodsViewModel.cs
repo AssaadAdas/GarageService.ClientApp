@@ -26,7 +26,7 @@ namespace GarageService.ClientApp.ViewModels
             _sessionService = sessionService;
             LoadPaymentMethodCommand = new Command(async () => await LoadPaymentMethods());
             AddPaymentMethodCommand = new Command(async () => await AddPaymentMethod());
-            EditPaymentMethodCommand = new Command(async () => await EditPaymentMethod());
+            EditPaymentMethodCommand = new Command<ClientPaymentMethod>(async (ClientPaymentMethod) => await EditPaymentMethod(ClientPaymentMethod));
             BackCommand = new Command(async () => await GoBack());
             LoadClientProfile();
         }
@@ -40,9 +40,9 @@ namespace GarageService.ClientApp.ViewModels
             await Shell.Current.GoToAsync(nameof(ClientPaymentMethodPage));
         }
 
-        private async Task EditPaymentMethod()
+        private async Task EditPaymentMethod(ClientPaymentMethod ClientPaymentMethod)
         {
-            await Shell.Current.GoToAsync(nameof(EditPaymentMethodsPage));
+            await Shell.Current.GoToAsync($"{nameof(EditPaymentMethodsPage)}?paymentMethodId={ClientPaymentMethod.Id}");
         }
 
         private List<ClientPaymentMethod> _clientPaymentMethod;
