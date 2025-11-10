@@ -1903,6 +1903,24 @@ namespace GarageService.ClientLib.Services
                 };
             }
         }
+
+        public async Task<bool> ChangePasswordAsync(int userId, PasswordChangeRequest request)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PatchAsync($"Users/{userId}/password", content);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error changing password: {ex.Message}");
+                return false;
+            }
+        }
     }
 
     public class ApiResponse<T>

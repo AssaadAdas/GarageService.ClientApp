@@ -19,16 +19,13 @@
                 TextColor="{AppThemeBinding Light=#111827, Dark=#E5E7EB}"/>
 
         <Button Text="🔒 Change Password"
-                Command="{Binding ChangePasswordCommand}"
+                Command="{Binding ChangePasswordMethodsCommand}"
                 BackgroundColor="Transparent"
                 BorderColor="#E5E7EB"
                 BorderWidth="1"
                 CornerRadius="8"
                 TextColor="{AppThemeBinding Light=#111827, Dark=#E5E7EB}"/>
 
-        <Button Text="Close"
-                Command="{Binding CloseCommand}"
-                BackgroundColor="#E5E7EB"
-                TextColor="Black"/>
+
     </VerticalStackLayout>
 </toolkit:Popup>

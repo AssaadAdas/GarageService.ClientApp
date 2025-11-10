@@ -31,6 +31,7 @@ namespace GarageService.ClientApp.ViewModels
         }
        
         public ICommand SaveCommand { get; }
+
         public ICommand LoadCommand { get; }
         public ICommand LoadCountriesCommand { get; }
         public ICommand BackCommand { get; }
@@ -100,6 +101,7 @@ namespace GarageService.ClientApp.ViewModels
             _ApiService = apiservice;
 
             SaveCommand = new Command(async () => await SaveProfile());
+            
             BackCommand = new Command(async () => await GoBack());
             LoadCountriesCommand = new Command(async () => await LoadCountries());
             
@@ -135,6 +137,8 @@ namespace GarageService.ClientApp.ViewModels
             }
 
         }
+
+       
         private async Task SaveProfile()
         {
             try

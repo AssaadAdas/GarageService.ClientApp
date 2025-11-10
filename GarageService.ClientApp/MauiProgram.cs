@@ -49,6 +49,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PaymentMethodsViewModel>();
         builder.Services.AddTransient<EditPaymentMethodsViewModel>();
         builder.Services.AddTransient<SettingsMenuViewModel>();
+        builder.Services.AddTransient<ChangePasswordViewModel>();
 
         // Register Pages
         builder.Services.AddTransient<LoginPage>();
@@ -73,6 +74,7 @@ public static class MauiProgram
         builder.Services.AddTransient<PaymentMethodsPage>();
         builder.Services.AddTransient<EditPaymentMethodsPage>();
         builder.Services.AddTransient<SettingsMenuPopup>();
+        builder.Services.AddTransient<ChangePasswordPage>();
 
         // Services
         builder.Services.AddSingleton<ISessionService, SessionService>();
