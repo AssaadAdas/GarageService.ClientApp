@@ -261,7 +261,7 @@ namespace GarageService.ClientApp.ViewModels
             ClientPaymentMethod.IsPrimary = IsPrimary;
             ClientPaymentMethod.PaymentTypeId = ClientPaymentMethod.PaymentTypeId;
             ClientPaymentMethod.Cvv = Cvv;
-            ClientPaymentMethod.Client =ClientProfile;
+            
 
             bool success = await _ApiService.UpdatePaymentMethodAsync(ClientPaymentMethod.Id, ClientPaymentMethod);
 
