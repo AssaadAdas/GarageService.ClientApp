@@ -271,7 +271,7 @@ namespace GarageService.ClientApp.ViewModels
             {
                ServiceDate = ServiceDate,
                Odometer = Odometer,
-               ServiceLocation = string.Empty,
+               ServiceLocation = SelectedGarage.GarageLocation,
                Notes = Notes,
                Garageid = GarageId,
                Vehicleid = VehicleId,
